@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+      <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            function moveColumn(table, sourceIndex, targetIndex) {
+                console.log("Move Col " + sourceIndex + " to " + targetIndex);
+                var body = $("tbody", table);
+                $("tr", body).each(function(i, row) {
+                $("td", row).eq(sourceIndex).insertAfter($("td", row).eq(targetIndex - 1));
+                });
+            }
+
+            $(".mytable > thead > tr").sortable({
+                items: "> th.sortme",
+                start: function(event, ui) {
+                ui.item.data("source", ui.item.index());
+                },
+                update: function(event, ui) {
+                moveColumn($(this).closest("table"), ui.item.data("source"), ui.item.index());
+                $(".mytable > tbody").sortable("refresh");
+                }
+            });
+
+            $(".mytable > tbody").sortable({
+                items: "> tr.sortme"
+            });
+            });
+    </script>
+</head>
+<body>
+    
+<table class="mytable">
+  <caption>My Table</caption>
+  <thead>
+    <tr>
+      <td id="corner"></td>
+      <th scope="col" class="sortme">Col I</th>
+      <th scope="col" class="sortme">Col II</th>
+      <th scope="col" class="sortme">Col III</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="sortme">
+      <th scope="row">Row I</th>
+      <td>Open</td>
+      <td>Open</td>
+      <td>Open</td>
+    </tr>
+    <tr class="sortme">
+      <th scope="row">Row II</th>
+      <td>Open</td>
+      <td>Open</td>
+      <td>Closed</td>
+    </tr>
+    <tr class="sortme">
+      <th scope="row">Row III</th>
+      <td>Open</td>
+      <td>Open</td>
+      <td>Closed</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+
+  <link rel="shortcut icon" href="images/fevicon.png" type="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <title> Project </title>
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+<style>
+  .popup {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
+.popup-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+button {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+.mystyle{
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.eye-icon{
+  position: absolute; margin-top: 18px; margin-left: -30px;
+}
+@media (max-width:985px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 300px;
+  }
+}
+@media (max-width:925px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 250px;
+  }
+}
+@media (max-width:835px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 200px;
+  }
+}
+@media (max-width:785px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 180px;
+  }
+}
+@media (max-width:768px){
+    .eye-icon{
+      position: absolute; margin-top: -10px; margin-left: 10px;
+  }
+}
+@media (max-width:692px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 450px;
+  }
+}
+@media (max-width:650px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 400px;
+  }
+}
+@media (max-width:650px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 350px;
+  }
+}
+@media (max-width:650px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 300px;
+  }
+}
+@media (max-width:505px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 250px;
+  }
+}
+@media (max-width:475px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 200px;
+  }
+}
+@media (max-width:455px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 250px;
+  }
+}
+@media (max-width:455px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 210px;
+  }
+}
+@media (max-width:372px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 170px;
+  }
+}
+@media (max-width:340px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 180px;
+  }
+}
+
+</style>
+  <script>
+    // const form = document.querySelector('validate-form'); 
+ 
+    // form.addEventListener('submit', function(event) { 
+    //     alert("Inside")
+    // event.preventDefault(); 
+    // // Your form submission logic here 
+    // });
+
+    
+    function validation() {
+    var name = document.forms["validate-form"]["Name"].value;
+    var num = document.forms["validate-form"]["PhoneNumber"].value;
+    var email = document.forms["validate-form"]["Email"].value;
+    var password = document.forms["validate-form"]["Password"].value;
+    var dob = document.forms["validate-form"]["DOB"].value;
+    var address = document.forms["validate-form"]["Address"].value;
+    var profile_img = document.forms["validate-form"]["Profile_Img"].value;
+    var pdf_file = document.forms["validate-form"]["Certificate"].value;
+    var role = document.getElementById("role").value;
+
+    // Hobbies
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedValues = [];
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            checkedValues.push(checkbox.value);
+        }
+    });
+
+    // Extract filenames
+    const fileName = profile_img.split("\\").pop();
+    const imagePath = `./images/${fileName}`;
+    const pdfFileName = pdf_file.split("\\").pop();
+    const pdfPath = `./pdf/${pdfFileName}`;
+
+    function saveFormData(formData_new) {
+        var email = document.forms["validate-form"]["Email"].value;
+        const storedFormData = JSON.parse(localStorage.getItem("formData_new")) || [];
+
+        const isNameValid = validation_name();
+        const isNumberValid = validation_number();
+        const isEmailValid = validation_email();
+        const isPasswordValid = validation_password();
+        const isProfileImg = validation_img_file();
+        const isPDFValid = file_size_validation();
+        const isDateValid = validation_date();
+        const isAddressValid = validation_address()
+
+        var id = storedFormData.length + 1;
+
+        if (isNameValid && isNumberValid && isEmailValid && isPasswordValid && isProfileImg && isPDFValid && isDateValid && isAddressValid) {
+            if (email == "superadmin@gmail.com") {
+                Object.assign(formData_new, { Role_ls: "superAdmin" });
+            } else if(role==""){
+              Object.assign(formData_new, { Role_ls: "user" });
+            }
+            else {
+                Object.assign(formData_new, { Role_ls: role });
+            }
+            Object.assign(formData_new, { Id_ls: id });
+
+            storedFormData.push(formData_new);
+            localStorage.setItem("formData_new", JSON.stringify(storedFormData));
+
+            // **Show Pop-up Message**
+            document.getElementById("popup-message").style.display = "flex";
+
+            // Close popup and redirect on 'Ok' button click
+            document.getElementById("popup-ok-btn").addEventListener("click", function () {
+                document.getElementById("popup-message").style.display = "none";
+                window.location.href = "./login.html";
+            });
+
+            return false; // Prevent default form submission
+        } else {
+            return false;
+        }
+    }
+
+    const formData_new = {
+        Name_ls: name,
+        Phone_ls: num,
+        Email_ls: email,
+        Pass_ls: password,
+        Dob_ls: dob,
+        Address_ls: address,
+        Img_ls: imagePath,
+        Hobbies_ls: checkedValues,
+        PDF_ls: uploadedFiles
+    };
+
+    return saveFormData(formData_new);
+}
+
+          function validation_name() {
+            // var submitButton = document.forms["validate-form"]["submit"].disabled;
+            let nameInput = document.getElementById("Name");
+            let errorMsg = document.getElementById("err_name");
+            // alert(nameInput.value.length)
+            // Regular expression to allow only letters and spaces
+            let namePattern = /^[A-Za-z\s]+$/;
+            // console.log(nameInput.value.length)
+              // alert(nameInput.length)
+            if (!nameInput.value) {
+                errorMsg.innerHTML = "Name is required";
+                errorMsg.style.color = "red";
+                return false;
+            } else if(nameInput.value.length<=3 ){   
+              errorMsg.innerHTML = "Name must contain atleast 3 characters";
+              errorMsg.style.color = "red";
+              return false;
+            } else if(nameInput.value.length>=25){
+              errorMsg.innerHTML = "Name must contain atmost 25 characters";
+              errorMsg.style.color = "red";
+              return false;
+            }
+            else if (!namePattern.test(nameInput.value)) {
+                errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                errorMsg.style.color = "red";
+                return false;
+            }  else {
+                errorMsg.innerHTML = ""; // Clear error message on valid input
+                return true;
+            }
+        }
+
+
+    function validation_number() {
+        let num = document.forms["validate-form"]["PhoneNumber"].value;
+        let errorMsg = document.getElementById("err_phone");
+        // let pat_num = /^[7-9][0-9]{9}$/;
+
+        // alert(num)
+        
+        // if (pat_num.test(num))
+        if(num==""){
+          errorMsg.innerHTML="Phone number is required"
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(num.length>10){
+          errorMsg.innerHTML="Number should contain at most 10 digits"
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(num.length==10){
+          errorMsg.innerHTML = "" 
+          // errorMsg.innerHTML = "Valid";
+          // errorMsg.style.color = "green";
+          return true;
+        }
+        else {
+            errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+            errorMsg.style.color = "red";
+            // document.getElementById("PhoneNumber").value = "";
+            return false;
+        }
+    }
+
+    function validation_password() {
+        let password = document.forms["validate-form"]["Password"].value;
+        let errorMsg = document.getElementById("err_password");
+        let pat_password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        //One uppercase one lowercase and at least 8 characters
+        if(password==""){
+          errorMsg.innerHTML = "Password is required";
+            errorMsg.style.color = "red";
+            // document.getElementById("Password").value = "";
+            return false;
+        }
+        else if (pat_password.test(password)) {
+            errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid password. Must contain at least one number, one uppercase, one lowercase letter, and be at least 8 characters.";
+            errorMsg.style.color = "red";
+            // document.getElementById("Password").value = "";
+            return false;
+        }
+    }
+
+    function validation_email() {
+        let email = document.forms["validate-form"]["Email"].value;
+        let errorMsg = document.getElementById("err_email");
+        let pat_mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // if (pat_mail.test(email)) 
+        if(email==""){
+          errorMsg.innerHTML="Email address is required"
+          errorMsg.style.color = "red";
+          return false
+        } else if(!pat_mail.test(email)){
+          errorMsg.innerHTML="Invalid email"
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(email.includes("@") && email.includes(".")){
+            errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid email";
+            errorMsg.style.color = "red";
+            // document.getElementById("Email").value = "";
+            return false;
+        }
+    }
+
+    function validation_date(){
+      var date = document.forms["validate-form"]["DOB"].value;
+      let errorMsg = document.getElementById("err_dob");
+      const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
+      if(date==""){
+        errorMsg.innerHTML="Date is required"
+        errorMsg.style.color = "red";
+        return false
+      }
+      else if(!patternDate.test(date)){
+        errorMsg.innerHTML="Date is invalid"
+        errorMsg.style.color = "red";
+        return false
+      } else {
+        errorMsg.innerHTML=""
+        return true
+      }
+
+    }
+
+    function validation_address(){
+      var address=document.forms["validate-form"]["Address"].value;
+      let errorMsg = document.getElementById("err_address");
+
+      if(address==""){
+        errorMsg.innerHTML="Address is required"
+        errorMsg.style.color = "red";
+        return false
+      } else if(address.length<=3){
+        errorMsg.innerHTML="Address must contain atleast 3 characters"
+        errorMsg.style.color = "red";
+        return false
+      } else if(address.length>250){
+        errorMsg.innerHTML="Address must contain atleast 3 characters"
+        errorMsg.style.color = "red";
+        return false
+      } else{
+        errorMsg.innerHTML=""
+        return true
+      }
+    }
+
+    function validation_img_file() {
+        let fileInput = document.getElementById("Profile_Img");
+        let file_img = document.getElementById("Profile_Img").files[0];
+        let errorMsg = document.getElementById("err_img");
+        let imgPreviewContainer = document.getElementById("imgPreviewContainer");
+        let imgPreview = document.getElementById("imgPreview");
+        let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+        let file = fileInput.files[0];
+
+        // alert(file_img)
+        if(file_img==undefined){
+          errorMsg.innerHTML = "Profile image is required";
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(file_img==undefined){
+          errorMsg.innerHTML = "Invalid file. Only jpeg, jpg, png are allowed";
+            errorMsg.style.color = "red";
+          return false
+        }
+        if (file_img.size >= 2048 * 1024) {
+            errorMsg.innerHTML = "File too Big. Please select a file less than 2MB";
+            errorMsg.style.color = "red";
+            return false;
+        }
+        else if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed";
+            errorMsg.style.color = "red";
+            // document.getElementById("Profile_Img").value = "";
+            return false
+        } else {
+          errorMsg.innerHTML =""
+          let fileURL = URL.createObjectURL(file);
+          imgPreview.src = fileURL;
+          imgPreviewContainer.style.display = "block";
+            // errorMsg.innerHTML = "Valid img file";
+            // errorMsg.style.color = "green";
+            return true;
+        }
+    }
+    function validation_hobbies(){
+
+      const hobbies = document.querySelectorAll('input[type="checkbox"]');
+      // alert(JSON.stringify(hobbies))
+      const hobby_1=JSON.stringify(hobbies[0])
+      const hobby_2=JSON.stringify(hobbies[1])
+      const hobby_3=JSON.stringify(hobbies[2])
+      // alert(!hobby_1)
+        let errorMsg = document.getElementById("err_hobbies");
+        // if(!hobby_1==false && !hobby_2==false && !hobby_3==false){
+          if(!hobby_1 && !hobby_2 && !hobby_3){
+          errorMsg.innerHTML = "Enter at least one hobby";
+            errorMsg.style.color = "red";
+            return false
+        }
+        else{
+          errorMsg.innerHTML =""
+          return true
+        }
+    }
+
+    let uploadedFiles = []; // Array to store uploaded PDF files
+function file_size_validation() {
+  let pdfInput = document.getElementById("Certificate");
+
+    let pdf_file_alert = pdfInput.value;
+    let file_img = pdfInput.files[0];
+    let allowedTypes = ["application/pdf"];
+    let errorMsg = document.getElementById("err_cert");
+    let pdfPreviewContainer = document.getElementById("pdfPreviewContainer");
+
+    if (pdf_file_alert == "") {
+        errorMsg.innerHTML = "PDF is required";
+        errorMsg.style.color = "red";
+        return false;
+    }
+
+    if (!allowedTypes.includes(file_img.type)) {
+        errorMsg.innerHTML = "Invalid file. Only PDF allowed";
+        errorMsg.style.color = "red";
+        return false;
+    }
+
+    if (file_img.size >= 4096 * 1024) {
+        errorMsg.innerHTML = "File too Big. Please select a file less than 4MB";
+        errorMsg.style.color = "red";
+        return false;
+    }
+
+    const pdfFileName = pdf_file_alert.split("\\").pop();
+    const pdfPath = `./pdf/${pdfFileName}`;
+    // Check if the file already exists in uploadedFiles
+    if (uploadedFiles.includes(pdfPath)) {
+        errorMsg.innerHTML = "";
+        errorMsg.style.color = "red";
+        return true;
+    }
+
+    // If it's a new file, add it to the uploadedFiles array
+    uploadedFiles.push(pdfPath);
+
+    show_pdf_name();
+    console.log(uploadedFiles);
+    pdfPreviewContainer.style.display = "block";
+    errorMsg.innerHTML = "";
+    return true;
+}
+
+function show_pdf_name() {
+    let pdfNameContainer = document.getElementById("pdf_name");
+    pdfNameContainer.innerHTML = ""; // Clear previous list
+    
+    uploadedFiles.forEach((pdfFileName, index) => {
+        let link_pdf = document.createElement("a");
+        let delete_button = document.createElement("a");
+        delete_button.style.color = "red";
+        delete_button.style.marginLeft = "30px";
+        delete_button.style.cursor = "pointer";
+
+        let div_new = document.createElement("div");
+        div_new.style.display = "flex";
+
+        link_pdf.classList.add("mystyle");
+        link_pdf.setAttribute("data-toggle", "modal");
+        link_pdf.setAttribute("data-target", "#exampleModal");
+        let pdfFilePath=pdfFileName.split("/").pop()
+        link_pdf.innerHTML = pdfFilePath;
+
+        delete_button.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
+
+        // Click event to show PDF preview
+        link_pdf.addEventListener("click", function () {
+            clickme(pdfFileName);
+        });
+
+        // Click event to delete the PDF from the array
+        delete_button.addEventListener("click", function () {
+            uploadedFiles.splice(index, 1);
+            show_pdf_name(); // Refresh the list
+            if (uploadedFiles.length === 0) {
+                document.getElementById("pdfPreviewContainer").style.display = "none";
+            }
+        });
+
+        div_new.appendChild(link_pdf);
+        div_new.appendChild(delete_button);
+        pdfNameContainer.appendChild(div_new);
+    });
+}
+
+function clickme(pdfFile) {
+    let pdf_preview = document.getElementById("pdfPreview");
+    pdf_preview.src = `./pdf/${pdfFile}`;
+}
+
+
+  </script>
+
+</head>
+
+<body class="sub_page">
+  
+
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid ">
+          <div class="contact_nav">
+            <a href="">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <span>
+                Call : +01 123455678990
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              <span>
+                Email : demo@gmail.com
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              <span>
+                Location
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+              <span>
+                Project
+              </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav  ">
+                <li class="nav-item ">
+                  <a class="nav-link" href="index.html">Home </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="service.html">Services</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html"> About</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="login.html">  Login</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="registration.html">Registration <span class="sr-only">(current)</span> </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile </a>
+                  </li>
+                <form class="form-inline">
+                  <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  
+  <!-- Details section -->
+   <div class="example">
+  <section class="details_section layout_padding-top">
+    <div class="container-fluid">
+          <div class="heading_container ">
+            <h2>
+              Registration
+            </h2>
+          </div>
+      <div class="form_container">
+        <form name="validate-form" onsubmit="return validation()" id="validate-form">
+          <div class="row">
+              <div class="col-lg-5 col-md-5 offset-md-1">
+                <div>
+                  <label for="Name">Name: </label>
+                  <input type="text" placeholder="Your Name" id="Name" onkeyup="validation_name()" />
+                  <p id="err_name"></p>
+                </div>
+                <div>
+                  <label for="PhoneNumber">Phone Number: </label>
+                  <input type="tel" placeholder="Phone Number" id="PhoneNumber" name="PhoneNumber" onkeyup="validation_number()" />
+                  <p id="err_phone"></p>
+                </div>
+                <div>
+                  <label for="Email">Email: </label>
+                  <input type="email" placeholder="Email" id="Email" onkeyup="validation_email()" />
+                  <p id="err_email"></p>
+                  <!-- <input id="Email" placeholder="Email" oninvalid="InvalidMsg(this);" oninput="InvalidMsg(this);" name="email" type="email" required="required"  />  -->
+                </div>
+                <div>
+                    <label for="Password">Password: </label>
+                    <input type="password" placeholder="Password" id="Password" onkeyup="validation_password()" autocomplete="current-password"/>
+                    <i class="fa-solid fa-eye eye-icon" id="togglePassword" ></i>
+                    <p id="err_password"></p>
+                </div>
+                <div>
+                  <label for="DOB">Date of Birth: </label>
+                  <input type="date" placeholder="Date of Birth" id="DOB" onkeyup="validation_date()"/>
+                  <p id="err_dob"></p>
+                </div>
+                <div>
+                    <label for="hobbies" >Hobbies: </label><br>
+                    Reading <input type="checkbox" name="hobbies" id="Reading" value="Reading" onkeyup="validation_hobbies()">
+                    Painting <input type="checkbox" name="hobbies" id="Painting" value="Painting" onkeyup="validation_hobbies()">
+                    Dancing <input type="checkbox" name="hobbies" id="Dancing" value="Dancing" onkeyup="validation_hobbies()">
+                    <p id="err_hobbies"></p>
+                </div>
+              </div>
+              <div class="col-lg-5 col-md-5 offset-md-1">
+                <div>
+                    <label for="Address">Address: </label>
+                    <input type="text" class="message-box" placeholder="Address" id="Address" onkeyup="validation_address()"/>
+                    <p id="err_address"></p>
+                </div>
+                <div>
+                    <label for="Gender" >Gender: </label><br>
+                    Male <input type="radio" name="Gender" id="male"/>
+                    Female <input type="radio" name="Gender" id="female"/>
+                </div>
+                <div>
+                    <label for="Certificate">Upload Certificate: </label>
+                    <!-- <input type="file" placeholder="Certificate" id="Certificate"  class="file_space" accept=".pdf"/> -->
+                    <input type="file" placeholder="Certificate" id="Certificate"  class="file_space" onchange="file_size_validation()" multiple/>
+                    <p id="err_cert"></p>
+                    <div id="pdfPreviewContainer" style="display: none; position: relative; width: 150px;">
+                      <div id="pdf_name"></div>
+                      <!-- <embed src="" width="100%" height="auto" id="pdfPreview"/> -->
+                      <!-- <button id="deleteImgBtn" onclick="deleteImage()" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; padding: 5px; cursor: pointer;">X</button> -->
+                    </div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <!-- <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                              <button type="button" class="close_btn" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div> -->
+                            <div class="modal-body">
+                              <embed src="" width="100%" height="300px" id="pdfPreview"/>
+                              <!-- <iframe src="file_name.pdf" style="width: 100%;height: 100%;border: none;"></iframe> -->
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <div>
+                    <label for="Profile_Img">Upload Profile Image: </label>
+                    <!-- <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" accept="image/*"/> -->
+                    <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" onchange="validation_img_file()"/>
+                    <p id="err_img"></p>
+                    <div id="imgPreviewContainer" style="display: none; position: relative; width: 150px;">
+                      <img id="imgPreview" src="" alt="Profile Preview" style="width: 100%; height: auto; border-radius: 10px;"/>
+                      <!-- <button id="deleteImgBtn" onclick="deleteImage()" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; padding: 5px; cursor: pointer;">X</button> -->
+                    </div>
+                </div>
+                <div>
+                  <label for="Role">Role: </label>
+                    <select class="form-control" id="role">
+                      <option selected>Select Role</option>
+                      <option  name="role" value="user">User</option>
+                      <option  name="role" value="manager">Manager</option>
+                    </select>
+                </div>
+                <div>
+                    Already have an account? <a href="Login.html">Login</a>
+                </div><br>
+                <div class="btn_box">
+                    <!-- <button onclick="redirct_after_submition()"> -->
+                    <button type="submit" class="btn_reg">
+                      Submit
+                    </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </form>
+      </div>
+        
+    </div>
+  </section>
+</div>
+  <!-- end Details section -->
+  <div id="popup-message" class="popup">
+    <div class="popup-content">
+        <img src="./images/success.jpg" alt="Success" class="popup-icon">
+        <!-- <h2>Oh Yeah!</h2> -->
+        <p>You have successfully registered.</p>
+        <button id="popup-ok-btn">Ok</button>
+    </div>
+</div>
+
+  <!-- info section -->
+
+  <section class="info_section layout_padding2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_contact">
+            <h4>
+              Address
+            </h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Location
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>
+                  Call +01 1234567890
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>
+                  demo@gmail.com
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="info_social">
+            <a href="">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_detail">
+            <h4>
+              Info
+            </h4>
+            <p>
+              necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-2 mx-auto info_col">
+          <div class="info_link_box">
+            <h4>
+              Links
+            </h4>
+            <div class="info_links">
+              <a class="active" href="index.html">
+                <img src="images/nav-bullet.png" alt="">
+                Home
+              </a>
+              <a class="" href="about.html">
+                <img src="images/nav-bullet.png" alt="">
+                About
+              </a>
+              <a class="" href="service.html">
+                <img src="images/nav-bullet.png" alt="">
+                Services
+              </a>
+
+              <a class="" href="contact.html">
+                <img src="images/nav-bullet.png" alt="">
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col ">
+          <h4>
+            Subscribe
+          </h4>
+          <form action="#">
+            <input type="text" placeholder="Enter email" />
+            <button type="submit">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="https://html.design/">Free Html Templates</a>
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+
+  <!-- jQery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+  <!-- End Google Map -->
+  <script>
+    const togglePassword =
+          document.querySelector('#togglePassword');
+
+    const password = 
+          document.querySelector('#Password');
+
+    togglePassword.
+    addEventListener('click', function (e) {
+
+        // Toggle the type attribute 
+        const type = password.getAttribute(
+            'type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // console.log(togglePassword.className)
+
+        if(togglePassword.className.match("fa-solid fa-eye-slash eye-icon")){
+          togglePassword.setAttribute("class","fa-solid fa-eye eye-icon")
+        } else {
+          togglePassword.setAttribute("class","fa-solid fa-eye-slash eye-icon")
+        }
+    }); 
+</script>
+</body>
+
+</html>

@@ -1,0 +1,541 @@
+@media (max-width: 1300px) {}
+@media (max-width: 1290px){
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 25px 25px 25px 25px; /*top right bottom left*/
+    border-radius: 20px;
+  
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+}
+@media (max-width: 1120px) {
+  .img_profile{
+    margin-left: -2px;
+    height: 150px;
+    width: 150px;
+}
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+  
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 40px 30px 40px 30px;
+  }
+}
+@media (max-width:990px){
+  .details_section .form_container{
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+  .details_section .form_container input {
+    width: 350px;
+  }
+  .details_section .form_container select{
+    width: 350px;
+  }
+  .details_section .form_container .login_page input {
+    width: 700px;
+  }
+}
+@media (max-width:980px){
+  .details_section .form_container{
+    /* margin-right: 15px; */
+    margin-left: 60px;
+  }
+  .details_section .form_container input {
+    width: 320px;
+  }
+  .details_section .form_container select{
+    width: 320px;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 25px;
+    margin-right: 0;
+  }
+  .details_section .form_container .login_page input {
+    width: 700px;
+  }
+}
+@media (max-width:940px){
+  .details_section .form_container{
+    /* margin-right: 15px; */
+    margin-left: 50px;
+  }
+  .details_section .form_container input {
+    width: 300px;
+  }
+  .details_section .form_container select {
+    width: 300px;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 25px;
+    margin-right: 0;
+  }
+  .details_section .form_container .login_page input {
+    width: 680px;
+  }
+}
+@media (max-width:880px){
+  .details_section .form_container{
+    margin-left: 50px;
+  }
+  .details_section .form_container input {
+    width: 280px;
+  }
+  .details_section .form_container select {
+    width: 280px;
+  }
+  .details_section .form_container .login_page input {
+    width: 650px;
+  }
+}
+@media (max-width:845px){
+  .details_section .form_container{
+    margin-left: 50px;
+  }
+  .details_section .form_container input {
+    width: 250px;
+  }
+  .details_section .form_container select {
+    width: 250px;
+  }
+  .details_section .form_container .login_page input {
+    width: 600px;
+  }
+}
+@media (max-width:795px){
+  .details_section .form_container{
+    margin-left: 50px;
+  }
+  .details_section .form_container input {
+    width: 220px;
+  }
+  .details_section .form_container select {
+    width: 220px;
+  }
+  .details_section .form_container .login_page input {
+    width: 550px;
+  }
+}
+@media (max-width:768px){
+  .details_section .form_container{
+    margin-left: 10px;
+    margin-right: 0px;
+  }
+  .details_section .form_container input {
+    width: 250px;
+  }
+  .details_section .form_container select {
+    width: 250px;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 20px;
+  }
+  .details_section .form_container .login_page input {
+    width: 550px;
+  }
+}
+@media (max-width:692px){
+  .details_section .form_container input {
+    width: 500px;
+  }
+  .details_section .form_container select {
+    width: 500px;
+  }
+  .details_section .form_container .login_page input {
+    width: 450px;
+  }
+}
+@media (max-width:650px){
+  .details_section .form_container input {
+    width: 450px;
+  }
+  .details_section .form_container select {
+    width: 450px;
+  }
+  .details_section .form_container .login_page input {
+    width: 400px;
+  }
+}
+@media (max-width:605px){
+  .details_section .form_container input {
+    width: 400px;
+  }
+  .details_section .form_container select {
+    width: 400px;
+  }
+  .details_section .form_container .login_page input {
+    width: 350px;
+  }
+}
+@media (max-width:550px){
+  .details_section .form_container input {
+    width: 350px;
+  }
+  .details_section .form_container select {
+    width: 350px;
+  }
+  .details_section .form_container .login_page input {
+    width: 300px;
+  }
+}
+@media (max-width:505px){
+  .details_section .form_container input {
+    width: 300px;
+  }
+  .details_section .form_container select {
+    width: 300px;
+  }
+  .details_section .form_container .login_page input {
+    width: 250px;
+  }
+}
+@media (max-width:450px){
+  .details_section .form_container input {
+    width: 250px;
+  }
+  .details_section .form_container select {
+    width: 250px;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 10px;
+  }
+  .details_section .form_container .login_page input {
+    width: 250px;
+  }
+}
+@media (max-width:415px){
+  .details_section .form_container{
+    margin: 0;
+  }}
+@media (max-width:395px){
+  .details_section .form_container{
+    margin: 0;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 10px;
+  }
+  .details_section .form_container .login_page input {
+    width: 220px;
+  }
+}
+@media (max-width:372px){
+  .details_section .form_container{
+    margin: 0;
+  }
+  .details_section .form_container input {
+    width: 200px;
+  }
+  .details_section .form_container select {
+    width: 200px;
+  }
+  .details_section .form_container .login_page{
+    margin-left: 10px;
+  }
+  .details_section .form_container .login_page input {
+    width: 200px;
+  }
+}
+@media (max-width:340px){
+  .details_section .form_container{
+    margin: 0;
+  }
+  .details_section .form_container input {
+    width: 200px;
+  }
+  .details_section .form_container select {
+    width: 200px;
+  }
+  .details_section .form_container .login_page input {
+    width: 180px;
+  }
+}
+@media (max-width: 992px) {
+  .img_profile{
+    margin-left: -5px;
+    height: 150px;
+    width: 150px;
+}
+  .hero_area {
+    min-height: auto;
+  }
+
+  .custom_nav-container .navbar-nav {
+    padding-top: 15px;
+    align-items: center;
+  }
+
+
+  .custom_nav-container .navbar-nav .nav-item .nav-link {
+    padding: 5px 25px;
+    margin: 5px 0;
+  }
+
+  .slider_section {
+    padding: 75px 0;
+  }
+
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    padding-right: 150px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+  .details_section .container-fluid .heading_container{
+    margin-left: 150px;
+  }
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 40px 30px 40px 30px;
+  }
+
+}
+@media (max-width: 988px) {
+  .img_profile{
+    margin-top: -20px;
+    margin-left: -10px;
+    height: 120px;
+    width: 120px;
+}}
+@media (max-width: 768px) {
+  .img_profile{
+    margin-top: -20px;
+    margin-left: -10px;
+    height: 100px;
+    width: 100px;
+}
+  .about_section .img-box {
+    margin-top: 45px;
+  }
+
+  .details_section {
+    padding-bottom: 0;
+  }
+
+  .details_section .heading_container {
+    padding-left: 15px;
+  }
+
+  .details_section .map_container {
+    margin-top: 45px;
+  }
+
+  .details_section .form_container {
+    padding: 0 15px;
+    margin-left: 50;
+  }
+  .details_section .img-box {
+    margin-top: 45px;
+    margin-bottom: 20px;
+  }
+  .details_section .form_container button{
+    margin-bottom: 20px;
+  }
+
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+}
+
+@media (max-width: 576px) {
+  .header_section .header_top .contact_nav a span {
+    display: none;
+  }
+
+
+  .client_section .client_container {
+    width: 100%;
+  }
+
+  .client_section .box {
+    margin: 0;
+  }
+
+  .owl-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+  }
+
+  .client_section .owl-carousel .owl-nav .owl-prev,
+  .client_section .owl-carousel .owl-nav .owl-next {
+    position: unset;
+    margin: 0 2.5px;
+  }
+
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+  /* .details_section .container-fluid .header_container{
+    margin-right: 200px;
+  } */
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 40px 30px 40px 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider_section .detail-box h1 {
+    font-size: 2rem;
+  }
+
+  .track_section form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .track_section form input {
+    width: 100%;
+  }
+
+  .track_section form button {
+    padding: 10px 60px;
+    margin-top: 10px;
+  }
+
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 40px 30px 40px 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .service_section .box {
+    flex-direction: column;
+  }
+
+  .service_section .box .img-box {
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  }
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+  .details_section .container-fluid .heading_container{
+    margin-left: 100px;
+  }
+
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 50px 30px 50px 30px;
+  }
+}
+
+@media (max-width: 376px) {
+  .details_section {
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 20px 25px 20px 25px; /*top right bottom left*/
+    border-radius: 20px;
+    padding-right: 150px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+
+  .details_section .container-fluid .heading_container{
+    margin-left: 100px;
+  }
+
+
+
+
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    margin: 50px 30px 50px 30px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1170px;
+  }
+}

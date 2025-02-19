@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <link href="dummy_profile.css" rel="stylesheet" />
+     <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- <link href="popup.css" rel="stylesheet" /> -->
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+
+  <link rel="shortcut icon" href="images/fevicon.png" type="">
+
+  <title> Project </title>
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .img_profile{
+            border-radius: 50%;
+            height: 200px;
+            width: 200px;
+            margin-left: -5px;
+            margin-top: -3px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 60%;
+            max-width: 500px;
+        }
+
+        .modal-content-edit {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .pdfIconButton{
+          border: none;
+        }
+        @media (max-width: 990px){
+          .img_profile{
+            margin-left: -10px;
+            margin-top: -8px;
+        }
+        }
+    </style>
+    <script>
+        function changeAvatar(event) {
+          const avatar = document.getElementById("avatarImage");
+          const file = event.target.files[0];
+          const fileName = file.name; 
+          const imagePath = `./images/${fileName}`; 
+
+          // Use FileReader to set the image preview
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            avatar.src = e.target.result;  // Set the new image source to the uploaded image (base64)
+          }
+
+          reader.readAsDataURL(file);  // Convert the file to base64 and trigger the load event
+
+          // Update login_users data in localStorage with the new image path
+          const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+
+          // Update the user's Img_ls field with the new image path
+          parsedData[latestIndex].Img_ls = imagePath;  // This stores the relative path of the image
+          localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+          // Update formData_new data in localStorage for registered users
+          const formData = localStorage.getItem("formData_new");
+          const formDataParsed = JSON.parse(formData) || [];
+
+          // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+          const userEmail = parsedData[latestIndex].Email_ls;
+          const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+          if (userIndex !== -1) {
+            // Update the user's Img_ls field in formData_new
+            formDataParsed[userIndex].Img_ls = imagePath;
+            localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+          }
+        }
+
+        function get_local_data() {
+          const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+          const user = parsedData[latestIndex];
+
+          // Display user details
+          document.getElementById("fetch_name").innerHTML = user.Name_ls;
+          document.getElementById("fetch_email").innerHTML = `Email: ${user.Email_ls}`;
+          document.getElementById("fetch_phone").innerHTML = `PhoneNumber: ${user.Phone_ls}`;
+          document.getElementById("fetch_dob").innerHTML = `DOB: ${user.Dob_ls}`;
+          document.getElementById("fetch_address").innerHTML = user.Address_ls;
+          document.getElementById("fetch_hobbies").innerHTML = `Hobbies: ${user.Hobbies_ls}`;
+          
+          document.getElementById("pdfTitle").innerHTML="Certificate: "
+          let pdfIcon=document.getElementById("fetch_pdf")
+          pdfIcon.innerHTML = "📄";
+          pdfIcon.setAttribute("data-toggle","tooltip")
+          pdfIcon.setAttribute("data-placement","top")
+          pdfIcon.setAttribute("title",user.PDF_ls)
+          pdfIcon.classList.add("pdf-icon");
+          pdfIcon.addEventListener("click", function () {                                  
+            openModal(user.PDF_ls);
+          });
+
+          const avatarImage = document.getElementById("avatarImage");
+          avatarImage.src = user.Img_ls || "./images/admin.jpg"; // Fallback to default image if not set
+        }
+        
+        function openModal(pdfUrl) {
+            let modal = document.getElementById("pdfModal");
+            let pdfViewer = document.getElementById("pdfViewer");
+            pdfViewer.src = pdfUrl;
+            modal.style.display = "flex";
+            let close_Modal = document.getElementById("closeModal");
+            close_Modal.addEventListener("click",closeModal)
+        }
+            
+        function closeModal() {
+            console.log("in")
+            let modal = document.getElementById("pdfModal");
+            modal.style.display = "none";
+        }
+        
+
+        function redirect_to_login(){
+          const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+
+          // Update the user's Img_ls field with the new image path
+          delete parsedData[latestIndex].Token_ls  // This stores the relative path of the image
+          localStorage.setItem("login_users", JSON.stringify(parsedData));
+          alert("Logout successfully!!!!!!")
+          window.location.href="./login.html"
+        }
+
+      </script>
+</head>
+<body onload="get_local_data()" class="sub_page">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid ">
+          <div class="contact_nav">
+            <a href="">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <span>
+                Call : +01 123455678990
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              <span>
+                Email : demo@gmail.com
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              <span>
+                Location
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+              <span>
+                Project
+              </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav  ">
+                <li class="nav-item ">
+                  <a class="nav-link" href="index.html">Home </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="service.html">Services</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html"> About</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="login.html">Login </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="registration.html">Registration</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile <span class="sr-only">(current)</span></a>
+                </li>
+                <form class="form-inline">
+                  <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+    <div class="profile-page">
+        <div class="content">
+          <div class="content__cover">
+            <div class="content__avatar" onclick="document.getElementById('avatarInput').click();">
+                <img id="avatarImage" src="" alt="Profile Avatar" class="img_profile"/>
+            </div>
+            <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="changeAvatar(event)" />
+
+            <div class="content__bull"><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <!-- <div class="content__actions">
+            <a href="#">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                <path fill="currentColor" d="M192 256A112 112 0 1 0 80 144a111.94 111.94 0 0 0 112 112zm76.8 32h-8.3a157.53 157.53 0 0 1-68.5 16c-24.6 0-47.6-6-68.5-16h-8.3A115.23 115.23 0 0 0 0 403.2V432a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48v-28.8A115.23 115.23 0 0 0 268.8 288z"></path>
+                <path fill="currentColor" d="M480 256a96 96 0 1 0-96-96 96 96 0 0 0 96 96zm48 32h-3.8c-13.9 4.8-28.6 8-44.2 8s-30.3-3.2-44.2-8H432c-20.4 0-39.2 5.9-55.7 15.4 24.4 26.3 39.7 61.2 39.7 99.8v38.4c0 2.2-.5 4.3-.6 6.4H592a48 48 0 0 0 48-48 111.94 111.94 0 0 0-112-112z"></path>
+              </svg><span>Connect</span></a><a href="#">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path fill="currentColor" d="M208 352c-41 0-79.1-9.3-111.3-25-21.8 12.7-52.1 25-88.7 25a7.83 7.83 0 0 1-7.3-4.8 8 8 0 0 1 1.5-8.7c.3-.3 22.4-24.3 35.8-54.5-23.9-26.1-38-57.7-38-92C0 103.6 93.1 32 208 32s208 71.6 208 160-93.1 160-208 160z"></path>
+                <path fill="currentColor" d="M576 320c0 34.3-14.1 66-38 92 13.4 30.3 35.5 54.2 35.8 54.5a8 8 0 0 1 1.5 8.7 7.88 7.88 0 0 1-7.3 4.8c-36.6 0-66.9-12.3-88.7-25-32.2 15.8-70.3 25-111.3 25-86.2 0-160.2-40.4-191.7-97.9A299.82 299.82 0 0 0 208 384c132.3 0 240-86.1 240-192a148.61 148.61 0 0 0-1.3-20.1C522.5 195.8 576 253.1 576 320z"></path>
+              </svg><span>Message</span></a>
+            </div> -->
+          <div class="content__title">
+            <h1 id="fetch_name"></h1><span id="fetch_address"></span>
+          </div>
+          <div class="content__description">
+            <p id="fetch_email"></p>
+            <p id="fetch_phone"></p>
+            <p id="fetch_dob"></p>
+            <p id="fetch_hobbies"></p>
+            <div style="display: flex; justify-content: center;"><p id="pdfTitle" style="margin-right: 6px;"></p><button id="fetch_pdf" class="pdfIconButton"></button></div>
+            
+            <!-- <a href="" id="fetch_pdf"></a> -->
+            <!-- <embed src="./pdf/ABC.pdf" width="600px" height="600px" id="pdfFile"/> -->
+          </div>
+          <div id="pdfModal" class="modal">
+            <div class="modal-content">
+                <iframe id="pdfViewer" width="100%" height="400px"></iframe>
+                <button class="close-btn" id="closeModal">Close</button>
+            </div>
+        </div>
+          <!-- <ul class="content__list">
+            <li><span>65</span>Friends</li>
+            <li><span>43</span>Photos</li>
+            <li><span>21</span>Comments</li>
+          </ul> -->
+          <div class="content__button">
+            <a class="button_edit" href="popup.html">
+              <div class="button__border"></div>
+              <div class="button__bg"></div>
+              <p class="button__text">Edit Profile</p></a>
+
+              <a class="button_edit" onclick="redirect_to_login()">
+                <div class="button__border"></div>
+                <div class="button__bg"></div>
+                <p class="button__text">Logout</p></a>
+          </div>
+        </div>
+        <div class="bg">
+          <div><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <!-- <div class="theme-switcher-wrapper" id="theme-switcher-wrapper"><span>Themes color</span>
+          <ul>
+            <li><em class="is-active" data-theme="orange"></em></li>
+            <li><em data-theme="green"></em></li>
+            <li><em data-theme="purple"></em></li>
+            <li><em data-theme="blue"></em></li>
+          </ul>
+        </div> -->
+        <!-- <div class="theme-switcher-button" id="theme-switcher-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path fill="currentColor" d="M352 0H32C14.33 0 0 14.33 0 32v224h384V32c0-17.67-14.33-32-32-32zM0 320c0 35.35 28.66 64 64 64h64v64c0 35.35 28.66 64 64 64s64-28.65 64-64v-64h64c35.34 0 64-28.65 64-64v-32H0v32zm192 104c13.25 0 24 10.74 24 24 0 13.25-10.75 24-24 24s-24-10.75-24-24c0-13.26 10.75-24 24-24z"></path>
+          </svg>
+        </div> -->
+      </div>
+
+      <section class="info_section layout_padding2">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-lg-3 info_col">
+              <div class="info_contact">
+                <h4>
+                  Address
+                </h4>
+                <div class="contact_link_box">
+                  <a href="">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span>
+                      Location
+                    </span>
+                  </a>
+                  <a href="">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <span>
+                      Call +01 1234567890
+                    </span>
+                  </a>
+                  <a href="">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>
+                      demo@gmail.com
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <div class="info_social">
+                <a href="">
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                </a>
+                <a href="">
+                  <i class="fa fa-twitter" aria-hidden="true"></i>
+                </a>
+                <a href="">
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="">
+                  <i class="fa fa-instagram" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 info_col">
+              <div class="info_detail">
+                <h4>
+                  Info
+                </h4>
+                <p>
+                  necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-2 mx-auto info_col">
+              <div class="info_link_box">
+                <h4>
+                  Links
+                </h4>
+                <div class="info_links">
+                  <a class="active" href="index.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Home
+                  </a>
+                  <a class="" href="about.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    About
+                  </a>
+                  <a class="" href="service.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Services
+                  </a>
+    
+                  <a class="" href="contact.html">
+                    <img src="images/nav-bullet.png" alt="">
+                    Contact Us
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 info_col ">
+              <h4>
+                Subscribe
+              </h4>
+              <form action="#">
+                <input type="text" placeholder="Enter email" />
+                <button type="submit">
+                  Subscribe
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- end info section -->
+    
+      <!-- footer section -->
+      <section class="footer_section">
+        <div class="container">
+          <p>
+            &copy; <span id="displayYear"></span> All Rights Reserved By
+            <a href="https://html.design/">Free Html Templates</a>
+          </p>
+        </div>
+      </section>
+      <!-- footer section -->
+    
+      <!-- jQery -->
+      <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+      <!-- popper js -->
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+      </script>
+      <!-- bootstrap js -->
+      <script type="text/javascript" src="js/bootstrap.js"></script>
+      <!-- owl slider -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+      </script>
+      <!-- custom js -->
+      <script type="text/javascript" src="js/custom.js"></script>
+      <!-- Google Map -->
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+      </script>
+      <!-- End Google Map -->
+      
+</body>
+</html>

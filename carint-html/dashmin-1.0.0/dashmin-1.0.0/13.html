@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #imagePreview {
+            max-width: 100%;
+            max-height: 400px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+    </style>
+    
+</head>
+<body>
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <script>
+        // Get the input element
+            const imageUpload = document.getElementById('imageUpload');
+
+            // Add an event listener to detect file upload
+            imageUpload.addEventListener('change', function() {
+            // Get the selected file
+            const file = imageUpload.files[0];
+
+            // Create a FileReader object
+            const reader = new FileReader();
+
+            // Set up the reader's onload event handler
+            reader.onload = function(e) {
+                // Get the image data URL
+                const imageDataUrl = e.target.result;
+
+                // Display the uploaded image
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = imageDataUrl;
+            };
+
+            // Read the selected file as Data URL
+            reader.readAsDataURL(file);
+            });
+    </script>
+</body>
+</html>

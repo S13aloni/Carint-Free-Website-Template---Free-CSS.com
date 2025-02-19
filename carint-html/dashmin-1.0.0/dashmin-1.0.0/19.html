@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function exportToCSV() {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+    csvContent += headers.join(",") + "\n";
+
+    filteredData.forEach(row => {
+        let rowData = headers.map(header => `"${row[header] || ""}"`).join(",");
+        csvContent += rowData + "\n";
+    });
+
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "user_data.csv");
+    document.body.appendChild(link);
+    
+    var i = 0;
+    if (i == 0) {
+        i = 1;
+        var elem = document.getElementById("myBar");
+        var width = 10;
+
+        // Determine delay based on the number of rows
+        let rowCount = filteredData.length;
+        let delay = rowCount > 10 ? 50 : 10;  // Increase delay if more than 10 rows
+
+        var id = setInterval(frame, delay);
+
+        function frame() {
+            if (width >= 100) {
+                let downloadPDF_div = document.getElementById("downloadPDF_div");
+                downloadPDF_div.innerHTML = `<button class="export-btn">Download</button>`;
+                downloadPDF_div.addEventListener("click", download_link);
+
+                function download_link() {
+                    link.click();
+                    document.body.removeChild(link);
+                }
+
+                clearInterval(id);
+                i = 0;
+            } else {
+                width++;
+                elem.style.width = width + "%";
+                elem.innerHTML = width + "%";
+            }
+        }
+    }
+}
+
+
+function handleRoleChange() {
+    let role = document.getElementById("role").value;
+
+    if (role === "SuperAdmin") {
+        // Redirect back to SuperAdmin view
+        window.location.href = "superadmin_dashboard.html"; // Change this to your SuperAdmin page
+    } else if (role === "Manager01") {
+        // Redirect to Manager01's view
+        sessionStorage.setItem("currentView", "Manager01"); // Store selected role
+        window.location.href = "manager01_dashboard.html"; // Change to the manager's page
+    } else if (role === "Manager02") {
+        // Redirect to Manager02's view
+        sessionStorage.setItem("currentView", "Manager02");
+        window.location.href = "manager02_dashboard.html"; // Change to the manager's page
+    }
+}
+    </script>
+</body>
+</html>

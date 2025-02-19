@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table with Scrollbar</title>
+    <style>
+        /* Wrapper for table with horizontal scroll */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* Enables horizontal scrolling */
+            overflow-y: hidden; /* Hides vertical scrollbar */
+            border: 1px solid #ddd; /* Optional: adds a border around the table */
+            padding-bottom: 10px; /* Creates space for scrollbar visibility */
+            max-width: 100vw; /* Prevents overflow beyond the viewport */
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%; /* Make the table width responsive */
+            border-collapse: collapse;
+        }
+
+        /* Table headers and cells */
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+            white-space: nowrap; /* Prevents text wrapping */
+        }
+
+        /* Scrollbar Styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px; /* Height of horizontal scrollbar */
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #888; /* Scrollbar color */
+            border-radius: 5px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #ddd; /* Background of scrollbar track */
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            th, td {
+                font-size: 12px; /* Adjust font size for smaller screens */
+                padding: 8px; /* Adjust padding */
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            th, td {
+                font-size: 10px; /* Further adjust font size for very small screens */
+                padding: 5px; /* Adjust padding */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Country</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>johndoe@example.com</td>
+                    <td>+1234567890</td>
+                    <td>123 Main St, City</td>
+                    <td>USA</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Smith</td>
+                    <td>janesmith@example.com</td>
+                    <td>+9876543210</td>
+                    <td>456 Elm St, City</td>
+                    <td>Canada</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

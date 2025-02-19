@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    font-family: sans-serif
+}
+ 
+.container {
+    width: 70%;
+    max-width: 800px;
+    margin-top: 50px;
+    margin-left: 50px;
+    position: relative
+}
+ 
+.parent {
+    width: 100%;
+    background-color: #c1c1c1;
+    height: 30px;
+    margin-top: 25px;
+    margin-bottom: 20px
+}
+ 
+.child {
+    width: 0%;
+    background-color: #53b453;
+    height: 100%
+}
+ 
+.clk {
+    padding: 10px 20px;
+    font-size: 20px;
+    color: white;
+    background-color: #53b453;
+    cursor: pointer
+}
+ 
+.clk:hover {
+    background-color: #c1c1c1;
+}
+ 
+.prog {
+    position: absolute;
+    display: block;
+    right: 0
+}
+ 
+@media screen and (max-width: 700px) {
+    .container{
+        text-align: center;
+        margin:auto;
+        margin-top: 40px
+    }
+    h1{
+        font-size: 20px
+    }
+    .prog{
+        bottom: 20px
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Progress Bar (pure JavaScript)
+       <br> "application on function closure in js"</h1>
+         <div class="parent">
+             <div class="child"></div>
+         </div>
+          <button class="clk">click</button>
+             <span class="prog">0%</span>
+     </div>
+     <script>
+        var child = document.getElementsByClassName("child")[0],
+    clkBut = document.getElementsByClassName("clk")[0],
+    progSpan = document.getElementsByClassName("prog")[0];
+ 
+//*************************
+ 
+var q = (function () {
+    var width = 0;
+ 
+    return function () {
+        var x = setInterval(function () {
+            if (width === 100) {
+                clearInterval(x);
+            } else {
+                width++;
+                child.style.width = width + "%";
+                progSpan.innerHTML = width + "%";
+            }
+        }, 15);
+    }
+})();
+clkBut.onclick = q;
+     </script>
+</body>
+</html>

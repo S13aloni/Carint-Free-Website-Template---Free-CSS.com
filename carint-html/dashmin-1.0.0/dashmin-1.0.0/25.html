@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Table with Persistent Order, Images & PDFs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 15px;
+        }
+
+        .searchbtn {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 200px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: relative;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .pdf-icon {
+            cursor: pointer;
+            font-size: 20px;
+            color: blue;
+        }
+
+        .pagination {
+            margin-top: 10px;
+        }
+
+        .page-btn {
+            margin: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            background-color: lightgray;
+        }
+
+        .page-btn.active {
+            font-weight: bold;
+            background-color: blue;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 60%;
+            max-width: 500px;
+        }
+
+        .modal-content-edit {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .sort-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+        }
+        .export-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            margin-right: 5px;
+        }
+        #myProgress {
+            width: 100%;
+            background-color: #ddd;
+            height: 20px;
+            /* padding: 10px; */
+            /* padding: ; */
+        }
+
+        #myBar {
+            /* width: 10%; */
+            height: 20px;
+            margin-bottom: 50px;
+            /* padding: 10px; */
+            /* background-color: #04AA6D; */
+            /* text-align: center; */
+            /* line-height: 30px; */
+            color: white;
+        }
+        .profile-button {
+        background: #BA68C8;
+        box-shadow: none;
+        border: none;
+        }
+
+        .profile-button:hover {
+        background: #682773;
+        }
+
+        .profile-button:focus {
+        background: #682773;
+        box-shadow: none;
+        }
+
+        .profile-button:active {
+        background: #682773;
+        box-shadow: none;
+        }
+
+        .back:hover {
+        color: #682773;
+        cursor: pointer;
+        }
+        .modal .modal-content-edit{
+            font-size: 20px;
+        }
+        .modalSize input{
+            font-size: 15px;
+        }
+        .modalSize select{
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- <button class="sort-button" id="sortBtn">Sort</button> -->
+    <input type="text" id="search" placeholder="Search..." class="searchbtn">
+    <button class="export-btn" id="exportCSV">Export to CSV</button>
+    <button class="export-btn" id="exportPDF">Export to PDF</button>
+    <button class="export-btn" id="addMember"><a href="./newMember.html" style="color: white;text-decoration: none;">Add Member</a></button>
+    <select class="form-control" id="viewAs" style="width: 200px;float: right;height: 30px;font-size: 15px;">
+        <!-- <option selected value="viewas">View As</option>
+        <option  name="viewAs" value="Manager01">Manager01</option>
+        <option  name="viewAs" value="Manager02">Manager02</option> -->
+    </select>
+    <!-- <button class="export-btn" id="exportPDF">Export to PDF</button> -->
+    <!-- <div id="myProgress">
+        <div id="myBar">10%</div>
+    </div> -->
+    <div id="myProgress" class="progress" >
+        <div class="progress-bar progress-bar-striped active" id="myBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+            <!-- 0% -->
+        </div>
+    </div>
+    <div id="downloadPDF_div" style="text-align: right;"></div>
+    
+    
+    <!-- <span class="prog">0%</span> -->
+
+    <div id="table-container"></div>
+    <div id="pagination" class="pagination"></div>
+
+    <!-- PDF Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <iframe id="pdfViewer" width="100%" height="400px"></iframe>
+            <button class="close-btn" id="closeModal">Close</button>
+        </div>
+    </div>
+
+
+    <div id="editModal" class="modal">
+        <!-- <h1>Edit Profile</h1> -->
+        <div class="modal-content-edit">
+            <div class="container rounded bg-white mt-5">
+                <div class="row">
+                    <div class="col-md-4 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5" onclick="document.getElementById('avatarInput').click();"><img class="rounded-circle mt-5" src="" style="width: 200px;height: 200px;" id="profile_img"></div>
+                        <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="changeAvatar(event)" />
+                    </div>
+                    <div class="col-md-8" >
+                        <div class="p-3 py-5 modalSize" >
+                            <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
+                                    <h6>Back to home</h6>
+                                </div>
+                                <h6 class="text-right">Edit Profile</h6>
+                            </div> -->
+                            <div class="row mt-2">
+                                <div class="col-md-6" ><input type="text" class="form-control" id="name" ></div>
+                                <div class="col-md-6"><input type="date" class="form-control" id="dob" ></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6"><input type="text" class="form-control" id="email"></div>
+                                <div class="col-md-6"><input type="text" class="form-control" id="phone"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6"><input type="text" class="form-control" id="address"></div>
+                                <div class="col-md-6"><input type="text" class="form-control" id="hobbies"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <!-- <div class="col-md-6"><input type="text" class="form-control" id="pdf"></div> -->
+                                <div class="col-md-6">
+                                    <!-- <label for="Role">Role: </label> -->
+                                      <select class="form-control" id="role">
+                                        <option selected>Select Role</option>
+                                        <option  name="role" value="user">User</option>
+                                        <option  name="role" value="manager">Manager</option>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <!-- <label for="Role">Role: </label> -->
+                                      <select class="form-control" id="manager">
+                                        <!-- <option selected>Select Manager</option>
+                                        <option  name="manager" value="manager01">Manager01</option>
+                                        <option  name="manager" value="manager02">Manager02</option> -->
+                                      </select>
+                                  </div>
+                                <!-- <div class="col-md-6"><input type="text" class="form-control" id="role"></div> -->
+                            </div>
+                            <div class="mt-5 text-right"><button class="btn btn-primary profile-button" type="button" id="save_profile" style="font-size: 15px;">Save Profile</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        <button class="close-btn" id="closeModal_edit">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function changeAvatar(event) {
+                const avatar = document.getElementById("profile_img");
+                const file = event.target.files[0];
+                // alert(file.name)
+                const fileName = file.name; // Get the file name (e.g., img2.jpg)
+                const imagePath = `./images/${fileName}`; // Create the correct relative path for your app
+
+                // Use FileReader to set the image preview
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;  // Set the new image source to the uploaded image (base64)
+                }
+
+                reader.readAsDataURL(file);  // Convert the file to base64 and trigger the load event
+
+                // Update login_users data in localStorage with the new image path
+                const data = localStorage.getItem("login_users");
+                const parsedData = JSON.parse(data);
+                const latestIndex = parsedData.length - 1;
+
+                // Update the user's Img_ls field with the new image path
+                parsedData[latestIndex].Img_ls = imagePath;  // This stores the relative path of the image
+                localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+                // Update formData_new data in localStorage for registered users
+                const formData = localStorage.getItem("formData_new");
+                const formDataParsed = JSON.parse(formData) || [];
+
+                // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+                const userEmail = parsedData[latestIndex].Email_ls;
+                const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+                if (userIndex !== -1) {
+                    // Update the user's Img_ls field in formData_new
+                    formDataParsed[userIndex].Img_ls = imagePath;
+                    localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+                }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            let tableContainer = document.getElementById("table-container");
+            let sortBtn = document.getElementById("sortBtn");
+            let searchInput = document.getElementById("search");
+            let searchInput_view = document.getElementById("search");
+            let paginationContainer = document.getElementById("pagination");
+            let storedData = localStorage.getItem("formData_new");
+            let tableData = storedData ? JSON.parse(storedData) : [];
+
+            let storedData_login = localStorage.getItem("login_users");
+            let tableData_login = storedData_login ? JSON.parse(storedData_login) : [];
+            let lastIndex_login = tableData_login.length-1
+            let manager_logged_in=tableData_login[lastIndex_login]
+            let manager_logged_in_id=manager_logged_in.Id_ls
+            if(manager_logged_in.Role_ls=="manager"){
+                let find_users=tableData.filter((item)=> item.ManagerId_ls==manager_logged_in_id)
+                tableData=find_users
+            }
+
+
+            let currentPage = 1;
+            const rowsPerPage = 5;
+            let originalData = [...tableData]; // Store the original order
+            let sortState = 0; // 0: original, 1: ascending, -1: descending
+
+            var filteredData;
+            // var find_users;
+            let exportCSVButton = document.getElementById("exportCSV");
+            let exportPDFButton = document.getElementById("exportPDF");
+
+            let close_Modal = document.getElementById("closeModal");
+            let closeModal_edit = document.getElementById("closeModal_edit");
+
+            
+
+
+            // let managerData = storedData ? JSON.parse(storedData) : [];
+            let managerData=[];
+            for(let i=0;i<tableData.length;i++){
+                if(tableData[i].Role_ls=="manager"){
+                    managerData.push(tableData[i])
+                    // alert(JSON.stringify(tableData[i]))
+                }
+            }
+            // alert(JSON.stringify(managerData))
+            
+            // var tableData_view;
+
+            let view_based=document.getElementById("viewAs");
+
+            view_based.innerHTML=`<option value="superadmin">Select View</option>`
+                for(let i=0;i<managerData.length;i++){
+                    view_based.innerHTML+=`<option  name="manager" value="${managerData[i].Name_ls}">${managerData[i].Name_ls}</option>`
+                }
+            var tableData_view;
+            view_based.addEventListener("change",show_view_based)
+
+            var find_users;
+            function show_view_based(){
+                let tableData = storedData ? JSON.parse(storedData) : [];
+                let view_name=view_based.value
+                if(view_name=="superadmin"){
+                    renderTable(tableData)
+                }
+                else{
+
+                    let manager_obj=managerData.find((item)=>item.Name_ls==view_name)
+                    // alert(manager_obj)
+                    let manager_view_id=manager_obj.Id_ls
+                    // alert(manager_view_id)
+                    find_users=tableData.filter((item)=> item.ManagerId_ls==manager_view_id)
+                    originalData=find_users
+                    // alert(JSON.stringify(originalData))
+                    tableData=find_users    
+                    tableData_view=tableData      
+                    // alert("tableData: "+JSON.stringify(tableData))
+                    createTable(tableData)
+                    renderTable(tableData)
+                }
+                
+                // alert(view_based.value)
+            }
+            // alert(find_users)
+            // alert(filteredData)
+
+            let columnOrder = localStorage.getItem("columnOrder");
+                if (columnOrder) {
+                    columnOrder = JSON.parse(columnOrder).filter(col => col !== "Role_ls" && col !== "Pass_ls" && col!=="Id_ls" && col!=="ManagerId_ls");
+                } else {
+                    columnOrder = ["Checkbox", ...Object.keys(tableData[0] || {}).filter(col => col !== "Role_ls" && col !== "Pass_ls" && col!=="Id_ls" && col!=="ManagerId_ls"), "Action"];
+                }
+
+
+            function createTable(tableData) {
+                
+                tableContainer.innerHTML = "";
+                let table = document.createElement("table");
+
+                if (tableData.length > 0) {
+                    let thead = document.createElement("thead");
+                    let headerRow = document.createElement("tr");
+
+                    // Add checkbox header
+                    // let thCheckbox = document.createElement("th");
+                    // thCheckbox.innerHTML = "<input type='checkbox' id='selectAll'>";
+                    // headerRow.appendChild(thCheckbox);
+
+                    columnOrder.forEach((key) => {
+                        // alert(key)
+                        if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
+                            let th = document.createElement("th");
+                            let res = key.split("_ls").join("");
+                            th.textContent = res;
+                            let headerText = document.createElement("span");
+                            // headerText.textContent = key;
+
+                            th.draggable = true;
+                            th.addEventListener("dragstart", onDragStart);
+                            th.addEventListener("dragover", onDragOver);
+                            th.addEventListener("drop", onDrop);
+
+                            if (key === "Name_ls") {
+                                th.classList.add("sortable");
+                                let sortButton = document.createElement("button");
+                                sortButton.innerHTML = "↕"; // Default down arrow
+                                sortButton.classList.add("sort-icon");
+                                sortButton.addEventListener("click", function () {
+                                    sortTable(tableData);
+                                    // sortButton.innerHTML = sortState === 1 ? "🔼" : (sortState === -1 ? "🔽" : "↕");
+                                });
+
+                                // Append text and button
+                                th.appendChild(headerText);
+                                th.appendChild(sortButton);
+                            }
+                            
+                            headerRow.appendChild(th);
+                        }
+                    });
+
+                    // Add "Action" header for delete button
+                    // let thAction = document.createElement("th");
+                    // thAction.textContent = "Action";
+                    // headerRow.appendChild(thAction);
+
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+                }
+
+                let tbody = document.createElement("tbody");
+                table.appendChild(tbody);
+                tableContainer.appendChild(table);
+
+                renderTable(tableData);
+                setupPagination();
+            }
+
+            function renderTable(tableData) {
+                let tbody = document.querySelector("tbody");
+                tbody.innerHTML = "";
+
+                // alert(tableData_view)
+                // alert("Findusers: "+find_users)
+                // alert(view_name)
+                //all data is filtered
+                // let filteredData = tableData.filter((item) =>
+                //     Object.values(item).some((value) =>
+                //         value.toString().toLowerCase().includes(searchInput.value.toLowerCase())
+                //     )
+                // );
+
+                // alert("in")
+                filteredData = tableData.filter((item) =>
+                    ["Name_ls", "Email_ls"].some((key) =>
+                        item[key]?.toString().toLowerCase().includes(searchInput.value.toLowerCase())
+                    )
+                );
+                // alert("render:"+filteredData)
+
+                let start = (currentPage - 1) * rowsPerPage;
+                let paginatedData = filteredData.slice(start, start + rowsPerPage);
+
+                paginatedData.forEach((data,index) => {
+                    let row = document.createElement("tr");
+
+                    // Add checkbox in the first column
+                    // let tdCheckbox = document.createElement("td");
+                    
+                    // row.appendChild(tdCheckbox);
+
+                    columnOrder.forEach((key) => {
+                        if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
+                            let td = document.createElement("td");
+                            
+
+                            if (key === "Img_ls") {
+                                let img = document.createElement("img");
+                                img.src = data[key];
+                                img.alt = "User Image";
+                                td.appendChild(img);
+                            } else if (key === "PDF_ls") {
+                                let pdfIcon = document.createElement("span");
+                                pdfIcon.innerHTML = "📄";
+                                pdfIcon.setAttribute("data-toggle","tooltip")
+                                pdfIcon.setAttribute("data-placement","top")
+                                pdfIcon.setAttribute("title",data.PDF_ls)
+                                pdfIcon.classList.add("pdf-icon");
+                                pdfIcon.addEventListener("click", function () {
+                                    openModal(data[key]);
+                                });
+                                td.appendChild(pdfIcon);
+                            } else if(key=="Checkbox"){
+                                let checkbox = document.createElement("input");
+                                checkbox.type = "checkbox";
+                                td.appendChild(checkbox);
+                            } else if(key=="Action"){
+                                
+                                let action_div = document.createElement("div");
+                                action_div.setAttribute("class","d-flex justify-content-center")
+
+                                let editButton=document.createElement("a")
+                                let deleteButton=document.createElement("a")
+                                // deleteButton.className="d-flex justify-content-end"
+                                editButton.innerHTML=`<button style="margin-right:10px;" id="edit_Button"><i class="fas fa-edit"></i></button>`
+                                deleteButton.innerHTML=`<button id="delete_Button"><i class="fa fa-trash" aria-hidden="true"></i></button>`
+                                // editButton.classList.add("pdf-icon");
+                                // let delete_Button=document.getElementById("delete_Button")
+                                // delete_Button.addEventListener("click", () => {
+                                //     deleteRow(data, index);
+                                // });
+                                // pdfIcon.classList.add("");
+                                // alert(editButton.innerHTML)
+                                editButton.addEventListener("click", function () {    
+                                    edit_data(data);
+                                });
+                                deleteButton.addEventListener("click",function (){
+                                    delete_data(data,index)
+                                })
+                                action_div.appendChild(editButton)
+                                action_div.appendChild(deleteButton)
+                                td.appendChild(action_div);
+                                
+                                // row.appendChild(tdAction);
+                            } else {
+                                td.textContent = data[key];
+                            }
+
+                            row.appendChild(td);
+                            
+                        }
+                    });                    
+                    tbody.appendChild(row);
+                    // let edit_button=document.getElementById("edit_Button");
+                    // edit_button.addEventListener("click",()=>{ edit_data(data)});
+                });
+
+                // //edit button for data
+                
+                
+                // //delete button for data
+                // let delete_button=document.getElementById("delete_Button");
+                // delete_button.addEventListener("click", delete_data);
+
+
+                setupPagination(filteredData.length,tableData);
+            }
+
+            
+            function setupPagination(totalRows = tableData.length,tableData) {
+                paginationContainer.innerHTML = "";
+                let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    let button = document.createElement("button");
+                    button.textContent = i;
+                    button.classList.add("page-btn");
+                    if (i === currentPage) button.classList.add("active");
+
+                    button.addEventListener("click", () => {
+                        currentPage = i;
+                        renderTable(tableData);
+                    });
+
+                    paginationContainer.appendChild(button);
+                }
+            }
+
+            // function setupPagination_view(totalRows = tableData_view.length,tableData) {
+            //     paginationContainer.innerHTML = "";
+            //     let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+            //     for (let i = 1; i <= totalPages; i++) {
+            //         let button = document.createElement("button");
+            //         button.textContent = i;
+            //         button.classList.add("page-btn");
+            //         if (i === currentPage) button.classList.add("active");
+
+            //         button.addEventListener("click", () => {
+            //             currentPage = i;
+            //             show_view_based();
+            //         });
+
+            //         paginationContainer.appendChild(button);
+            //     }
+            // }
+
+            
+            function sortTable(tableData) {
+                // alert(tableData)
+                if (sortState === 0) {
+                    tableData.sort((a, b) => a["Name_ls"].localeCompare(b["Name_ls"]));
+                    sortState = 1;
+                } else if (sortState === 1) {
+                    tableData.sort((a, b) => b["Name_ls"].localeCompare(a["Name_ls"]));
+                    sortState = -1;
+                } else {
+                    // alert(JSON.stringify(originalData))
+                    tableData = [...originalData];
+                    sortState = 0;
+                }
+                renderTable(tableData) ;
+            }
+            
+
+            // sortBtn.addEventListener("click", sortTable);
+
+            function onDragStart(event) {
+                event.dataTransfer.setData("text/plain", event.target.cellIndex);
+            }
+
+            function onDragOver(event) {
+                event.preventDefault();
+            }
+
+            function onDrop(event) {
+                event.preventDefault();
+                let fromIndex = event.dataTransfer.getData("text/plain");
+                let toIndex = event.target.cellIndex;
+
+                let newColumnOrder = [...columnOrder];
+                let movedColumn = newColumnOrder.splice(fromIndex, 1)[0];
+                newColumnOrder.splice(toIndex, 0, movedColumn);
+                columnOrder = newColumnOrder;
+                localStorage.setItem("columnOrder", JSON.stringify(columnOrder));
+
+                createTable(tableData);
+            }
+
+            function openModal(pdfUrl) {
+                let modal = document.getElementById("pdfModal");
+                let pdfViewer = document.getElementById("pdfViewer");
+                pdfViewer.src = pdfUrl;
+                modal.style.display = "flex";
+            }
+
+            close_Modal.addEventListener("click", closeModal);
+            function closeModal() {
+                let modal = document.getElementById("pdfModal");
+                modal.style.display = "none";
+            }
+
+
+            //edit button 
+            var data_user;
+            function edit_data(data){
+                data_user=data;
+                console.log(data)
+                let edit_modal = document.getElementById("editModal");
+                edit_modal.style.display = "flex";
+                let name_old=document.getElementById("name").value=data.Name_ls
+                let dob_old=document.getElementById("dob").value=data.Dob_ls
+                let email_old=document.getElementById("email").value=data.Email_ls
+                let phone_old=document.getElementById("phone").value=data.Phone_ls
+                let address_old=document.getElementById("address").value=data.Address_ls
+                let hobbies_old=document.getElementById("hobbies").value=data.Hobbies_ls
+                let role_old=document.getElementById("role").value=data.Role_ls
+                let profileImg=document.getElementById("profile_img").src=data.Img_ls
+                // alert(document.getElementById("manager").value)
+
+                let manager=document.getElementById("manager")
+                manager.innerHTML=`<option value="">Select Manager</option>`
+                for(let i=0;i<managerData.length;i++){
+                    manager.innerHTML+=`<option  name="manager" value="${managerData[i].Name_ls}">${managerData[i].Name_ls}</option>`
+                }       
+                if(data.ManagerId_ls){
+                    // alert(data.ManagerId_ls)
+                    let manName=managerData.find((item)=>item.Id_ls==data.ManagerId_ls)
+                    manager.value=manName.Name_ls
+                }
+            }
+            
+
+            let save_prof=document.getElementById("save_profile")
+            save_prof.addEventListener("click",function (){
+                // alert(JSON.stringify(data_user))
+                    let name=document.getElementById("name").value;
+                    data_user.Name_ls=name;
+                    let email=document.getElementById("email").value;
+                    data_user.Email_ls=email
+                    let phone=document.getElementById("phone").value;
+                    data_user.Phone_ls=phone
+                    let dob=document.getElementById("dob").value;
+                    // alert(data_user.dob)
+                    // alert(dob)
+                    data_user.Dob_ls=dob
+                    let address=document.getElementById("address").value
+                    data_user.Address_ls=address
+                    let hobbies=document.getElementById("hobbies").value;
+                    data_user.Hobbies_ls=hobbies;
+                    let role=document.getElementById("role").value;
+                    data_user.Role_ls=role;
+
+                    // alert(role)
+                    let manager=document.getElementById("manager").value;  
+                    let managerid=managerData.find((item)=> item.Name_ls==manager)
+                    // alert(JSON.stringify(managerid))
+                    if(managerid){
+                        man_id=managerid.Id_ls
+                        data_user.ManagerId_ls=man_id
+                        alert(JSON.stringify(data_user))
+                    }
+                    alert(JSON.stringify(data_user))
+                    localStorage.setItem("formData_new",JSON.stringify(tableData))
+                // }
+            })
+
+            
+            closeModal_edit.addEventListener("click", close_Modal_edit);
+            function close_Modal_edit() {
+                
+                let edit_modal = document.getElementById("editModal");
+                edit_modal.style.display = "none";
+                location.reload();
+            }
+
+            function delete_data(data,index){
+                tableData.splice(index, 1);
+                localStorage.setItem("formData_new", JSON.stringify(tableData));
+                alert(data.Name_ls+" deleted successfully!!!!!");
+                window.location.href="./20.html"
+            }
+
+            
+            
+
+            // Add event listeners for the buttons
+            exportCSVButton.addEventListener("click", exportToCSV);
+            exportPDFButton.addEventListener("click", exportToPDF);
+
+            function exportToCSV() {
+                // let fileSize=10000;
+                let totalDuration=10000;
+                let startTime = Date.now();
+
+                let csvContent = "data:text/csv;charset=utf-8,";
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+                csvContent += headers.join(",") + "\n";
+
+                filteredData.forEach(row => {
+                    let rowData = headers.map(header => {
+                        return `"${row[header] || ""}"`;
+                    }).join(",");
+                    csvContent += rowData + "\n";
+                });
+
+                
+                let encodedUri = encodeURI(csvContent);
+                let link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "user_data.csv");
+                document.body.appendChild(link);
+                var i = 0;
+                let progress=0;
+                var z = 1;
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    // var width = 10;
+                    let rowCount=filteredData.length;
+
+                    // let rowCount=100;
+                    // alert(rowCount)
+                    // let delay=rowCount > 4 ? 50 : 4;
+                    var id = setInterval(() => {
+                            // let elapsedTime = Date.now() - startTime;
+                            // alert(elapsedTime)
+                            progress = Math.min(100, (z/rowCount) * 100);
+                            // alert(progress)
+                            elem.style.width = progress + "%";
+                            elem.innerText = Math.round(progress) + "%";
+                            z++;
+                            if (progress >= 100) {
+                                clearInterval(id);
+                                let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                                    // doc.save("user_data.pdf");
+                                    downloadPDF_div.addEventListener("click", download_link);
+                                    function download_link(){
+                                        link.click();
+                                        document.body.removeChild(link);
+                                        location.reload()
+                                    }
+                                // alert("Download Complete!");
+                            }
+                        }, 100);
+                    // function frame() {
+                    // if (width >= 100) {
+                    //     let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                    //     downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                    //     // doc.save("user_data.pdf");
+                    //     downloadPDF_div.addEventListener("click", download_link);
+                    //     function download_link(){
+                    //         link.click();
+                    //         document.body.removeChild(link);
+                    //     }
+                    //     // download_link()
+                    //     clearInterval(id);
+                    //     i = 0;
+                    // } else {
+                    //     width++;
+                    //     elem.style.width = width + "%";
+                    //     elem.innerHTML = width  + "%";
+                    // }
+                    // }
+                }
+                
+            }
+
+            function exportToPDF() {
+                // alert("Filter"+JSON.stringify(filteredData))
+                const { jsPDF } = window.jspdf;
+                let doc = new jsPDF();
+                
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+                let data = filteredData.map(row => headers.map(header => row[header] || ""));
+
+                doc.text("User Data Table", 10, 10);
+                doc.autoTable({
+                    head: [headers],
+                    body: data,
+                    startY: 20
+                });
+
+                var i = 0;
+                var z = 1;
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    // let rowCount=filteredData.length;
+                    let rowCount = 100;
+                    var width = 10;
+                    var id = setInterval(() => {
+                            // let elapsedTime = Date.now() - startTime;
+                            // alert(elapsedTime)
+                            progress = Math.min(100, (z/rowCount) * 100);
+                            // alert(progress)
+                            elem.style.width = progress + "%";
+                            elem.innerText = Math.round(progress) + "%";
+                            z++;
+                            if (progress >= 100) {
+                                clearInterval(id);
+                                let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                                    // doc.save("user_data.pdf");
+                                    downloadPDF_div.addEventListener("click", download_link);
+                                    function download_link(){
+                                        link.click();
+                                        document.body.removeChild(link);
+                                    }
+                                // alert("Download Complete!");
+                            }
+                        }, 100);
+                }
+                
+                // doc.save("user_data.pdf");
+            }
+
+            
+
+
+            // function exportToPDF() {
+            //     // alert("Filter"+JSON.stringify(filteredData))
+            //     const { jsPDF } = window.jspdf;
+            //     let doc = new jsPDF();
+                
+            //     let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+            //     let data = filteredData.map(row => headers.map(header => row[header] || ""));
+
+            //     doc.text("User Data Table", 10, 10);
+            //     doc.autoTable({
+            //         head: [headers],
+            //         body: data,
+            //         startY: 20
+            //     });
+            //     doc.save("user_data.pdf");
+            // }
+
+
+            searchInput.addEventListener("input", () => {
+                // alert(view_based.value)
+                if(view_based.value=="superadmin"){
+                    currentPage = 1;
+                    renderTable(tableData);
+                }else{
+                    currentPage = 1;
+                    renderTable(tableData_view);
+                }
+                
+            });
+
+            // searchInput_view.addEventListener("input", () => {
+            //     currentPage = 1;
+            //     show_view_based();
+            // });
+            
+
+            createTable(tableData);
+        });
+    </script>
+
+</body>
+</html>

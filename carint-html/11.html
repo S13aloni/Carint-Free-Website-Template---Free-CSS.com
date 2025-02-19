@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop Table Columns</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+            cursor: grab;
+        }
+        th.dragging {
+            background: #ff5733;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+<table id="myTable">
+    <thead>
+        <tr>
+            <th draggable="true">Column 1</th>
+            <th draggable="true">Column 2</th>
+            <th draggable="true">Column 3</th>
+            <th draggable="true">Column 4</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Data 1A</td>
+            <td>Data 2A</td>
+            <td>Data 3A</td>
+            <td>Data 4A</td>
+        </tr>
+        <tr>
+            <td>Data 1B</td>
+            <td>Data 2B</td>
+            <td>Data 3B</td>
+            <td>Data 4B</td>
+        </tr>
+        <tr>
+            <td>Data 1C</td>
+            <td>Data 2C</td>
+            <td>Data 3C</td>
+            <td>Data 4C</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("myTable");
+        const headers = table.querySelectorAll("th");
+        let draggingColumnIndex = null;
+
+        headers.forEach((header, index) => {
+            header.addEventListener("dragstart", (event) => {
+                draggingColumnIndex = index;
+                event.dataTransfer.effectAllowed = "move";
+                header.classList.add("dragging");
+            });
+
+            header.addEventListener("dragover", (event) => {
+                event.preventDefault();
+            });
+
+            header.addEventListener("drop", (event) => {
+                event.preventDefault();
+                const targetColumnIndex = Array.from(headers).indexOf(event.target);
+
+                if (draggingColumnIndex !== null && targetColumnIndex !== draggingColumnIndex) {
+                    swapColumns(draggingColumnIndex, targetColumnIndex);
+                }
+
+                header.classList.remove("dragging");
+            });
+
+            header.addEventListener("dragend", () => {
+                header.classList.remove("dragging");
+            });
+        });
+
+        function swapColumns(fromIndex, toIndex) {
+            const rows = table.rows;
+
+            for (let row of rows) {
+                const cells = Array.from(row.children);
+                if (cells.length > Math.max(fromIndex, toIndex)) {
+                    row.insertBefore(cells[fromIndex], fromIndex < toIndex ? cells[toIndex].nextSibling : cells[toIndex]);
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

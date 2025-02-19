@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+  <div class="p-6">
+    <!-- Dashboard Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-black dark:text-white">Admin Dashboard</h1>
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search by name..."
+        class="w-1/3 p-2 border rounded-md dark:bg-gray-800 dark:text-white"
+      />
+    </div>
+
+    <!-- Table Section -->
+    <div
+      class="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-lg dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <h4 class="mb-6 text-xl font-bold text-black dark:text-white">User Details</h4>
+
+      <div class="flex flex-col">
+        <!-- Table Header -->
+        <div
+          class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-gray-800 sm:grid-cols-5"
+        >
+          <div class="p-2.5 xl:p-5">
+            <h5 class="text-sm font-medium uppercase xsm:text-base">Name</h5>
+          </div>
+          <div class="p-2.5 text-center xl:p-5">
+            <h5 class="text-sm font-medium uppercase xsm:text-base">Phone</h5>
+          </div>
+          <div class="p-2.5 text-center xl:p-5">
+            <h5 class="text-sm font-medium uppercase xsm:text-base">Email</h5>
+          </div>
+          <div class="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 class="text-sm font-medium uppercase xsm:text-base">Address</h5>
+          </div>
+          <div class="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 class="text-sm font-medium uppercase xsm:text-base">Hobbies</h5>
+          </div>
+        </div>
+
+        <!-- Table Body -->
+        <div id="table-body"></div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
+      <!-- Bar Chart -->
+      <div class="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800">
+        <h2 class="text-lg font-bold text-black dark:text-white mb-4">User Hobbies Distribution</h2>
+        <canvas id="bar-chart"></canvas>
+      </div>
+
+      <!-- Pie Chart -->
+      <div class="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800">
+        <h2 class="text-lg font-bold text-black dark:text-white mb-4">User Locations</h2>
+        <canvas id="pie-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch data from localStorage
+    const data = JSON.parse(localStorage.getItem("formData_new")) || [];
+
+    // Table Body Element
+    const tableBody = document.getElementById("table-body");
+
+    // Dynamically Generate Table Rows
+    const renderTable = (filter = "") => {
+      tableBody.innerHTML = "";
+      const filteredData = data.filter(item =>
+        item.Name_ls.toLowerCase().includes(filter.toLowerCase())
+      );
+      
+      filteredData.forEach((item) => {
+        const row = document.createElement("div");
+        row.className =
+          "grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5";
+
+        row.innerHTML = `
+          <div class="flex items-center gap-3 p-2.5 xl:p-5">
+            <img
+              src="${item.Img_ls}"
+              alt="${item.Name_ls}"
+              class="h-10 w-10 rounded-full object-cover"
+            />
+            <p class="font-medium text-black dark:text-white">${item.Name_ls}</p>
+          </div>
+
+          <div class="flex items-center justify-center p-2.5 xl:p-5">
+            <p class="font-medium text-black dark:text-white">${item.Phone_ls}</p>
+          </div>
+
+          <div class="flex items-center justify-center p-2.5 xl:p-5">
+            <p class="font-medium text-meta-3">${item.Email_ls}</p>
+          </div>
+
+          <div class="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+            <p class="font-medium text-black dark:text-white">${item.Address_ls}</p>
+          </div>
+
+          <div class="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+            <p class="font-medium text-meta-5">${item.Hobbies_ls.join(", ")}</p>
+          </div>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    };
+
+    renderTable();
+
+    // Search Bar Functionality
+    document.getElementById("search-bar").addEventListener("input", (e) => {
+      renderTable(e.target.value);
+    });
+
+    // Bar Chart
+    const barChartCtx = document.getElementById("bar-chart").getContext("2d");
+    const hobbiesCount = data.reduce((acc, item) => {
+      item.Hobbies_ls.forEach(hobby => {
+        acc[hobby] = (acc[hobby] || 0) + 1;
+      });
+      return acc;
+    }, {});
+
+    new Chart(barChartCtx, {
+      type: "bar",
+      data: {
+        labels: Object.keys(hobbiesCount),
+        datasets: [{
+          label: "Number of Users",
+          data: Object.values(hobbiesCount),
+          backgroundColor: "#4f46e5",
+        }],
+      },
+    });
+
+    // Pie Chart
+    const pieChartCtx = document.getElementById("pie-chart").getContext("2d");
+    const locationsCount = data.reduce((acc, item) => {
+      acc[item.Address_ls] = (acc[item.Address_ls] || 0) + 1;
+      return acc;
+    }, {});
+
+    new Chart(pieChartCtx, {
+      type: "pie",
+      data: {
+        labels: Object.keys(locationsCount),
+        datasets: [{
+          data: Object.values(locationsCount),
+          backgroundColor: ["#4f46e5", "#6366f1", "#a78bfa", "#c4b5fd"],
+        }],
+      },
+    });
+  </script>
+</body>
+</html>

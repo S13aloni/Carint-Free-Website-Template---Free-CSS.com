@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <link href="popup.css" rel="stylesheet" />
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+
+  <link rel="shortcut icon" href="images/fevicon.png" type="">
+<!-- <link href="dummy_profile.css" rel="stylesheet" /> -->
+  <title> Project </title>
+
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <style>
+    .img_profile{
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+    }
+    .content__avatar{
+        text-align: center;
+    }
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Cropper
+    var image = document.getElementById('imagePreview');//the image to be cropped
+    var cropper;
+
+    document.getElementById('imageInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                image.src = e.target.result;
+
+                // Initialize Cropper once the image is loaded
+                cropper = new Cropper(image, {
+                    aspectRatio: 1, // Set the aspect ratio (1:1 for a square crop)
+                    viewMode: 1,   // Set the view mode
+                    autoCropArea: 1, // Automatically select the whole image for cropping
+                });
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Crop button event
+    document.getElementById('cropButton').addEventListener('click', function () {
+        // Get the cropped data
+        var img=document.getElementById('imageInput').value
+        
+        var croppedData = cropper.getCroppedCanvas().toDataURL('image/jpeg'); 
+      
+
+        const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+
+          // Update the user's Img_ls field with the new image path
+          parsedData[latestIndex].Img_ls = croppedData;  // This stores the relative path of the image
+          localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+          // Update formData_new data in localStorage for registered users
+          const formData = localStorage.getItem("formData_new");
+                const formDataParsed = JSON.parse(formData) || [];
+
+                // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+                const userEmail = parsedData[latestIndex].Email_ls;
+                const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+                if (userIndex !== -1) {
+                    // Update the user's Img_ls field in formData_new
+                    formDataParsed[userIndex].Img_ls = croppedData;
+                    localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+                }
+                  // You can now upload the croppedData to your server or use it as needed
+                  // console.log('Cropped Image Data:', croppedData);
+                  window.location.href = "./popup.html";
+              });
+          });
+
+            function get_local_data(){
+                // document.getElementById("local_data")
+                var data_1=localStorage.getItem("formData_new")
+                var parse_data_1=JSON.parse(data_1)
+                var latest_data=(parse_data_1.length)-1
+            
+                //login data
+                var data_1_email=localStorage.getItem("login_users")
+                var parse_data_1_email=JSON.parse(data_1_email)
+                var latest_data_email=(parse_data_1_email.length)-1
+                var login_email=JSON.stringify(parse_data_1_email[latest_data_email].Email_ls)
+                
+                email=login_email.replace(/"/g, '')
+                var user_data_1 = parse_data_1.find((user) => user.Email_ls == email);
+                document.getElementById("fetch_name").placeholder= `${user_data_1.Name_ls}`;
+                document.getElementById("fetch_phone_number").placeholder= `${user_data_1.Phone_ls}`;
+                document.getElementById("fetch_birth_date").placeholder= `${user_data_1.Dob_ls}`;
+                document.getElementById("fetch_address").placeholder= `${user_data_1.Address_ls}`;
+
+                
+
+                const avatarImage = document.getElementById("avatarImage");
+                avatarImage.src = user_data_1.Img_ls || "./images/client-1.png";
+                
+            }
+            var currentTab = 0;
+              document.addEventListener("DOMContentLoaded", function(event) {
+
+
+              showTab(currentTab);
+
+              });
+
+              function showTab(n) {
+                var x = document.getElementsByClassName("tab");
+                x[n].style.display = "block";
+                if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+                } else {
+                document.getElementById("prevBtn").style.display = "inline";
+                }
+                if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
+                } else {
+                document.getElementById("nextBtn").innerHTML = '<i class="fa fa-angle-double-right"></i>';
+                }
+                fixStepIndicator(n)
+              }
+
+              function nextPrev(n) {
+                var x = document.getElementsByClassName("tab");
+                if (n == 1 && !validateForm()) return false;
+                x[currentTab].style.display = "none";
+                currentTab = currentTab + n;
+                if (currentTab >= x.length) {
+                
+                document.getElementById("nextprevious").style.display = "none";
+                document.getElementById("all-steps").style.display = "none";
+                document.getElementById("register").style.display = "none";
+                document.getElementById("avatarImage").style.display = "none";
+                document.getElementById("text-message").style.display = "block";
+                setTimeout(function () {
+                    window.location.href = "./dummy_profile.html";
+                }, 2000);
+              }
+              showTab(currentTab);
+              }
+
+              function validateForm() {
+                   var x, y, i, valid = true;
+                   x = document.getElementsByClassName("tab");
+                   y = x[currentTab].getElementsByTagName("input");
+                
+                    var name=document.forms["regForm"]["fetch_name"].value;
+                    var phone_number=document.forms["regForm"]["fetch_phone_number"].value;
+                    var birth_date=document.forms["regForm"]["fetch_birth_date"].value;
+                    var address=document.forms["regForm"]["fetch_address"].value;
+
+                    //Hobbies
+                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    let checkedValues = [];
+
+                    checkboxes.forEach(function (checkbox) {
+                        if (checkbox.checked) {
+                            checkedValues.push(checkbox.value);
+                        }
+                    });
+                    
+                        //login data
+                        var data_1_email=localStorage.getItem("login_users")
+                        var parse_data_1_email=JSON.parse(data_1_email)
+                        var latest_data_email=(parse_data_1_email.length)-1
+                        var login_email=JSON.stringify(parse_data_1_email[latest_data_email].Email_ls)
+                        // var register_email="abc@gmail.com"
+
+                        let existingData = localStorage.getItem("formData_new");
+                        let dataArray = existingData ? JSON.parse(existingData) : [];
+                        let updated = false;
+                        email=login_email.replace(/"/g, '')
+
+                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==""){
+                            if(name){
+                                dataArray = dataArray.map(item => {
+                                    if (item.Email_ls === email) {
+                                        // updated = true;
+                                        return { ...item, Name_ls: name };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(phone_number){
+                              if(validation_phone()){
+                                dataArray = dataArray.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Phone_ls: phone_number };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }else {valid=false}}
+                            if(birth_date){
+                                dataArray = dataArray.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Dob_ls: birth_date };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(address){
+                                dataArray = dataArray.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Address_ls: address };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(checkedValues){
+                                dataArray = dataArray.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Hobbies_ls: checkedValues };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            updated = true;
+                        }
+
+
+                        let existingData_login = localStorage.getItem("login_users");
+                        let dataArray_login = existingData_login ? JSON.parse(existingData_login) : [];
+                        let updated_login = false;
+                        email=login_email.replace(/"/g, '')
+
+                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==""){
+                            if(name){
+                              
+                                dataArray_login = dataArray_login.map(item => {
+                                    if (item.Email_ls === email) {
+                                        // updated = true;
+                                        return { ...item, Name_ls: name };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(phone_number){
+                              if(validation_phone()){
+                                dataArray_login = dataArray_login.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Phone_ls: phone_number };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }else{valid=false}}
+                            if(birth_date){
+                                dataArray_login = dataArray_login.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Dob_ls: birth_date };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(address){
+                                dataArray_login = dataArray_login.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Address_ls: address };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            if(checkedValues){
+                                dataArray_login = dataArray_login.map(item => {
+                                    if (item.Email_ls === email) {
+                                        
+                                        return { ...item, Hobbies_ls: checkedValues };
+                                    }
+                                    return item; // Return other objects unchanged
+                                });
+                            }
+                            updated_login = true;
+                        }
+                    
+
+                        console.log(JSON.stringify(dataArray))
+                        if (updated && updated_login) {
+                            console.log("Data updated successfully!");
+                        } else {
+                            alert("Error: Unable to update.");
+                        }
+                        localStorage.setItem("formData_new",JSON.stringify(dataArray))
+                        localStorage.setItem("login_users",JSON.stringify(dataArray_login))
+                    
+                   if (valid) {
+                       document.getElementsByClassName("step")[currentTab].className += " finish";
+                   }
+                   return valid;
+               }
+
+               function changeAvatar(event) {
+                const avatar = document.getElementById("avatarImage");
+                const file = event.target.files[0];
+                const fileName = file.name; // Get the file name (e.g., img2.jpg)
+                const imagePath = `./images/${fileName}`; // Create the correct relative path for your app
+
+                // Use FileReader to set the image preview
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;  // Set the new image source to the uploaded image (base64)
+                }
+
+                reader.readAsDataURL(file);  // Convert the file to base64 and trigger the load event
+
+                // Update login_users data in localStorage with the new image path
+                const data = localStorage.getItem("login_users");
+                const parsedData = JSON.parse(data);
+                const latestIndex = parsedData.length - 1;
+
+                // Update the user's Img_ls field with the new image path
+                parsedData[latestIndex].Img_ls = imagePath;  // This stores the relative path of the image
+                localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+                // Update formData_new data in localStorage for registered users
+                const formData = localStorage.getItem("formData_new");
+                const formDataParsed = JSON.parse(formData) || [];
+
+                // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+                const userEmail = parsedData[latestIndex].Email_ls;
+                const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+                if (userIndex !== -1) {
+                    // Update the user's Img_ls field in formData_new
+                    formDataParsed[userIndex].Img_ls = imagePath;
+                    localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+                }
+                }
+               function fixStepIndicator(n) {
+                   var i, x = document.getElementsByClassName("step");
+                   for (i = 0; i < x.length; i++) {
+                       x[i].className = x[i].className.replace(" active", "");
+                   }
+                   x[n].className += " active";
+               }
+               
+function validation_phone(){
+  // alert(phone)
+  var phone=document.forms["regForm"]["fetch_phone_number"].value;
+   let errorMsg=document.getElementById("err_phone")
+   if(phone.length>10){
+    errorMsg.innerHTML="Phone number should not be greater than 10 digits."
+    errorMsg.style.color = "red";
+    return false;
+   } else if(phone.length<10){
+    errorMsg.innerHTML="Phone number should not be at least of 10 digits."
+    errorMsg.style.color = "red";
+    return false;
+   }
+   else{
+    errorMsg.innerHTML=""
+    return true;
+   }
+   
+}
+               
+  </script>
+</head>
+<body onload="get_local_data()" class="sub_page">
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+          <div class="header_top">
+            <div class="container-fluid ">
+              <div class="contact_nav">
+                <a href="">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>
+                    Call : +01 123455678990
+                  </span>
+                </a>
+                <a href="">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <span>
+                    Email : demo@gmail.com
+                  </span>
+                </a>
+                <a href="">
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  <span>
+                    Location
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="header_bottom">
+            <div class="container-fluid">
+              <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" href="index.html">
+                  <span>
+                    Project
+                  </span>
+                </a>
+    
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav  ">
+                    <li class="nav-item ">
+                      <a class="nav-link" href="index.html">Home </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="service.html">Services</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="about.html"> About</a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="login.html">Login </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile <span class="sr-only">(current)</span></a>
+                    </li>
+                    <form class="form-inline">
+                      <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </form>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </header>
+        <!-- end header section -->
+      </div>
+    <div class="container mt-5">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+            <form id="regForm">
+                <h1 id="register">Edit Profile</h1>
+                <div class="content__avatar"><a data-toggle="modal" data-target="#exampleModal">
+                    <img id="avatarImage" src="./images/client-1.png" alt="Profile Avatar" class="img_profile"/></a>
+                </div>
+                <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="changeAvatar(event)" />
+                <div class="all-steps" id="all-steps"> 
+                  <span class="step"><i class="fa fa-user"></i></span> 
+                  <span class="step"><i class="fa fa-phone icon_size" aria-hidden="true"></i></span>
+                  <span class="step"><i class="fa fa-birthday-cake icon_size" aria-hidden="true"></i></i></span>
+                  <span class="step"><i class="fa fa-address-book icon_size" aria-hidden="true"></i></span>
+                  <span class="step"><img src="./images/hobbies.png" alt="home icon" style="width: 24px; height: 24px;"/></span>
+                  <!-- <span class="step"><i class="fa fa-mobile-phone"></i></span> -->
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="file" id="imageInput">
+                            <div>
+                                <img id="imagePreview" src="" alt="Preview Image" style="max-width: 100%;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="cropButton">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="tab">
+                  <h6>Do you want to change your name?</h6>
+                    <p>
+                      <input oninput="this.className = ''" name="fname" id="fetch_name" ></p>
+                    
+                </div>
+                <div class="tab">
+                  <h6>Do you want to change your phone number?</h6>
+                    <p><input type="tel" oninput="this.className = ''" name="phone" id="fetch_phone_number" onkeyup="validation_phone()"></p>
+                    <p id="err_phone"></p>
+                </div>
+                <div class="tab">
+                    <h6>Do you want to change your Birth Date?</h6>
+                    <p><input type="date" oninput="this.className = ''" name="birth-date" id="fetch_birth_date"></p>
+                 
+                </div>
+                <div class="tab">
+                    <h6>Do you want to change your address?</h6>
+                    <p><input type="text" oninput="this.className = ''" name="address" id="fetch_address"></p>
+                </div>
+
+                <div class="tab">
+                    <h6>Do you want to change your hobbies?</h6>
+                    <p>Reading: <input type="checkbox" name="hobbies" id="Reading" value="Reading" style="margin-left: 6px; margin-bottom: -5px;"></p>
+                    <p>Painting: <input type="checkbox" name="hobbies" id="Painting" value="Painting" style="margin-left: 6px; margin-bottom: -5px;"></p>
+                    <p>Dancing: <input type="checkbox" name="hobbies" id="Dancing" value="Dancing" style="margin-left: 5px; margin-bottom: -5px;"></p>
+                </div>
+
+
+                <!-- <div class="tab">
+                    <h6>What's your Favourite Mobile brand?</h6>
+                    <p><input placeholder="Favourite Mobile Brand" oninput="this.className = ''" name="uname"></p>
+                </div>  -->
+                <div class="thanks-message text-center" id="text-message"> <img src="https://i.imgur.com/O18mJ1K.png" width="100" class="mb-4">
+                    <h3>Your Data is Updated Successfully!!</h3> 
+                    <p id="result"></p>
+                    <!-- <span>Thanks for your valuable information. It helps us to improve our services!</span> -->
+                </div>
+                <div style="overflow:auto;" id="nextprevious">
+                    <div style="float:right;">
+                      <button type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-angle-double-left"></i></button> 
+                      <button type="button" id="nextBtn" onclick="nextPrev(1)"><i class="fa fa-angle-double-right"></i></button> </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<section class="info_section layout_padding2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_contact">
+            <h4>
+              Address
+            </h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Location
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>
+                  Call +01 1234567890
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>
+                  demo@gmail.com
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="info_social">
+            <a href="">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_detail">
+            <h4>
+              Info
+            </h4>
+            <p>
+              necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-2 mx-auto info_col">
+          <div class="info_link_box">
+            <h4>
+              Links
+            </h4>
+            <div class="info_links">
+              <a class="active" href="index.html">
+                <img src="images/nav-bullet.png" alt="">
+                Home
+              </a>
+              <a class="" href="about.html">
+                <img src="images/nav-bullet.png" alt="">
+                About
+              </a>
+              <a class="" href="service.html">
+                <img src="images/nav-bullet.png" alt="">
+                Services
+              </a>
+
+              <a class="" href="contact.html">
+                <img src="images/nav-bullet.png" alt="">
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col ">
+          <h4>
+            Subscribe
+          </h4>
+          <form action="#">
+            <input type="text" placeholder="Enter email" />
+            <button type="submit">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="https://html.design/">Free Html Templates</a>
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+
+  <!-- jQery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+  <!-- End Google Map -->
+</body>
+</html>

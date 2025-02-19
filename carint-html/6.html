@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function TextAbstract(text, length) {
+                if (text == null) {
+                    return "";
+                }
+                if (text.length <= length) {
+                    return text;
+                }
+                text = text.substring(0, length);
+                last = text.lastIndexOf(" ");
+                text = text.substring(0, last);
+                return text + "...";
+            }
+
+            text = "I am not the shortest string of a short lenth with all these cows in here cows cows cows cows";
+
+        alert(TextAbstract(text,20));
+    </script>
+</body>
+</html>

@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SuperAdmin</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+    <link rel="shortcut icon" href="images/fevicon.png" type="">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js">
+    </script>
+    <!-- pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- <meta charset="UTF-8"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Draggable Table with Persistent Order, Images & PDFs</title> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            font-size: 15px;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 40px;
+        }
+
+        .searchbtn {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 500px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: relative;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .pdf-icon {
+            cursor: pointer;
+            font-size: 20px;
+            color: blue;
+        }
+
+        .pagination {
+            margin-top: 10px;
+        }
+
+        .page-btn {
+            margin: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            background-color: lightgray;
+        }
+
+        .page-btn.active {
+            font-weight: bold;
+            background-color: blue;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 60%;
+            max-width: 500px;
+        }
+
+        .modal-content-edit {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .sort-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+        }
+        .export-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            margin-right: 5px;
+        }
+        #myProgress {
+            width: 100%;
+            background-color: #ddd;
+            height: 20px;
+        }
+
+        #myBar {
+            /* width: 10%; */
+            height: 30px;
+            height: 20px;
+            /* background-color: #04AA6D; */
+            /* text-align: center; */
+            /* line-height: 30px; */
+            color: white;
+        }
+        .profile-button {
+        background: #BA68C8;
+        box-shadow: none;
+        border: none;
+        }
+
+        .profile-button:hover {
+        background: #682773;
+        }
+
+        .profile-button:focus {
+        background: #682773;
+        box-shadow: none;
+        }
+
+        .profile-button:active {
+        background: #682773;
+        box-shadow: none;
+        }
+
+        .back:hover {
+        color: #682773;
+        cursor: pointer;
+        }
+        .modal .modal-content-edit{
+            font-size: 20px;
+        }
+        .modalSize input{
+            font-size: 15px;
+        }
+        .modalSize select{
+            font-size: 15px;
+        }
+        .dashHeading{
+            margin-bottom: 0px;
+            font-size: 40px;
+        }
+        .selectView{
+            width: 200px;float: right;height: 40px;font-size: 15px;margin-top: 8px;
+        }
+        @media (max-width:890px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 6px 10px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 12px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 25px;
+            }
+        }
+        @media (max-width:730px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 5px 8px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 11px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 25px;
+            }
+        }
+        @media (max-width:650px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 6px 5px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 10px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 25px;
+            }
+        }
+        @media (max-width:510px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 6px 4px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 10px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 20px;
+            }
+            .selectView{
+                width: 100px;
+            }
+        }
+        @media (max-width:410px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 4px 4px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 10px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 15px;
+            }
+            .selectView{
+                width: 80px;
+            }
+        }
+        @media (max-width:360px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 4px 4px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 8px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 15px;
+            }
+            .selectView{
+                width: 70px;
+            }
+        }
+        @media (max-width:338px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 4px 4px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 10px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 12px;
+            }
+            .selectView{
+                width: 50px;
+            }
+        }
+        
+        @media (max-width:320px){
+            .export-btn {
+                margin-top: 10px;
+                padding: 1px 2px;
+                border: none;
+                cursor: pointer;
+                background-color: blue;
+                color: white;
+                margin-right: 5px;
+                font-size: 10px;
+            }
+            .dashHeading{
+                margin-bottom: 0px;
+                font-size: 15px;
+            }
+            .selectView{
+                width: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="index.html" class="navbar-brand mx-0 mb-3">
+                    <h3 class="text-primary mr-10 mb-15" style="font-size: 28px;font-weight: bold;"><i class="fa fa-hashtag me-1"></i>DASHBOARD</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="" alt="" style="width: 40px; height: 40px;" id="adminImg">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0" id="admin_name" style="font-size: 20px;"></h6>
+                        <!-- <span>Admin</span> -->
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="index.html" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                
+                    <a href="table2.html" class="nav-item nav-link active"><i class="fa fa-table me-2"></i>Tables</a>
+                </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" id="search" placeholder="Search..." style="width: 200px;height: 40px;font-size: 15px;margin-top: 10px;">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="" id="admin_Img" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex" id="dropdown_admin" style="color: black;"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0" style="font-size: 15px;">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4" style="color: black;">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="dashHeading">User details</h6>
+                <div class="d-flex justify-content-end">
+                    <button class="export-btn" id="exportCSV">Export to CSV</button>
+                    <button class="export-btn" id="exportPDF">Export to PDF</button>
+                    <button class="export-btn" id="addMember"><a href="./newMember.html" style="color: white;text-decoration: none;">Add Member</a></button>
+                    <select class="form-select selectView" id="viewAs" >
+                        
+                    </select>
+                </div>
+                
+            
+            </div>
+            <div id="progressBar">
+                <div id="myProgress" class="progress">
+                    <div class="progress-bar progress-bar-striped active" id="myBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="downloadPDF_div" style="text-align: right;"></div>
+            <div id="table-container" class="table-responsive"></div>
+            <div id="pagination" class="pagination"></div>
+            
+            <div id="pdfModal" class="modal">
+                <div class="modal-content">
+                    <iframe id="pdfViewer" width="100%" height="400px"></iframe>
+                    <button class="close-btn" id="closeModal">Close</button>
+                </div>
+            </div>
+
+            <div id="editModal" class="modal">
+                <!-- <h1>Edit Profile</h1> -->
+                <div class="modal-content-edit">
+                    <div class="container rounded bg-white mt-5">
+                        <div class="row">
+                            <div class="col-md-4 border-right">
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5" onclick="document.getElementById('avatarInput').click();"><img class="rounded-circle mt-5" src="" style="width: 200px;height: 200px;" id="profile_img"></div>
+                        <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="changeAvatar(event)" />
+                            </div>
+                            <div class="col-md-8" >
+                                <div class="p-3 py-5 modalSize" >
+                                    <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex flex-row align-items-center back"><i class="fa fa-long-arrow-left mr-1 mb-1"></i>
+                                            <h6>Back to home</h6>
+                                        </div>
+                                        <h6 class="text-right">Edit Profile</h6>
+                                    </div> -->
+                                    <div class="row mt-2">
+                                        <div class="col-md-6" ><input type="text" class="form-control" id="name" ></div>
+                                        <div class="col-md-6"><input type="date" class="form-control" id="dob" ></div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6"><input type="text" class="form-control" id="email"></div>
+                                        <div class="col-md-6"><input type="text" class="form-control" id="phone"></div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6"><input type="text" class="form-control" id="address"></div>
+                                        <div class="col-md-6"><input type="text" class="form-control" id="hobbies"></div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <!-- <div class="col-md-6"><input type="text" class="form-control" id="pdf"></div> -->
+                                        <div class="col-md-6">
+                                            <!-- <label for="Role">Role: </label> -->
+                                              <select class="form-select" id="role">
+                                                <option selected>Select Role</option>
+                                                <option  name="role" value="user">User</option>
+                                                <option  name="role" value="manager">Manager</option>
+                                              </select>
+                                          </div>
+                                          <div class="col-md-6">
+                                            <!-- <label for="Role">Role: </label> -->
+                                              <select class="form-select" id="manager">
+                                                <!-- <option selected>Select Manager</option>
+                                                <option  name="manager" value="manager01">Manager01</option>
+                                                <option  name="manager" value="manager02">Manager02</option> -->
+                                              </select>
+                                          </div>
+                                        <!-- <div class="col-md-6"><input type="text" class="form-control" id="role"></div> -->
+                                    </div>
+                                    <div class="mt-5 text-right"><button class="btn btn-primary profile-button" type="button" id="save_profile" style="font-size: 15px;">Save Profile</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                <button class="close-btn" id="closeModal_edit">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- PDF Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <iframe id="pdfViewer" width="100%" height="400px"></iframe>
+            <button class="close-btn" id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded-top p-4">
+            <div class="row">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                </div>
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <script>
+        function changeAvatar(event) {
+                const avatar = document.getElementById("profile_img");
+                const file = event.target.files[0];
+                // alert(file.name)
+                const fileName = file.name; // Get the file name (e.g., img2.jpg)
+                const imagePath = `./images/${fileName}`; // Create the correct relative path for your app
+
+                // Use FileReader to set the image preview
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    avatar.src = e.target.result;  // Set the new image source to the uploaded image (base64)
+                }
+
+                reader.readAsDataURL(file);  // Convert the file to base64 and trigger the load event
+
+                // Update login_users data in localStorage with the new image path
+                const data = localStorage.getItem("login_users");
+                const parsedData = JSON.parse(data);
+                const latestIndex = parsedData.length - 1;
+
+                // Update the user's Img_ls field with the new image path
+                parsedData[latestIndex].Img_ls = imagePath;  // This stores the relative path of the image
+                localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+                // Update formData_new data in localStorage for registered users
+                const formData = localStorage.getItem("formData_new");
+                const formDataParsed = JSON.parse(formData) || [];
+
+                // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+                const userEmail = parsedData[latestIndex].Email_ls;
+                const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+                if (userIndex !== -1) {
+                    // Update the user's Img_ls field in formData_new
+                    formDataParsed[userIndex].Img_ls = imagePath;
+                    localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+                }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            let tableContainer = document.getElementById("table-container");
+            let sortBtn = document.getElementById("sortBtn");
+            let searchInput = document.getElementById("search");
+            let searchInput_view = document.getElementById("search");
+            let paginationContainer = document.getElementById("pagination");
+            let storedData = localStorage.getItem("formData_new");
+            let tableData = storedData ? JSON.parse(storedData) : [];
+
+            let storedData_login = localStorage.getItem("login_users");
+            let tableData_login = storedData_login ? JSON.parse(storedData_login) : [];
+            let lastIndex_login = tableData_login.length-1
+            let manager_logged_in=tableData_login[lastIndex_login]
+            let manager_logged_in_id=manager_logged_in.Id_ls
+            document.getElementById("admin_name").innerHTML=manager_logged_in.Name_ls
+            document.getElementById("dropdown_admin").innerHTML=manager_logged_in.Name_ls
+            document.getElementById("adminImg").src=manager_logged_in.Img_ls
+            document.getElementById("admin_Img").src=manager_logged_in.Img_ls
+            if(manager_logged_in.Role_ls=="manager"){
+                let find_users=tableData.filter((item)=> item.ManagerId_ls==manager_logged_in_id)
+                tableData=find_users
+            }
+            
+            let currentPage = 1;
+            const rowsPerPage = 5;
+            let originalData = [...tableData]; // Store the original order
+            let sortState = 0; // 0: original, 1: ascending, -1: descending
+
+            var filteredData;
+            let exportCSVButton = document.getElementById("exportCSV");
+            let exportPDFButton = document.getElementById("exportPDF");
+
+            let close_Modal = document.getElementById("closeModal");
+            let closeModal_edit = document.getElementById("closeModal_edit");
+
+            
+            let managerData=[];
+            for(let i=0;i<tableData.length;i++){
+                if(tableData[i].Role_ls=="manager"){
+                    managerData.push(tableData[i])
+                    
+                }
+            }
+            
+            
+            var tableData_view;
+
+            let view_based=document.getElementById("viewAs");
+
+            view_based.innerHTML=`<option value="superadmin">View As</option>`
+                for(let i=0;i<managerData.length;i++){
+                    view_based.innerHTML+=`<option  name="manager" value="${managerData[i].Name_ls}">${managerData[i].Name_ls}</option>`
+                }
+            var originalData_view
+            view_based.addEventListener("change",show_view_based)
+            function show_view_based(){
+                let tableData = storedData ? JSON.parse(storedData) : [];
+                
+                let view_name=view_based.value
+                
+                if(view_name=="superadmin"){
+                    renderTable()
+                    
+                }else{
+                    let manager_obj=managerData.find((item)=>item.Name_ls==view_name)
+                    let manager_view_id=manager_obj.Id_ls
+                    let find_users=tableData.filter((item)=> item.ManagerId_ls==manager_view_id)
+                    
+                    tableData=find_users
+                    tableData_view=tableData
+                    originalData_view=tableData_view
+                    let tbody = document.querySelector("tbody");
+                    tbody.innerHTML = "";
+                
+                    filteredData = tableData.filter((item) =>
+                        ["Name_ls", "Email_ls"].some((key) =>
+                            item[key]?.toString().toLowerCase().includes(searchInput_view.value.toLowerCase())
+                        )
+                    );
+            
+
+                    let start = (currentPage - 1) * rowsPerPage;
+                    let paginatedData = filteredData.slice(start, start + rowsPerPage);
+
+                    paginatedData.forEach((data,index) => {
+                        let row = document.createElement("tr");
+
+
+                        columnOrder.forEach((key) => {
+                            if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
+                                let td = document.createElement("td");
+                                
+
+                                if (key === "Img_ls") {
+                                    let img = document.createElement("img");
+                                    img.src = data[key];
+                                    img.alt = "User Image";
+                                    td.appendChild(img);
+                                } else if (key === "PDF_ls") {
+                                    let pdfContainer = document.createElement("span"); // Container for multiple icons
+                                    let pdfFiles = Array.isArray(data.PDF_ls) ? data.PDF_ls : data.PDF_ls.split(","); // Convert to array if needed
+
+                                    pdfFiles.forEach(pdf => {
+                                        let pdfIcon = document.createElement("i"); // Create Font Awesome icon
+                                        pdfIcon.classList.add("fas", "fa-file-pdf", "text-danger", "pdf-icon"); // Font Awesome PDF icon with red color
+                                        pdfIcon.setAttribute("data-toggle", "tooltip");
+                                        pdfIcon.setAttribute("data-placement", "top");
+                                        pdfIcon.setAttribute("title", pdf.trim());
+                                        pdfIcon.style.marginRight = "8px"; // Adds spacing between icons
+                                        pdfIcon.style.cursor = "pointer"; // Change cursor to indicate clickability
+
+                                        pdfIcon.addEventListener("click", function () {
+                                            openModal(pdf.trim()); // Open modal for the clicked PDF
+                                        });
+
+                                        pdfContainer.appendChild(pdfIcon);
+                                    });
+
+                                    td.appendChild(pdfContainer);
+                                } else if(key=="Checkbox"){
+                                    let checkbox = document.createElement("input");
+                                    checkbox.type = "checkbox";
+                                    td.appendChild(checkbox);
+                                } else if(key=="Action"){
+                                    
+                                    let action_div = document.createElement("div");
+                                    action_div.setAttribute("class","d-flex justify-content-center")
+
+                                    let editButton=document.createElement("a")
+                                    let deleteButton=document.createElement("a")
+                                    
+                                    editButton.innerHTML=`<button style="margin-right:10px;" id="edit_Button"><i class="fas fa-edit"></i></button>`
+                                    deleteButton.innerHTML=`<button id="delete_Button"><i class="fa fa-trash" aria-hidden="true"></i></button>`
+            
+                                    editButton.addEventListener("click", function () {    
+                                        edit_data(data);
+                                    });
+                                    deleteButton.addEventListener("click",function (){
+                                        delete_data(data,index)
+                                    })
+                                    action_div.appendChild(editButton)
+                                    action_div.appendChild(deleteButton)
+                                    td.appendChild(action_div);
+                                    
+                                } else {
+                                    td.textContent = data[key];
+                                }
+
+                                row.appendChild(td);
+                                
+                            }
+                        });                    
+                        tbody.appendChild(row);
+                    });
+
+                setupPagination_view(filteredData.length);
+            }}
+
+
+            let columnOrder = localStorage.getItem("columnOrder");
+                if (columnOrder) {
+                    columnOrder = JSON.parse(columnOrder).filter(col => col !== "Role_ls" && col !== "Pass_ls" && col!=="Id_ls" && col!=="ManagerId_ls");
+                } else {
+                    columnOrder = ["Checkbox", ...Object.keys(tableData[0] || {}).filter(col => col !== "Role_ls" && col !== "Pass_ls" && col!=="Id_ls" && col!=="ManagerId_ls"), "Action"];
+                }
+
+
+            function createTable() {
+                
+                tableContainer.innerHTML = "";
+                let table = document.createElement("table");
+
+                if (tableData.length > 0) {
+                    let thead = document.createElement("thead");
+                    let headerRow = document.createElement("tr");
+
+
+                    columnOrder.forEach((key) => {
+                        if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
+                            let th = document.createElement("th");
+                            let res = key.split("_ls").join("");
+                            th.textContent = res;
+                            let headerText = document.createElement("span");
+
+                            th.draggable = true;
+                            th.addEventListener("dragstart", onDragStart);
+                            th.addEventListener("dragover", onDragOver);
+                            th.addEventListener("drop", onDrop);
+
+                            if (key === "Name_ls") {
+                                th.classList.add("sortable");
+                                let sortButton = document.createElement("button");
+                                sortButton.innerHTML = "↕"; // Default down arrow
+                                sortButton.classList.add("sort-icon");
+                                sortButton.addEventListener("click", function () {
+                                    sortTable();
+                                });
+
+                                // Append text and button
+                                th.appendChild(headerText);
+                                th.appendChild(sortButton);
+                            }
+                            
+                            headerRow.appendChild(th);
+                        }
+                    });
+
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+                }
+
+                let tbody = document.createElement("tbody");
+                table.appendChild(tbody);
+                tableContainer.appendChild(table);
+
+                renderTable();
+                setupPagination();
+            }
+
+            function renderTable() {
+                let tbody = document.querySelector("tbody");
+                tbody.innerHTML = "";
+
+                filteredData = tableData.filter((item) =>
+                    ["Name_ls", "Email_ls"].some((key) =>
+                        item[key]?.toString().toLowerCase().includes(searchInput.value.toLowerCase())
+                    )
+                );
+
+                let start = (currentPage - 1) * rowsPerPage;
+                let paginatedData = filteredData.slice(start, start + rowsPerPage);
+
+                paginatedData.forEach((data,index) => {
+                    let row = document.createElement("tr");
+
+
+                    columnOrder.forEach((key) => {
+                        if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
+                            let td = document.createElement("td");
+                            
+
+                            if (key === "Img_ls") {
+                                let img = document.createElement("img");
+                                img.src = data[key];
+                                img.alt = "User Image";
+                                td.appendChild(img);
+                            } else if (key === "PDF_ls") {
+                                let pdfContainer = document.createElement("span"); // Container for multiple icons
+                                let pdfFiles = Array.isArray(data.PDF_ls) ? data.PDF_ls : data.PDF_ls.split(","); // Convert to array if needed
+
+                                pdfFiles.forEach(pdf => {
+                                    let pdfIcon = document.createElement("i"); // Create Font Awesome icon
+                                    pdfIcon.classList.add("fas", "fa-file-pdf", "text-danger", "pdf-icon"); // Font Awesome PDF icon with red color
+                                    pdfIcon.setAttribute("data-toggle", "tooltip");
+                                    pdfIcon.setAttribute("data-placement", "top");
+                                    pdfIcon.setAttribute("title", pdf.trim());
+                                    pdfIcon.style.marginRight = "8px"; // Adds spacing between icons
+                                    pdfIcon.style.cursor = "pointer"; // Change cursor to indicate clickability
+
+                                    pdfIcon.addEventListener("click", function () {
+                                        openModal(pdf.trim()); // Open modal for the clicked PDF
+                                    });
+
+                                    pdfContainer.appendChild(pdfIcon);
+                                });
+
+                                td.appendChild(pdfContainer);
+                            } else if(key=="Checkbox"){
+                                let checkbox = document.createElement("input");
+                                checkbox.type = "checkbox";
+                                td.appendChild(checkbox);
+                            } else if(key=="Action"){
+                                
+                                let action_div = document.createElement("div");
+                                action_div.setAttribute("class","d-flex justify-content-center")
+
+                                let editButton=document.createElement("a")
+                                let deleteButton=document.createElement("a")
+                            
+                                editButton.innerHTML=`<button style="margin-right:10px;" id="edit_Button"><i class="fas fa-edit"></i></button>`
+                                deleteButton.innerHTML=`<button id="delete_Button"><i class="fa fa-trash" aria-hidden="true"></i></button>`
+                                editButton.addEventListener("click", function () {    
+                                    edit_data(data);
+                                });
+                                deleteButton.addEventListener("click",function (){
+                                    delete_data(data,index)
+                                })
+                                action_div.appendChild(editButton)
+                                action_div.appendChild(deleteButton)
+                                td.appendChild(action_div);
+                            } else {
+                                td.textContent = data[key];
+                            }
+
+                            row.appendChild(td);
+                            
+                        }
+                    });                    
+                    tbody.appendChild(row);
+                });
+                
+                setupPagination(filteredData.length);
+
+            }
+
+            
+            function setupPagination(totalRows = tableData.length) {
+                paginationContainer.innerHTML = "";
+                let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    let button = document.createElement("button");
+                    button.textContent = i;
+                    button.classList.add("page-btn");
+                    if (i === currentPage) button.classList.add("active");
+
+                    button.addEventListener("click", () => {
+                        currentPage = i;
+                        renderTable();
+                    });
+
+                    paginationContainer.appendChild(button);
+                }
+            }
+
+            function setupPagination_view(totalRows = tableData_view.length) {
+                paginationContainer.innerHTML = "";
+                let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    let button = document.createElement("button");
+                    button.textContent = i;
+                    button.classList.add("page-btn");
+                    if (i === currentPage) button.classList.add("active");
+
+                    button.addEventListener("click", () => {
+                        currentPage = i;
+                        show_view_based();
+                    });
+
+                    paginationContainer.appendChild(button);
+                }
+            }
+
+            
+            function sortTable() {
+                // alert(tableData)
+                if (sortState === 0) {
+                    tableData.sort((a, b) => a["Name_ls"].localeCompare(b["Name_ls"]));
+                    sortState = 1;
+                } else if (sortState === 1) {
+                    tableData.sort((a, b) => b["Name_ls"].localeCompare(a["Name_ls"]));
+                    sortState = -1;
+                } else {
+                    tableData = [...originalData];
+                    sortState = 0;
+                }
+                currentPage=1
+                renderTable() ;
+            }
+            
+
+            // sortBtn.addEventListener("click", sortTable);
+
+            function onDragStart(event) {
+                event.dataTransfer.setData("text/plain", event.target.cellIndex);
+                // alert(event.target.cellIndex)
+            }
+
+            function onDragOver(event) {
+                event.preventDefault();
+            }
+
+            function onDrop(event) {
+                event.preventDefault();
+                let fromIndex = event.dataTransfer.getData("text/plain");
+                let toIndex = event.target.cellIndex;
+
+                let newColumnOrder = [...columnOrder];
+                let movedColumn = newColumnOrder.splice(fromIndex, 1)[0];
+                newColumnOrder.splice(toIndex, 0, movedColumn);
+                columnOrder = newColumnOrder;
+                localStorage.setItem("columnOrder", JSON.stringify(columnOrder));
+
+                createTable();
+            }
+
+            //PDF modal popup box
+            function openModal(pdfUrl) {
+                let modal = document.getElementById("pdfModal");
+                let pdfViewer = document.getElementById("pdfViewer");
+                pdfViewer.src = pdfUrl;
+                modal.style.display = "flex";
+            }
+
+            //PDF modal close popup box
+            close_Modal.addEventListener("click", closeModal);
+            function closeModal() {
+                let modal = document.getElementById("pdfModal");
+                modal.style.display = "none";
+            }
+
+
+            //Edit of the data when edit button is clicked
+            var data_user;
+            function edit_data(data){
+                data_user=data;
+                console.log(data)
+                let edit_modal = document.getElementById("editModal");
+                edit_modal.style.display = "flex";
+                let name_old=document.getElementById("name").value=data.Name_ls
+                let dob_old=document.getElementById("dob").value=data.Dob_ls
+                let email_old=document.getElementById("email").value=data.Email_ls
+                let phone_old=document.getElementById("phone").value=data.Phone_ls
+                let address_old=document.getElementById("address").value=data.Address_ls
+                let hobbies_old=document.getElementById("hobbies").value=data.Hobbies_ls
+                let role_old=document.getElementById("role").value=data.Role_ls
+                let profileImg=document.getElementById("profile_img").src=data.Img_ls
+
+                let manager=document.getElementById("manager")
+                manager.innerHTML=`<option value="">Select Manager</option>`
+                for(let i=0;i<managerData.length;i++){
+                    manager.innerHTML+=`<option  name="manager" value="${managerData[i].Name_ls}">${managerData[i].Name_ls}</option>`
+                }       
+                if(data.ManagerId_ls){
+                    let manName=managerData.find((item)=>item.Id_ls==data.ManagerId_ls)
+                    manager.value=manName.Name_ls
+                }
+            }
+            
+
+            let save_prof=document.getElementById("save_profile")
+            save_prof.addEventListener("click",function (){
+                    let name=document.getElementById("name").value;
+                    data_user.Name_ls=name;
+                    let email=document.getElementById("email").value;
+                    data_user.Email_ls=email
+                    let phone=document.getElementById("phone").value;
+                    data_user.Phone_ls=phone
+                    let dob=document.getElementById("dob").value;
+                    
+                    data_user.Dob_ls=dob
+                    let address=document.getElementById("address").value
+                    data_user.Address_ls=address
+                    let hobbies=document.getElementById("hobbies").value;
+                    data_user.Hobbies_ls=hobbies;
+                    let role=document.getElementById("role").value;
+                    data_user.Role_ls=role;
+
+                    
+                    let manager=document.getElementById("manager").value;  
+                    let managerid=managerData.find((item)=> item.Name_ls==manager)
+                    
+                    if(managerid){
+                        man_id=managerid.Id_ls
+                        data_user.ManagerId_ls=man_id
+                        
+                    }
+                    
+                    let edit_modal = document.getElementById("editModal");
+                    edit_modal.style.display = "none";
+                    
+                    localStorage.setItem("formData_new",JSON.stringify(tableData))
+                    location.reload();
+                
+            })
+
+            
+            closeModal_edit.addEventListener("click", close_Modal_edit);
+            function close_Modal_edit() {
+                
+                let edit_modal = document.getElementById("editModal");
+                edit_modal.style.display = "none";
+                location.reload();
+            }
+
+            //delete data when data is clicked
+            function delete_data(data,index){
+                if(index>=0){
+                    let confirmDelete = confirm(`Do you want to delete ${data.Name_ls}?`);
+                    if(confirmDelete){
+                        tableData.splice(index, 1);
+                        localStorage.setItem("formData_new", JSON.stringify(tableData));
+                        alert(data.Name_ls+" deleted successfully!!!!!");
+                        window.location.href="./table2.html"
+                    }
+                } else {
+                    alert("Data doesnt exists")
+                }
+                
+            }
+
+            
+            
+
+            // Add event listeners for the export buttons
+            exportCSVButton.addEventListener("click", exportToCSV);
+            exportPDFButton.addEventListener("click", exportToPDF);
+
+            //Table data converted to csv file
+            function exportToCSV() {
+                let heading=[];
+                let csvContent = "data:text/csv;charset=utf-8,";
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls");
+                for(let i=0;i<headers.length;i++){
+                    heading[i]=headers[i].split("_ls").join("");
+                }
+
+                csvContent += heading.join(",") + "\n";//All the heading of the table
+
+                filteredData.forEach(row => {
+                    let rowData = headers.map(header => {
+                        return `"${row[header] || ""}"`;
+                    }).join(",");
+                    csvContent += rowData + "\n";//Data of the table
+                });
+
+    
+                let encodedUri = encodeURI(csvContent);
+                let link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "UserData.csv");
+                document.body.appendChild(link);
+                var i = 0;
+                let progress=0;
+                var z = 1;
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    let rowCount=filteredData.length;
+                    // let rowCount=100;
+                    var id = setInterval(() => {
+                            progress = Math.min(100, (z/rowCount) * 100);
+                            elem.style.width = progress + "%";
+                            elem.innerText = Math.round(progress) + "%";
+                            z++;
+                            if (progress >= 100) {
+                                clearInterval(id);
+                                let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                                    downloadPDF_div.addEventListener("click", download_link);
+                                    function download_link(){
+                                        link.click();
+                                        document.body.removeChild(link);
+                                        location.reload();
+                                    }
+                            }
+                        }, 100);
+                }
+                
+            }
+
+            //Table data converted to pdf file
+            function exportToPDF() {
+                const { jsPDF } = window.jspdf;
+                let doc = new jsPDF();
+                
+                let heading=[];
+                
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls");
+                for(let i=0;i<headers.length;i++){
+                    heading[i]=headers[i].split("_ls").join("");
+                }
+                let data = filteredData.map(row => headers.map(header => row[header] || ""));
+
+                doc.text("User Data Table", 10, 10);
+                doc.autoTable({
+                    head: [heading],
+                    body: data,
+                    startY: 20
+                });
+
+                var i = 0;
+                var z = 1;
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    let rowCount=filteredData.length;
+                    
+                    var width = 10;
+                    var id = setInterval(() => {
+                            progress = Math.min(100, (z/rowCount) * 100);
+                            elem.style.width = progress + "%";
+                            elem.innerText = Math.round(progress) + "%";
+                            z++;
+                            if (progress >= 100) {
+                                clearInterval(id);
+                                let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                                    downloadPDF_div.addEventListener("click", download_link);
+                                    function download_link(){
+                                        doc.save("UserData.pdf");
+                                        location.reload()
+                                    }
+                            }
+                        }, 100);
+                }                
+            }
+
+            ///Search for all data
+            searchInput.addEventListener("input", () => {
+                currentPage = 1;
+                renderTable();
+            });
+
+            //Search for view as data
+            searchInput_view.addEventListener("input", () => {
+                currentPage = 1;
+                show_view_based();
+            });
+            
+
+            createTable();
+        });
+    </script>
+
+</body>
+</html>

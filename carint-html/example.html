@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Validation</title>
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <style>
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <form id="myForm">
+    <div>
+      <label for="Name">Name: </label>
+      <input type="text" id="Name" name="Name" placeholder="Your Name" />
+      <p id="err_name" class="error"></p>
+    </div>
+
+    <div>
+      <label for="PhoneNumber">Phone Number: </label>
+      <input type="tel" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" />
+      <p id="err_phone" class="error"></p>
+    </div>
+
+    <div>
+      <label for="Email">Email: </label>
+      <input type="email" id="Email" name="Email" placeholder="Email" />
+      <p id="err_email" class="error"></p>
+    </div>
+
+    <div>
+      <label for="Password">Password: </label>
+      <input type="password" id="Password" name="Password" placeholder="Password" />
+      <p id="err_password" class="error"></p>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Form validation function
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form from reloading the page
+      
+      // Clear all error messages first
+      document.getElementById("err_name").textContent = "";
+      document.getElementById("err_phone").textContent = "";
+      document.getElementById("err_email").textContent = "";
+      document.getElementById("err_password").textContent = "";
+
+      let isValid = true;
+
+      // Validate Name
+      const name = document.getElementById("Name").value.trim();
+      if (!name) {
+        document.getElementById("err_name").textContent = "Name is required.";
+        isValid = false;
+      }
+
+      // Validate Phone Number
+      const phone = document.getElementById("PhoneNumber").value.trim();
+      if (!phone) {
+        document.getElementById("err_phone").textContent = "Phone number is required.";
+        isValid = false;
+      } else if (!/^\d{10}$/.test(phone)) {
+        document.getElementById("err_phone").textContent = "Phone number must be 10 digits.";
+        isValid = false;
+      }
+
+      // Validate Email
+      const email = document.getElementById("Email").value.trim();
+      if (!email) {
+        document.getElementById("err_email").textContent = "Email is required.";
+        isValid = false;
+      } else if (!/\S+@\S+\.\S+/.test(email)) {
+        document.getElementById("err_email").textContent = "Enter a valid email address.";
+        isValid = false;
+      }
+
+      // Validate Password
+      const password = document.getElementById("Password").value.trim();
+      if (!password) {
+        document.getElementById("err_password").textContent = "Password is required.";
+        isValid = false;
+      } else if (password.length < 6) {
+        document.getElementById("err_password").textContent = "Password must be at least 6 characters.";
+        isValid = false;
+      }
+
+      // If all fields are valid, proceed with form submission logic
+      if (isValid) {
+        alert("Form submitted successfully!");
+        // You can add a server call here, or redirect to another page
+        // For demonstration, we'll reload the page
+        location.reload(); // Remove this line if actual submission is needed
+      }
+    });
+  </script>
+</body>
+</html>

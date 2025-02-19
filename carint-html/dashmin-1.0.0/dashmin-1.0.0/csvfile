@@ -1,0 +1,99 @@
+function exportToCSV() {
+                let csvContent = "data:text/csv;charset=utf-8,";
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+                csvContent += headers.join(",") + "\n";
+
+                filteredData.forEach(row => {
+                    let rowData = headers.map(header => {
+                        return `"${row[header] || ""}"`;
+                    }).join(",");
+                    csvContent += rowData + "\n";
+                });
+
+                
+                let encodedUri = encodeURI(csvContent);
+                let link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "user_data.csv");
+                document.body.appendChild(link);
+                var i = 0;
+                
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    var width = 10;
+                    let rowCount=filteredData.length;
+                    // alert(rowCount)
+                    let delay=rowCount > 4 ? 50 : 4;
+                    var id = setInterval(frame, delay);
+                    function frame() {
+                    if (width >= 100) {
+                        let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                        downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                        // doc.save("user_data.pdf");
+                        downloadPDF_div.addEventListener("click", download_link);
+                        function download_link(){
+                            link.click();
+                            document.body.removeChild(link);
+                        }
+                        // download_link()
+                        clearInterval(id);
+                        i = 0;
+                    } else {
+                        width++;
+                        elem.style.width = width + "%";
+                        elem.innerHTML = width  + "%";
+                    }
+                    }
+                }
+                
+            }
+
+            //pdf
+
+            function exportToPDF() {
+                // alert("Filter"+JSON.stringify(filteredData))
+                const { jsPDF } = window.jspdf;
+                let doc = new jsPDF();
+                
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls");
+                let data = filteredData.map(row => headers.map(header => row[header] || ""));
+
+                doc.text("User Data Table", 10, 10);
+                doc.autoTable({
+                    head: [headers],
+                    body: data,
+                    startY: 20
+                });
+
+                var i = 0;
+                
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    var width = 10;
+                    var id = setInterval(frame, 10);
+                    function frame() {
+                    if (width >= 100) {
+                        let downloadPDF_div = document.getElementById("downloadPDF_div");
+
+                        downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                        // doc.save("user_data.pdf");
+                        downloadPDF_div.addEventListener("click", download_link);
+                        function download_link(){
+                            doc.save("user_data.pdf");
+                        }
+                        // download_link()
+                        clearInterval(id);
+                        i = 0;
+                    } else {
+                        width++;
+                        elem.style.width = width + "%";
+                        elem.innerHTML = width  + "%";
+                    }
+                    }
+                }
+                
+                // doc.save("user_data.pdf");
+            }

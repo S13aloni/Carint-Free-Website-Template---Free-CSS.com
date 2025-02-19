@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+	<center>
+		<h2 style="color:green">
+			GeeksforGeeks
+		</h2>
+
+		<div>
+			<form>
+				Username
+				<input type="text"
+					name="username"
+					autofocus=""
+					autocapitalize="none"
+					autocomplete="username"
+					required="" id="id_username">
+				<br /><br />
+
+				Password
+				<input type="password"
+					name="password"
+					autocomplete="current-password"
+					required=""
+					id="id_password">
+
+				<img src=
+"https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png"
+					width="1%"
+					height="1%"
+					style=
+						"display: inline; 
+						margin-left: -1.5%; 
+						vertical-align: middle"
+					id="togglePassword">
+				<br /><br />
+
+				<button type="submit">
+					Login
+				</button>
+			</form>
+		</div>
+	</center>
+
+	<script>
+		const togglePassword =
+			document.querySelector('#togglePassword');
+
+		const password = 
+			document.querySelector('#id_password');
+
+		togglePassword.
+		addEventListener('click', function (e) {
+
+			// Toggle the type attribute 
+			const type = password.getAttribute(
+				'type') === 'password' ? 'text' : 'password';
+			password.setAttribute('type', type);
+
+			// Toggle the eye slash icon 
+			if (togglePassword.src.match(
+"https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png")) {
+				togglePassword.src =
+"https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png";
+			} else {
+				togglePassword.src =
+"https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png";
+			}
+		}); 
+	</script>
+</body>
+
+</html>

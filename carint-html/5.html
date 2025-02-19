@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+
+  <link rel="shortcut icon" href="images/fevicon.png" type="">
+
+  <title> Project </title>
+
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!--owl slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+
+  <script>
+    // const form = document.querySelector('validate-form'); 
+ 
+    // form.addEventListener('submit', function(event) { 
+    //     alert("Inside")
+    // event.preventDefault(); 
+    // // Your form submission logic here 
+    // });
+
+
+    
+    function validation(){
+      // return false
+        var name=document.forms["validate-form"]["Name"].value;
+        var num=document.forms["validate-form"]["PhoneNumber"].value;
+        var email=document.forms["validate-form"]["Email"].value;
+        var password=document.forms["validate-form"]["Password"].value;
+        var dob=document.forms["validate-form"]["DOB"].value;
+        var address=document.forms["validate-form"]["Address"].value;
+        //Hobbies
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let checkedValues = [];
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkedValues.push(checkbox.value);
+            }
+        });
+        // alert(checkedValues)
+        // const hobby_data={"Hobbies":checkedValues}
+        // alert(JSON.stringify(hobby_data))
+        // const storedHobbies=JSON.parse(checkedValues) || [];
+        // alert(JSON.stringify(storedHobbies))
+
+        var profile_img = document.forms["validate-form"]["Profile_Img"].value; // Get the value
+        // C:\\fakepath\\img2.jpg
+
+        // if (!profile_img) {
+        //   // alert("Please upload an image.");
+        //   return false;
+        // }
+
+        // Extract the file name from the fake path
+        // alert(profile_img.split("\\").pop())
+        const fileName = profile_img.split("\\").pop(); // This gets 'img2.jpg' from 'C:\fakepath\img2.jpg'
+        const imagePath = `./images/${fileName}`;
+      
+        function saveFormData(formData_new) {
+                const storedFormData = JSON.parse(localStorage.getItem("formData_new")) || [];
+                // storedEmailData.splice(0,1)
+                const isNameValid = validation_name();
+                // alert("Valid name")
+                const isNumberValid = validation_number();
+                // alert("Valid number")
+                const isEmailValid = validation_email();
+                // alert("Valid Email")
+                const isPasswordValid = validation_password();
+                // alert("Valid password")
+                const isImageFile = validation_img_file();
+
+                // var submitButton=document.forms["validate-form"]["submit"].disabled;
+                if (isNameValid==true && isNumberValid==true && isEmailValid==true && isPasswordValid==true && isImageFile==true) {
+                    storedFormData.push(formData_new);
+                    localStorage.setItem("formData_new", JSON.stringify(storedFormData));
+                    window.open("./login.html", "_blank");
+                } else {
+                    return false
+                }
+            }
+            const formData_new={Name_ls:name,Phone_ls:num,Email_ls:email,Pass_ls:password,Dob_ls:dob,Address_ls:address,Img_ls:imagePath,Hobbies_ls:checkedValues}
+            return saveFormData(formData_new)
+
+          }
+
+          function validation_name() {
+            var submitButton = document.forms["validate-form"]["submit"].disabled;
+            
+            let nameInput = document.getElementById("Name");
+            let errorMsg = document.getElementById("err_name");
+
+            // Regular expression to allow only letters and spaces
+            let namePattern = /^[A-Za-z\s]+$/;
+
+            if (!nameInput.value) {
+                errorMsg.innerHTML = "Name is required";
+                errorMsg.style.color = "red";
+                return false;
+            } else if (!namePattern.test(nameInput.value)) {
+                errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                errorMsg.style.color = "red";
+                return false;
+            } else {
+                errorMsg.innerHTML = ""; // Clear error message on valid input
+                return true;
+            }
+        }
+
+
+    function validation_number() {
+        let num = document.forms["validate-form"]["PhoneNumber"].value;
+        let errorMsg = document.getElementById("err_phone");
+        // let pat_num = /^[7-9][0-9]{9}$/;
+
+        
+        // if (pat_num.test(num))
+        if(num.length>10){
+          errorMsg.innerHTML="Number should contain at most 10 digits"
+          errorMsg.style.color = "red";
+        }
+        else if(num.length==10){
+          errorMsg.innerHTML = "" 
+          // errorMsg.innerHTML = "Valid";
+          // errorMsg.style.color = "green";
+          return true;
+        }
+        else {
+            errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+            errorMsg.style.color = "red";
+            // document.getElementById("PhoneNumber").value = "";
+            return false;
+        }
+    }
+
+    function validation_password() {
+        let password = document.forms["validate-form"]["Password"].value;
+        let errorMsg = document.getElementById("err_password");
+        let pat_password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        //One uppercase one lowercase and at least 8 characters
+        if (pat_password.test(password)) {
+            errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid password. Must contain at least one number, one uppercase, one lowercase letter, and be at least 8 characters.";
+            errorMsg.style.color = "red";
+            // document.getElementById("Password").value = "";
+            return false;
+        }
+    }
+
+    function validation_email() {
+        let email = document.forms["validate-form"]["Email"].value;
+        let errorMsg = document.getElementById("err_email");
+        let pat_mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // if (pat_mail.test(email)) 
+        if(!email.includes("@")){
+          errorMsg.innerHTML="Email should have at least one @"
+          errorMsg.style.color = "red";
+        }
+        else if(!email.includes(".")){
+          errorMsg.innerHTML="Email should have at least one ."
+          errorMsg.style.color = "red";
+        }
+        else if(email.includes("@") && email.includes(".")){
+            errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid email";
+            errorMsg.style.color = "red";
+            // document.getElementById("Email").value = "";
+            return false;
+        }
+    }
+
+    function validation_img_file() {
+        let file_img = document.getElementById("Profile_Img").files[0];
+        let errorMsg = document.getElementById("err_img");
+        let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+        if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed.";
+            errorMsg.style.color = "red";
+            return false
+            // document.getElementById("Profile_Img").value = "";
+        } else {
+            // errorMsg.innerHTML = "Valid img file";
+            // errorMsg.style.color = "green";
+            return true
+        }
+    }
+
+    function file_size_validation() {
+        let file_img = document.getElementById("Certificate").files[0];
+        let allowedTypes = ["application/pdf"];
+        let errorMsg = document.getElementById("err_cert");
+
+        const fi = document.getElementById('Certificate');
+        if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only PDF allowed.";
+            errorMsg.style.color = "red";
+            document.getElementById("Certificate").value = "";
+        } else {
+            if (fi.files.length > 0) {
+                for (const i = 0; i <= fi.files.length - 1; i++) {
+                    const fsize = fi.files.item(i).size;
+                    const file = Math.round(fsize / 1024); // size in KB
+                    if (file >= 4096) {
+                        errorMsg.innerHTML = "File too Big. Please select a file less than 4MB.";
+                        errorMsg.style.color = "red";
+                        document.getElementById("Certificate").value = "";
+                    } else {
+                        errorMsg.innerHTML = "Valid PDF file";
+                        errorMsg.style.color = "green";
+                    }
+                }
+            }
+        }
+    }
+
+    // function valid()
+    // {
+    //     var name_valid=validation_name()
+    //     if(name_valid==true){
+    //         alert("GOod")
+    //     }
+    //     else{
+    //         alert("In valid")
+    //         // window.history.back();
+    //     }
+    // }
+
+    // function redirct_after_submition(){
+    //     if(true){
+    //         alert("Redirecting")
+    //         window.open("./login.html", "_blank");
+    //     }
+    //     else{
+    //         window.open("./registration.html", "_blank");
+    //     }
+    // }
+
+
+    // function redirct_after_submition(){
+    //     alert("Redirecting")
+    //     window.open("./login.html", "_blank");
+    // }
+  </script>
+
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid ">
+          <div class="contact_nav">
+            <a href="">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <span>
+                Call : +01 123455678990
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              <span>
+                Email : demo@gmail.com
+              </span>
+            </a>
+            <a href="">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              <span>
+                Location
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="index.html">
+              <span>
+                Project
+              </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav  ">
+                <li class="nav-item ">
+                  <a class="nav-link" href="index.html">Home </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="service.html">Services</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html"> About</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="login.html">  Login</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="registration.html">Registration <span class="sr-only">(current)</span> </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile </a>
+                  </li>
+                <form class="form-inline">
+                  <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  
+  <!-- Details section -->
+   <div class="example">
+  <section class="details_section layout_padding-top">
+    <div class="container-fluid">
+          <div class="heading_container ">
+            <h2>
+              Registration
+            </h2>
+          </div>
+      <div class="form_container">
+        <form name="validate-form" onsubmit="return validation()" id="validate-form">
+          <div class="row">
+              <div class="col-lg-4 col-md-5 offset-md-1">
+                <div>
+                  <label for="Name">Name: </label>
+                  <input type="text" placeholder="Your Name" id="Name" onkeyup="validation_name()" />
+                  <p id="err_name"></p>
+                </div>
+                <div>
+                  <label for="PhoneNumber">Phone Number: </label>
+                  <input type="tel" placeholder="Phone Number" id="PhoneNumber" name="PhoneNumber" onkeyup="validation_number()" />
+                  <p id="err_phone"></p>
+                </div>
+                <div>
+                  <label for="Email">Email: </label>
+                  <input type="email" placeholder="Email" id="Email" onkeyup="validation_email()" />
+                  <p id="err_email"></p>
+                  <!-- <input id="Email" placeholder="Email" oninvalid="InvalidMsg(this);" oninput="InvalidMsg(this);" name="email" type="email" required="required"  />  -->
+                </div>
+                <div>
+                    <label for="Password">Password: </label>
+                    <input type="password" placeholder="Password" id="Password" onkeyup="validation_password()" />
+                    <p id="err_password"></p>
+                </div>
+                <div>
+                  <label for="DOB">Date of Birth: </label>
+                  <input type="date" placeholder="Date of Birth" id="DOB"/>
+                </div>
+                <!-- <div>
+                    <label for="hobbies">Hobbies: </label>
+                    <select id="hobbies">
+                      <option value="" selected="selected">Select One</option>
+                      <option value="painting" >Painting</option>
+                      <option value="dance" >Dance</option>
+                      <option value="sing" >Sing</option>
+                    </select>
+                </div> -->
+                <div>
+                    <label for="hobbies" >Hobbies: </label><br>
+                    Reading: <input type="checkbox" name="hobbies" id="Reading" value="Reading">
+                    Painting: <input type="checkbox" name="hobbies" id="Painting" value="Painting">
+                    Dancing: <input type="checkbox" name="hobbies" id="Dancing" value="Dancing">
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-5 offset-md-1">
+                <div>
+                    <label for="Address">Address: </label>
+                    <input type="text" class="message-box" placeholder="Address" id="Address"/>
+                </div>
+                <div>
+                    <label for="Gender" >Gender: </label><br>
+                    Male: <input type="radio" name="Gender" id="male"/>
+                    Female: <input type="radio" name="Gender" id="female"/>
+                </div>
+                <div>
+                    <label for="Certificate">Upload Certificate: </label>
+                    <!-- <input type="file" placeholder="Certificate" id="Certificate"  class="file_space" accept=".pdf"/> -->
+                    <input type="file" placeholder="Certificate" id="Certificate"  class="file_space" onchange="file_size_validation()" />
+                    <p id="err_cert"></p>
+                </div>
+                <div>
+                    <label for="Profile_Img">Upload Profile Image: </label>
+                    <!-- <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" accept="image/*"/> -->
+                    <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" onchange="validation_img_file()"/>
+                    <p id="err_img"></p>
+                </div>
+                <div>
+                    Already have an account? <a href="Login.html">Login</a>
+                </div><br>
+                <div class="btn_box">
+                    <!-- <button onclick="redirct_after_submition()"> -->
+                    <button type="submit">
+                      Submit
+                    </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </form>
+      </div>
+        
+    </div>
+  </section>
+</div>
+  <!-- end Details section -->
+
+  <!-- info section -->
+
+  <section class="info_section layout_padding2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_contact">
+            <h4>
+              Address
+            </h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span>
+                  Location
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span>
+                  Call +01 1234567890
+                </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span>
+                  demo@gmail.com
+                </span>
+              </a>
+            </div>
+          </div>
+          <div class="info_social">
+            <a href="">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col">
+          <div class="info_detail">
+            <h4>
+              Info
+            </h4>
+            <p>
+              necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
+            </p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-2 mx-auto info_col">
+          <div class="info_link_box">
+            <h4>
+              Links
+            </h4>
+            <div class="info_links">
+              <a class="active" href="index.html">
+                <img src="images/nav-bullet.png" alt="">
+                Home
+              </a>
+              <a class="" href="about.html">
+                <img src="images/nav-bullet.png" alt="">
+                About
+              </a>
+              <a class="" href="service.html">
+                <img src="images/nav-bullet.png" alt="">
+                Services
+              </a>
+
+              <a class="" href="contact.html">
+                <img src="images/nav-bullet.png" alt="">
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 info_col ">
+          <h4>
+            Subscribe
+          </h4>
+          <form action="#">
+            <input type="text" placeholder="Enter email" />
+            <button type="submit">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <section class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="https://html.design/">Free Html Templates</a>
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+
+  <!-- jQery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <!-- bootstrap js -->
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <!-- custom js -->
+  <script type="text/javascript" src="js/custom.js"></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+  </script>
+  <!-- End Google Map -->
+
+</body>
+
+</html>

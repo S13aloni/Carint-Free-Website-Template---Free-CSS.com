@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Responsive Registration Form | CodingLab </title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <style>
+    /* Importing Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body {
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+.container {
+  max-width: 700px;
+  width: 100%;
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  /* margin-top: 80px; */
+}
+.container .title {
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.container .title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+.content form .user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+form .user-details .input-box {
+  margin-bottom: 15px;
+  width: calc(100% / 2 - 20px);
+}
+form .input-box span.details {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.user-details .input-box input {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid {
+  border-color: #9b59b6;
+}
+
+.txt_address{
+    height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.txt_address:focus,.txt_address:valid{
+    border-color: #9b59b6;
+}
+
+.user_role{
+    height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user_role:focus,.user_role:valid{
+    border-color: #9b59b6;
+}
+
+form .gender-details .gender-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+form .category {
+  display: flex;
+  width: 80%;
+  margin: 14px 0;
+  justify-content: space-between;
+}
+form .category label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+form .category label .dot {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+#dot-1:checked~.category label .one,
+#dot-2:checked~.category label .two,
+#dot-3:checked~.category label .three {
+  background: #9b59b6;
+  border-color: #d9d9d9;
+}
+form input[type="radio"] {
+  display: none;
+}
+
+#check-1:checked~.category label .one1,
+#check-2:checked~.category label .two2,
+#check-3:checked~.category label .three3 {
+  background: #9b59b6;
+  border-color: #d9d9d9;
+}
+form input[type="checkbox"] {
+  display: none;
+}
+form .button {
+  height: 45px;
+  margin: 35px 0
+}
+form .button input {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+form .button input:hover {
+  background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+}
+
+/* Responsive media query code for mobile devices */
+@media(max-width: 1890px) {
+    .container .content .category {
+    flex-direction: column;
+  }
+}
+@media(max-width: 584px) {
+  .container {
+    max-width: 100%;
+  }
+  form .user-details .input-box {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  form .category {
+    width: 100%;
+  }
+  .content form .user-details {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+}
+
+/* Responsive media query code for mobile devices */
+@media(max-width: 459px) {
+  .container .content .category {
+    flex-direction: column;
+  }
+}
+.popup {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
+.popup-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+button {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+  </style>
+  <script>
+    function validation() {
+        var name = document.getElementById("Name").value;
+        // alert(name)
+        var num = document.getElementById("Phone").value;
+        var email = document.getElementById("Email").value;
+        var password = document.getElementById("Password").value;
+        var dob = document.getElementById("dob").value;
+        var address = document.getElementById("dob").value;
+        var profile_img = document.getElementById("Profile_Img").value;
+        var pdf_file = document.getElementById("Certificate").value;
+        var role = document.getElementById("role").value;
+
+        // Hobbies
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        // alert(checkboxes)
+        let checkedValues = [];
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                checkedValues.push(checkbox.value);
+            }
+        });
+
+        // Extract filenames
+        const fileName = profile_img.split("\\").pop();
+        const imagePath = `./images/${fileName}`;
+        const pdfFileName = pdf_file.split("\\").pop();
+        const pdfPath = `./pdf/${pdfFileName}`;
+
+        function saveFormData(formData_new) {
+            var email = document.getElementById("Email").value;
+            const storedFormData = JSON.parse(localStorage.getItem("formData_new")) || [];
+
+            // alert(storedFormData.length)
+            let isNameValid=validation_name()
+            let isEmailValid=validation_email()
+            let isPhoneValid=validation_number()
+            let isPasswordValid=validation_password()
+            let isPasswordConform=validation_password_conformation()
+            let isProfileImg=validation_img_file()
+            let isPDFValid=file_size_validation()
+            let isDateValid=validation_date()
+
+            var id = storedFormData.length + 1;
+
+            if(isNameValid && isEmailValid && isPhoneValid && isPasswordValid && isPasswordConform && isProfileImg && isPDFValid && isDateValid){
+                if (email == "superadmin@gmail.com") {
+                    Object.assign(formData_new, { Role_ls: "superAdmin" });
+                } else {
+                    Object.assign(formData_new, { Role_ls: role });
+                }
+                Object.assign(formData_new, { Id_ls: id });
+
+                storedFormData.push(formData_new);
+                localStorage.setItem("formData_new", JSON.stringify(storedFormData));
+
+                // **Show Pop-up Message**
+                document.getElementById("popup-message").style.display = "flex";
+
+                // Close popup and redirect on 'Ok' button click
+                document.getElementById("popup-ok-btn").addEventListener("click", function () {
+                    document.getElementById("popup-message").style.display = "none";
+                    window.location.href = "./20.html";
+                });
+
+                return false; // Prevent default form submission
+            } else {
+                return false;
+            }
+        }
+
+        const formData_new = {
+            Name_ls: name,
+            Phone_ls: num,
+            Email_ls: email,
+            Pass_ls: password,
+            Dob_ls: dob,
+            Address_ls: address,
+            Img_ls: imagePath,
+            Hobbies_ls: checkedValues,
+            PDF_ls: pdfPath
+        };
+
+        return saveFormData(formData_new);
+    }
+    function validation_name() {
+            // var submitButton = document.forms["validate-form"]["submit"].disabled;
+            let nameInput = document.getElementById("Name");
+            let errorMsg = document.getElementById("err_name");
+
+            // Regular expression to allow only letters and spaces
+            let namePattern = /^[A-Za-z\s]+$/;
+
+            if (!nameInput.value) {
+                errorMsg.innerHTML = "Name is required";
+                errorMsg.style.color = "red";
+                return false;
+            } else if (!namePattern.test(nameInput.value)) {
+                errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                errorMsg.style.color = "red";
+                return false;
+            } else {
+                errorMsg.innerHTML = "";
+                return true;
+            }
+        }
+        function validation_number() {
+            let num = document.getElementById("Phone").value;
+            let errorMsg = document.getElementById("err_phone");
+            // let pat_num = /^[7-9][0-9]{9}$/;
+
+            if(num==""){
+            errorMsg.innerHTML="Phone number is required."
+            errorMsg.style.color = "red";
+            return false
+            }
+            else if(num.length>10){
+            errorMsg.innerHTML="Number should contain at most 10 digits"
+            errorMsg.style.color = "red";
+            return false
+            }
+            else if(num.length==10){
+            errorMsg.innerHTML = ""
+            return true;
+            }
+            else {
+                errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+                errorMsg.style.color = "red";
+                return false;
+            }
+    }
+
+    function validation_password() {
+        let password = document.getElementById("Password").value;
+        let errorMsg = document.getElementById("err_password");
+        let pat_password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        if(password==""){
+          errorMsg.innerHTML = "Password is required.";
+            errorMsg.style.color = "red";
+            return false;
+        }
+        else if (pat_password.test(password)) {
+            errorMsg.innerHTML = ""
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid password. Must contain at least one number, one uppercase, one lowercase letter, and be at least 8 characters.";
+            errorMsg.style.color = "red";
+            return false;
+        }
+    }
+
+    function validation_password_conformation(){
+        let conform_password = document.getElementById("ConformPass").value;
+        let password = document.getElementById("Password").value;
+        let errorMsg = document.getElementById("err_conf_password");
+
+        if(conform_password==""){
+            errorMsg.innerHTML = "Confirm password is required.";
+            errorMsg.style.color = "red";
+            return false
+        }
+        else if(conform_password!=password){
+            errorMsg.innerHTML = "Confirm password is required.";
+            errorMsg.style.color = "red";
+            return false
+        }
+        else{
+            errorMsg.innerHTML = "";
+            return true
+        }
+    }
+
+    function validation_email() {
+        let email = document.getElementById("Email").value;
+        let errorMsg = document.getElementById("err_email");
+        let pat_mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // if (pat_mail.test(email)) 
+        if(email==""){
+          errorMsg.innerHTML="Email address is required."
+          errorMsg.style.color = "red";
+          return false
+        } else if(!email.includes("@")){
+          errorMsg.innerHTML="Email should have at least one @"
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(!email.includes(".")){
+          errorMsg.innerHTML="Email should have at least one ."
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(email.includes("@") && email.includes(".")){
+            errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
+            return true;
+        } else {
+            errorMsg.innerHTML = "Invalid email";
+            errorMsg.style.color = "red";
+            // document.getElementById("Email").value = "";
+            return false;
+        }
+    }
+
+    function validation_img_file() {
+        let file_img = document.getElementById("Profile_Img").files[0];
+        let errorMsg = document.getElementById("err_img");
+        let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+        // alert(file_img)
+        if(file_img==undefined){
+          errorMsg.innerHTML = "Profile image is required.";
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(file_img==undefined){
+          errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed.";
+            errorMsg.style.color = "red";
+          return false
+        }
+        else if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed.";
+            errorMsg.style.color = "red";
+            return false
+        } else {
+          errorMsg.innerHTML =""
+            return true;
+        }
+    }
+
+    function file_size_validation() {
+        let pdf_file_alert = document.getElementById("Certificate").value;
+        // alert(!pdf_file_alert)
+        let file_img = document.getElementById("Certificate").files[0];
+        let allowedTypes = ["application/pdf"];
+        let errorMsg = document.getElementById("err_cert");
+
+        const fi = document.getElementById('Certificate');
+        if(pdf_file_alert=="")
+        {
+          errorMsg.innerHTML = "PDF is required.";
+            errorMsg.style.color = "red";
+            return false
+        }
+        if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only PDF allowed.";
+            errorMsg.style.color = "red";
+            // document.getElementById("Certificate").value = "";
+            alert("fasle")
+        } else {
+            if (fi.files.length > 0) {
+                for (const i = 0; i <= fi.files.length - 1; i++) {
+                    const fsize = fi.files.item(i).size;
+                    const file = Math.round(fsize / 1024); // size in KB
+                    if (file >= 4096) {
+                        errorMsg.innerHTML = "File too Big. Please select a file less than 4MB.";
+                        errorMsg.style.color = "red";
+                        return false
+                    } else {
+                      errorMsg.innerHTML = "";
+                        return true
+                    }
+                }
+            }
+        }
+    }
+
+    function validation_date(){
+        let date=document.getElementById("dob").value;
+        let errorMsg = document.getElementById("err_dob");
+
+        if(date==""){
+            errorMsg.innerHTML="Date is required."
+            errorMsg.style.color = "red";
+            return false
+        }
+        else{
+            errorMsg.innerHTML=""
+            return true
+        }
+    }
+
+    function goBack(){
+      window.location.href="./table2.html"
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- Title section -->
+     <div style="display: flex;justify-content: space-between;">
+      <div class="title">Registration</div>
+      <div class="backBtn"><button style="background-color: #9b59b6;" onclick="goBack()">Back</button></div>
+     </div>
+    
+    <div class="content">
+      <!-- Registration form -->
+      <form action="#">
+        <div class="user-details">
+          <!-- Input for Full Name -->
+          <div class="input-box">
+            <span class="details">Full Name</span>
+            <input type="text" placeholder="Enter your name" onkeyup="validation_name()" id="Name">
+            <p id="err_name"></p>
+          </div>
+          <!-- Input for Username -->
+          <div class="input-box">
+            <span class="details">Date of Birth</span>
+            <input type="date" id="dob">
+            <p id="err_dob"></p>
+          </div>
+        </div>
+        <div class="user-details">
+          <!-- Input for Email -->
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="text" placeholder="Enter your email" onkeyup="validation_email()" id="Email">
+            <p id="err_email"></p>
+          </div>
+          <!-- Input for Phone Number -->
+          <div class="input-box">
+            <span class="details">Phone Number</span>
+            <input type="text" placeholder="Enter your number" onkeyup="validation_number()" id="Phone">
+            <p id="err_phone"></p>
+          </div>
+        </div>
+        <div class="user-details">
+          <!-- Input for Password -->
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="text" placeholder="Enter your password" onkeyup="validation_password()" id="Password">
+            <p id="err_password"></p>
+          </div>
+          <!-- Input for Confirm Password -->
+          <div class="input-box">
+            <span class="details">Confirm Password</span>
+            <input type="text" placeholder="Confirm your password" onkeyup="validation_password_conformation()" id="ConformPass">
+            <p id="err_conf_password"></p>
+          </div>
+        </div>
+        
+        <div class="gender-details">
+          <!-- Radio buttons for gender selection -->
+          <input type="radio" name="gender" id="dot-1" value="Male">
+          <input type="radio" name="gender" id="dot-2" value="Female">
+          <input type="radio" name="gender" id="dot-3" value="PreferNot">
+          <span class="gender-title">Gender</span>
+          <div class="category" >
+            <!-- Label for Male -->
+            <label for="dot-1">
+              <span class="dot one"></span>
+              <span class="gender">Male</span>
+            </label>
+            <!-- Label for Female -->
+            <label for="dot-2">
+              <span class="dot two"></span>
+              <span class="gender">Female</span>
+            </label>
+            <!-- Label for Prefer not to say -->
+            <label for="dot-3">
+              <span class="dot three"></span>
+              <span class="gender">Prefer not to say</span>
+            </label>
+          </div>
+        </div>
+        <div class="user-details">
+            <!-- Input for Full Name -->
+            <div class="input-box">
+              <span class="details">Upload Certificate</span>
+              <input type="file" onchange="file_size_validation()" id="Certificate" style="padding-top: 10px;">
+              <p id="err_cert"></p>
+            </div>
+            <!-- Input for Username -->
+            <div class="input-box">
+              <span class="details">Upload Profile Image</span>
+              <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" onchange="validation_img_file()" style="padding-top: 10px;"/>
+              <p id="err_img"></p>
+            </div>
+        </div>
+        <div class="user-details">
+            <!-- Input for Full Name -->
+            <div class="input-box">
+              <span class="details">Address</span>
+              <textarea id="address" class="txt_address"></textarea>
+              <p id="err_cert"></p>
+            </div>
+            <!-- Input for Username -->
+            <div class="input-box">
+              <span class="details">Role</span>
+              <select class="form-control user_role" id="role">
+                <option selected>Select Role</option>
+                <option  name="role" value="user">User</option>
+                <option  name="role" value="manager">Manager</option>
+              </select>
+              <p id="err_img"></p>
+            </div>
+        </div>
+        <div class="gender-details">
+            <!-- Radio buttons for gender selection -->
+            <input type="checkbox" name="hobbies" id="check-1" value="Reading">
+            <input type="checkbox" name="hobbies" id="check-2" value="Painting">
+            <input type="checkbox" name="hobbies" id="check-3" value="Dancing">
+            <span class="gender-title">Hobbies</span>
+            <div class="category">
+              <!-- Label for Male -->
+              <label for="check-1">
+                <span class="dot one1"></span>
+                <span class="hobbies">Reading</span>
+              </label>
+              <!-- Label for Female -->
+              <label for="check-2">
+                <span class="dot two2"></span>
+                <span class="hobbies">Painting</span>
+              </label>
+              <!-- Label for Prefer not to say -->
+              <label for="check-3">
+                <span class="dot three3"></span>
+                <span class="hobbies">Dancing</span>
+              </label>
+            </div>
+          </div>
+        <!-- Submit button -->
+        <div class="button">
+          <input type="submit" value="Register" onclick="return validation()">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="popup-message" class="popup">
+    <div class="popup-content">
+        <img src="./images/success.jpg" alt="Success" class="popup-icon">
+        <!-- <h2>Oh Yeah!</h2> -->
+        <p>New user added successfully registered.</p>
+        <button id="popup-ok-btn">Ok</button>
+    </div>
+</div>
+</body>
+</html>

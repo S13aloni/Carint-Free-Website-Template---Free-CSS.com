@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropping with Cropper.js</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Cropper
+    var image = document.getElementById('imagePreview');
+    var cropper;
+
+    document.getElementById('imageInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                image.src = e.target.result;
+
+                // Initialize Cropper once the image is loaded
+                cropper = new Cropper(image, {
+                    aspectRatio: 1, // Set the aspect ratio (1:1 for a square crop)
+                    viewMode: 1,   // Set the view mode
+                    autoCropArea: 1, // Automatically select the whole image for cropping
+                });
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Crop button event
+    document.getElementById('cropButton').addEventListener('click', function () {
+        // Get the cropped data
+        var img=document.getElementById('imageInput').value
+        // var img_final=img.split("\\").pop()
+        // console.log(img_final)
+        var croppedData = cropper.getCroppedCanvas().toDataURL('image/jpeg'); 
+        // croppedData=`./images/cropped_${img_final}`;
+        // console.log(croppedData)
+        // Change format if needed
+
+        const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+
+          // Update the user's Img_ls field with the new image path
+          parsedData[latestIndex].Img_ls = croppedData;  // This stores the relative path of the image
+          localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+          // Update formData_new data in localStorage for registered users
+          const formData = localStorage.getItem("formData_new");
+                const formDataParsed = JSON.parse(formData) || [];
+
+                // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+                const userEmail = parsedData[latestIndex].Email_ls;
+                const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+                if (userIndex !== -1) {
+                    // Update the user's Img_ls field in formData_new
+                    formDataParsed[userIndex].Img_ls = croppedData;
+                    localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+                }
+        // You can now upload the croppedData to your server or use it as needed
+        console.log('Cropped Image Data:', croppedData);
+    });
+});
+    </script>
+</head>
+<body>
+    <!-- Your HTML content goes here -->
+    
+    <input type="file" id="imageInput">
+    <div>
+        <img id="imagePreview" src="" alt="Preview Image" style="max-width: 100%;">
+    </div>
+
+    <button id="cropButton">Crop</button>
+
+    <!-- Include Cropper.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <!-- Your JavaScript code goes here -->
+</body>
+</html>

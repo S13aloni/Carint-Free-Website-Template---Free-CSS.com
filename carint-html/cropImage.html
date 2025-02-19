@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Image Cropper</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Outfit", sans-serif;
+}
+body {
+  background-color: #1e1c27;
+}
+.custom-wrapper {
+  width: min(90%, 800px);
+  position: absolute;
+  transform: translateX(-50%);
+  top: 1em;
+  left: 50%;
+  background-color: #ffffff;
+  padding: 2em 3em;
+  border-radius: 0.5em;
+}
+.custom-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  border-radius: 7px;
+}
+.custom-container .custom-image-container,
+.custom-container .custom-preview-container {
+  width: 100%;
+}
+input[type="file"] {
+  display: none;
+}
+label {
+  display: block;
+  position: relative;
+  background-color: #025bee;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  width: 250px;
+  padding: 16px 0;
+  border-radius: 0.3em;
+  margin: 16px auto;
+  cursor: pointer;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+.custom-image-container {
+  width: 60%;
+  margin: 0 auto;
+}
+.custom-options {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+input[type="number"] {
+  width: 100px;
+  padding: 16px 5px;
+  border-radius: 0.3em;
+  border: 2px solid #000000;
+}
+button {
+  padding: 1em;
+  border-radius: 0.3em;
+  border: 2px solid #025bee;
+  background-color: #ffffff;
+  color: #025bee;
+}
+.custom-btns {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 1em;
+}
+.custom-btns button {
+  font-size: 1em;
+}
+.custom-btns a {
+  border: 2px solid #025bee;
+  background-color: #025bee;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 1em;
+  font-size: 1em;
+  border-radius: 0.3em;
+}
+.custom-hide {
+  display: none;
+}
+    </style>
+    <script>
+        let customFileInput = document.getElementById("custom-file");
+let customImage = document.getElementById("custom-image");
+let customDownloadButton = document.getElementById("custom-download");
+let customAspectRatio = document.querySelectorAll(
+  ".custom-aspect-ratio-button"
+);
+const customPreviewButton = document.getElementById("custom-preview");
+const customPreviewImage = document.getElementById(
+  "custom-preview-image"
+);
+const customOptions = document.querySelector(".custom-options");
+const customWidthInput = document.getElementById("custom-width-input");
+const customHeightInput = document.getElementById("custom-height-input");
+let customCropper = "";
+let customFileName = "";
+
+customFileInput.onchange = () => {
+  customPreviewImage.src = "";
+  customHeightInput.value = 0;
+  customWidthInput.value = 0;
+  customDownloadButton.classList.add("custom-hide");
+
+  let customReader = new FileReader();
+  customReader.readAsDataURL(customFileInput.files[0]);
+
+  customReader.onload = () => {
+    customImage.setAttribute("src", customReader.result);
+    if (customCropper) {
+      customCropper.destroy();
+    }
+    customCropper = new Cropper(customImage);
+    customOptions.classList.remove("custom-hide");
+    customPreviewButton.classList.remove("custom-hide");
+  };
+  customFileName = customFileInput.files[0].name.split(".")[0];
+};
+
+customAspectRatio.forEach((element) => {
+  element.addEventListener("click", () => {
+    if (element.innerText == "Free") {
+      customCropper.setAspectRatio(NaN);
+    } else {
+      customCropper.setAspectRatio(
+        eval(element.innerText.replace(":", "/"))
+      );
+    }
+  });
+});
+
+customHeightInput.addEventListener("input", () => {
+  const { height } = customCropper.getImageData();
+  if (parseInt(customHeightInput.value) > Math.round(height)) {
+    customHeightInput.value = Math.round(height);
+  }
+  let newHeight = parseInt(customHeightInput.value);
+  customCropper.setCropBoxData({ height: newHeight });
+});
+customWidthInput.addEventListener("input", () => {
+  const { width } = customCropper.getImageData();
+  if (parseInt(customWidthInput.value) > Math.round(width)) {
+    customWidthInput.value = Math.round(width);
+  }
+  let newWidth = parseInt(customWidthInput.value);
+  customCropper.setCropBoxData({ width: newWidth });
+});
+
+customPreviewButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  customDownloadButton.classList.remove("custom-hide");
+  let imgSrc = customCropper.getCroppedCanvas({}).toDataURL();
+  customPreviewImage.src = imgSrc;
+  customDownloadButton.download = `cropped_${customFileName}.png`;
+  customDownloadButton.setAttribute("href", imgSrc);
+});
+
+window.onload = () => {
+  customDownload.classList.add("custom-hide");
+  customOptions.classList.add("custom-hide");
+  customPreviewButton.classList.add("custom-hide");
+};
+    </script>
+  </head>
+  <body>
+    <div class="custom-wrapper">
+      <div class="custom-container">
+        <div class="custom-image-container">
+          <img id="custom-image" />
+        </div>
+        <div class="custom-preview-container">
+          <img id="custom-preview-image" />
+        </div>
+      </div>
+      <input type="file" id="custom-file" accept="image/*" />
+      <label for="custom-file">Choose A Photo</label>
+      <div class="custom-options custom-hide">
+        <input
+          type="number"
+          id="custom-height-input"
+          placeholder="Enter Height"
+          max="780"
+        />
+        <input
+          type="number"
+          id="custom-width-input"
+          placeholder="Enter Width"
+          max="780"
+        />
+        <button class="custom-aspect-ratio-button">16:9</button>
+        <button class="custom-aspect-ratio-button">4:3</button>
+        <button class="custom-aspect-ratio-button">1:1</button>
+        <button class="custom-aspect-ratio-button">2:3</button>
+        <button class="custom-aspect-ratio-button">Free</button>
+      </div>
+      <div class="custom-btns">
+        <button id="custom-preview" class="custom-hide">Preview</button>
+        <a href="" id="custom-download" class="custom-hide">Download</a>
+      </div>
+    </div>
+  </body>
+</html>

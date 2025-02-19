@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pagination with JavaScript</title>
+    <style>
+        table {
+            margin: auto;
+        }
+
+        #pagination {
+            text-align: center;
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="myTable">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>City</th>
+        </tr>
+        <!-- Table rows will be added dynamically -->
+    </table>
+    <div id="pagination"></div>
+
+    <script>
+        const data = [
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "ABC", email: "xyz@geeksforgeeks.org", city: "Noida" },
+            { name: "XYZ", email: "xyz@geeksforgeeks.org", city: "Noida" }
+        ];
+
+        const rowsPerPage = 5;
+        let currentPage = 1;
+
+        function displayTable(page) {
+            const table = document.getElementById("myTable");
+            const startIndex = (page - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const slicedData = data.slice(startIndex, endIndex);
+            let paginationContainer = document.getElementById("pagination");
+            paginationContainer.innerHTML = "";
+
+            slicedData = slicedData.value.trim() ? getFilteredData() : data;
+            let totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+            let prevButton = `<button onclick="changePage(-1)" ${currentPage === 1 ? "disabled" : ""}>Prev</button>`;
+            let nextButton = `<button onclick="changePage(1)" ${currentPage === totalPages ? "disabled" : ""}>Next</button>`;
+
+            paginationContainer.innerHTML = prevButton;
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationContainer.innerHTML += `<button onclick="goToPage(${i})" class="${currentPage === i ? 'active' : ''}">${i}</button>`;
+            }
+
+            paginationContainer.innerHTML += nextButton;
+
+            document.getElementById("entries").textContent = `Showing ${(data.length === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1)} to ${Math.min(currentPage * rowsPerPage, data.length)} of ${data.length} entries`;
+            console.log(startIndex)
+            console.log(endIndex)
+            console.log(slicedData)
+            // Clear existing table rows
+            table.innerHTML = `
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>City</th>
+                    </tr>
+                `;
+
+            // Add new rows to the table
+            slicedData.forEach(item => {
+                const row = table.insertRow();
+                const nameCell = row.insertCell(0);
+                const emailCell = row.insertCell(1);
+                const cityCell = row.insertCell(2);
+                nameCell.innerHTML = item.name;
+                emailCell.innerHTML = item.email;
+                cityCell.innerHTML = item.city;
+            });
+
+            // Update pagination
+            updatePagination(page);
+        }
+
+        function updatePagination(currentPage) {
+            const pageCount = Math.ceil(data.length / rowsPerPage);
+            const paginationContainer = document.getElementById("pagination");
+            paginationContainer.innerHTML = "";
+
+            for (let i = 1; i <= pageCount; i++) {
+                const pageLink = document.createElement("a");
+                pageLink.href = "#";
+                pageLink.innerText = i;
+                pageLink.onclick = function () {
+                    displayTable(i);
+                };
+                if (i === currentPage) {
+                    pageLink.style.fontWeight = "bold";
+                }
+                paginationContainer.appendChild(pageLink);
+                paginationContainer.appendChild(document.createTextNode(" "));
+            }
+        }
+
+        // Initial display
+        displayTable(currentPage);
+    </script>
+</body>
+
+</html>
