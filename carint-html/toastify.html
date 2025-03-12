@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="
+https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css
+" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- <style>
+        html,body{
+            height:100%;
+            margin:0;
+            padding:0;
+            font-family:"Roboto","segoe ui",sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+            }
+            body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            }
+            #button{
+            padding: 10px 40px;
+            border-radius: 5px;
+            background-color: #96c93d;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 1.5em;
+            }
+    </style> -->
+</head>
+<body>
+    <span id="button">Click</span>
+<p> Visit <a href="https://github.com/apvarun/toastify-js/" target="_blank">Github</a></p>
+<script>
+    document.getElementById("button").addEventListener("click",function(){
+        Toastify({
+            text: "Logged in successfully! Redirecting...",
+            duration: 3000,  // Toast lasts for 3 seconds
+            gravity: "top", 
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            close: true
+        }).showToast();
+        });
+
+</script>
+</body>
+</html>

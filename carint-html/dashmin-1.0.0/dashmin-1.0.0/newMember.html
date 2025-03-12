@@ -4,6 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> Responsive Registration Form | CodingLab </title>
+  <!-- Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <!-- <link rel="stylesheet" href="style.css"> -->
   <style>
     /* Importing Google Fonts - Poppins */
@@ -23,7 +43,7 @@ body {
   background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
 .container {
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
   background-color: #fff;
   padding: 25px 30px;
@@ -92,6 +112,35 @@ form .input-box span.details {
     border-color: #9b59b6;
 }
 
+/* gender hobbies */
+.gender-hobbies-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  gap: 20px; /* Space between the two sections */
+}
+
+.gender-details,
+.hobbies-details {
+  width: 48%; /* Adjust width so they appear side by side */
+}
+
+/* Responsive design for screens smaller than 450px */
+@media screen and (max-width: 450px) {
+  .gender-hobbies-container {
+    flex-direction: column; /* Stack Gender and Hobbies vertically */
+    align-items: flex-start; /* Align text to the left */
+  }
+
+  .gender-details,
+  .hobbies-details {
+    width: 100%; /* Full width */
+  }
+}
+
+
+
 .user_role{
     height: 45px;
   width: 100%;
@@ -111,6 +160,12 @@ form .gender-details .gender-title {
   font-size: 20px;
   font-weight: 500;
 }
+
+form .hobbies-details .gender-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
 form .category {
   display: flex;
   width: 80%;
@@ -247,6 +302,19 @@ button:hover {
     background: #218838;
 }
 
+/* File Upload Preview */
+#imgPreviewContainer, #pdfPreviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#imgPreview {
+  max-width: 150px;
+  border-radius: 10px;
+}
+
   </style>
   <script>
     function validation() {
@@ -256,7 +324,7 @@ button:hover {
         var email = document.getElementById("Email").value;
         var password = document.getElementById("Password").value;
         var dob = document.getElementById("dob").value;
-        var address = document.getElementById("dob").value;
+        var address = document.getElementById("address").value;
         var profile_img = document.getElementById("Profile_Img").value;
         var pdf_file = document.getElementById("Certificate").value;
         var role = document.getElementById("role").value;
@@ -270,6 +338,11 @@ button:hover {
                 checkedValues.push(checkbox.value);
             }
         });
+        console.log(checkedValues)
+
+        document.getElementById("check-1").addEventListener("click",function(){
+          console.log("In")
+        })
 
         // Extract filenames
         const fileName = profile_img.split("\\").pop();
@@ -290,10 +363,11 @@ button:hover {
             let isProfileImg=validation_img_file()
             let isPDFValid=file_size_validation()
             let isDateValid=validation_date()
+            let isAddressValid=validation_address()
 
             var id = storedFormData.length + 1;
 
-            if(isNameValid && isEmailValid && isPhoneValid && isPasswordValid && isPasswordConform && isProfileImg && isPDFValid && isDateValid){
+            if(isNameValid && isEmailValid && isPhoneValid && isPasswordValid && isPasswordConform && isProfileImg && isPDFValid && isDateValid && isAddressValid){
                 if (email == "superadmin@gmail.com") {
                     Object.assign(formData_new, { Role_ls: "superAdmin" });
                 } else {
@@ -310,7 +384,7 @@ button:hover {
                 // Close popup and redirect on 'Ok' button click
                 document.getElementById("popup-ok-btn").addEventListener("click", function () {
                     document.getElementById("popup-message").style.display = "none";
-                    window.location.href = "./20.html";
+                    window.location.href = "./table2.html";
                 });
 
                 return false; // Prevent default form submission
@@ -326,9 +400,9 @@ button:hover {
             Pass_ls: password,
             Dob_ls: dob,
             Address_ls: address,
-            Img_ls: imagePath,
+            Img_ls: croppedImage,
             Hobbies_ls: checkedValues,
-            PDF_ls: pdfPath
+            PDF_ls: uploadedFiles
         };
 
         return saveFormData(formData_new);
@@ -341,61 +415,94 @@ button:hover {
             // Regular expression to allow only letters and spaces
             let namePattern = /^[A-Za-z\s]+$/;
 
-            if (!nameInput.value) {
-                errorMsg.innerHTML = "Name is required";
-                errorMsg.style.color = "red";
+            if (!nameInput.value.trim()) {
+                    errorMsg.innerHTML = "Name is required";
+                    errorMsg.style.color = "red";
+                    return false;
+                } else if(nameInput.value.length<=3 ){   
+                    errorMsg.innerHTML = "Name must contain atleast 3 characters";
+                    errorMsg.style.color = "red";
                 return false;
-            } else if (!namePattern.test(nameInput.value)) {
-                errorMsg.innerHTML = "Name must not contain numbers or special characters";
-                errorMsg.style.color = "red";
+                } else if(nameInput.value.length>=25){
+                    errorMsg.innerHTML = "Name must contain atmost 25 characters";
+                    errorMsg.style.color = "red";
                 return false;
-            } else {
-                errorMsg.innerHTML = "";
-                return true;
-            }
+                }
+                else if (!namePattern.test(nameInput.value)) {
+                    errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                    errorMsg.style.color = "red";
+                    return false;
+                }  else {
+                    errorMsg.innerHTML = ""; // Clear error message on valid input
+                    return true;
+                }
         }
         function validation_number() {
             let num = document.getElementById("Phone").value;
             let errorMsg = document.getElementById("err_phone");
-            // let pat_num = /^[7-9][0-9]{9}$/;
+            let pat_num = /^(\+91[\s-]?)?\d{10}$|^(\+44[\s-]?)?((\d{3}|\d{4})[\s-]?)?\d{8}$/;
+            //+44 area code of 3 or 4 digits and then phone number of 8 digits
 
-            if(num==""){
-            errorMsg.innerHTML="Phone number is required."
-            errorMsg.style.color = "red";
-            return false
+            // alert(num)
+            
+            // if (pat_num.test(num))
+            if(!num.trim()){
+              errorMsg.innerHTML="Phone number is required"
+              errorMsg.style.color = "red";
+              return false
             }
-            else if(num.length>10){
-            errorMsg.innerHTML="Number should contain at most 10 digits"
-            errorMsg.style.color = "red";
-            return false
-            }
-            else if(num.length==10){
-            errorMsg.innerHTML = ""
-            return true;
+            // else if(num.length>10){
+            //   errorMsg.innerHTML="Number should contain at most 10 digits"
+            //   errorMsg.style.color = "red";
+            //   return false
+            // }
+            else if(pat_num.test(num)){
+              errorMsg.innerHTML = "" 
+              // errorMsg.innerHTML = "Valid";
+              // errorMsg.style.color = "green";
+              return true;
+            } else if(!pat_num.test(num)){
+              errorMsg.innerHTML="Phone number is invalid";
+              errorMsg.style.color="red";
+              return false
             }
             else {
                 errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
                 errorMsg.style.color = "red";
+                // document.getElementById("PhoneNumber").value = "";
                 return false;
             }
-    }
+      }
 
     function validation_password() {
         let password = document.getElementById("Password").value;
         let errorMsg = document.getElementById("err_password");
         let pat_password = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-        if(password==""){
-          errorMsg.innerHTML = "Password is required.";
+        //One uppercase one lowercase and at least 8 characters
+        if(!password.trim()){
+          errorMsg.innerHTML = "Password is required";
             errorMsg.style.color = "red";
+            // document.getElementById("Password").value = "";
             return false;
         }
         else if (pat_password.test(password)) {
             errorMsg.innerHTML = ""
+            // errorMsg.innerHTML = "Valid";
+            // errorMsg.style.color = "green";
             return true;
         } else {
-            errorMsg.innerHTML = "Invalid password. Must contain at least one number, one uppercase, one lowercase letter, and be at least 8 characters.";
+            errorMsg.innerHTML = `
+            <p style="margin-bottom:0px;">Your password must contain</p>
+            <ul style="margin-left:20px">
+              <li>At least 8 characters</li>
+              <li>Uppercase letter [A-Z]</li>
+              <li>Lowercase letter [a-z]</li>
+              <li>Number [0-9]</li>
+            </ul>`
+            // Invalid password. Must contain at least one number, one uppercase, one lowercase letter, and be at least 8 characters.
             errorMsg.style.color = "red";
+            // document.getElementById("Password").value = "";
             return false;
         }
     }
@@ -405,13 +512,13 @@ button:hover {
         let password = document.getElementById("Password").value;
         let errorMsg = document.getElementById("err_conf_password");
 
-        if(conform_password==""){
-            errorMsg.innerHTML = "Confirm password is required.";
+        if(!conform_password.trim()){
+            errorMsg.innerHTML = "Confirm password is required";
             errorMsg.style.color = "red";
             return false
         }
         else if(conform_password!=password){
-            errorMsg.innerHTML = "Confirm password is required.";
+            errorMsg.innerHTML = "Passwords do not match";
             errorMsg.style.color = "red";
             return false
         }
@@ -427,17 +534,12 @@ button:hover {
         let pat_mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         // if (pat_mail.test(email)) 
-        if(email==""){
-          errorMsg.innerHTML="Email address is required."
+        if(!email.trim()){
+          errorMsg.innerHTML="Email address is required"
           errorMsg.style.color = "red";
           return false
-        } else if(!email.includes("@")){
-          errorMsg.innerHTML="Email should have at least one @"
-          errorMsg.style.color = "red";
-          return false
-        }
-        else if(!email.includes(".")){
-          errorMsg.innerHTML="Email should have at least one ."
+        } else if(!pat_mail.test(email)){
+          errorMsg.innerHTML="Invalid email"
           errorMsg.style.color = "red";
           return false
         }
@@ -454,83 +556,243 @@ button:hover {
         }
     }
 
+    let cropper;
+    let croppedBlob; // Stores the cropped image
+
     function validation_img_file() {
-        let file_img = document.getElementById("Profile_Img").files[0];
+        let fileInput = document.getElementById("Profile_Img");
+        let file_img = fileInput.files[0];
         let errorMsg = document.getElementById("err_img");
+        let imgPreviewContainer = document.getElementById("imgPreviewContainer");
+        let imgPreview = document.getElementById("imgPreview");
         let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
-        // alert(file_img)
-        if(file_img==undefined){
-          errorMsg.innerHTML = "Profile image is required.";
-          errorMsg.style.color = "red";
-          return false
-        }
-        else if(file_img==undefined){
-          errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed.";
-            errorMsg.style.color = "red";
-          return false
+        if (!file_img && !croppedBlob) {
+            errorMsg.innerHTML = "Profile image is required";
+            errorMsg.style.color="red";
+            return false;
         }
         else if (!allowedTypes.includes(file_img.type)) {
-            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed.";
-            errorMsg.style.color = "red";
-            return false
-        } else {
-          errorMsg.innerHTML =""
-            return true;
+            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed";
+            errorMsg.style.color="red";
+            return false;
         }
+        else if (file_img.size >= 2048 * 1024) {
+            errorMsg.innerHTML = "File too big. Select a file less than 2MB";
+            errorMsg.style.color="red";
+            return false;
+        } 
+        else{
+          errorMsg.innerHTML = "";
+          let fileURL = URL.createObjectURL(file_img);
+          imgPreview.src = fileURL;
+          imgPreviewContainer.style.display = "block";
+          return true
+        }    
     }
 
+    // Open Cropper Modal
+    function openCropperModal() {
+        let modal = document.getElementById("cropperModal");
+        let canvas = document.getElementById("cropperCanvas");
+        let ctx = canvas.getContext("2d");
+        let img = new Image();
+        img.src = document.getElementById("imgPreview").src;
+
+        img.onload = function () {
+            canvas.width = 300;
+            canvas.height = 300;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            modal.style.display = "flex";
+
+            if (cropper) {
+                cropper.destroy();
+            }
+            cropper = new Cropper(canvas, {
+                aspectRatio: 1,
+                viewMode: 1,
+            });
+        };
+    }
+
+    // Crop Image & Save
+    var croppedImage;
+    function cropImage() {
+        var reader = new FileReader();
+        let modal = document.getElementById("cropperModal");
+        let canvas = document.getElementById("cropperCanvas");
+
+        cropper.getCroppedCanvas().toBlob((blob) => {
+            croppedBlob = blob;
+
+            let croppedURL = URL.createObjectURL(blob);
+            croppedImage=cropper.getCroppedCanvas().toDataURL('image/jpeg')
+            document.getElementById("imgPreview").src = croppedURL;
+            
+            modal.style.display = "none";
+        });
+    }
+
+    // Close Modal
+    function closeCropperModal() {
+        document.getElementById("cropperModal").style.display = "none";
+    }
+
+let uploadedFiles = []; // Array to store uploaded PDF files
     function file_size_validation() {
-        let pdf_file_alert = document.getElementById("Certificate").value;
-        // alert(!pdf_file_alert)
-        let file_img = document.getElementById("Certificate").files[0];
+      let pdfInput = document.getElementById("Certificate");
+
+        let pdf_file_alert = pdfInput.value;
+        let file_img = pdfInput.files[0];
         let allowedTypes = ["application/pdf"];
         let errorMsg = document.getElementById("err_cert");
+        let pdfPreviewContainer = document.getElementById("pdfPreviewContainer");
 
-        const fi = document.getElementById('Certificate');
-        if(pdf_file_alert=="")
-        {
-          errorMsg.innerHTML = "PDF is required.";
+        if (pdf_file_alert == "") {
+            errorMsg.innerHTML = "PDF is required";
             errorMsg.style.color = "red";
-            return false
+            return false;
         }
+
         if (!allowedTypes.includes(file_img.type)) {
-            errorMsg.innerHTML = "Invalid file. Only PDF allowed.";
+            errorMsg.innerHTML = "Invalid file. Only PDF allowed";
             errorMsg.style.color = "red";
-            // document.getElementById("Certificate").value = "";
-            alert("fasle")
-        } else {
-            if (fi.files.length > 0) {
-                for (const i = 0; i <= fi.files.length - 1; i++) {
-                    const fsize = fi.files.item(i).size;
-                    const file = Math.round(fsize / 1024); // size in KB
-                    if (file >= 4096) {
-                        errorMsg.innerHTML = "File too Big. Please select a file less than 4MB.";
-                        errorMsg.style.color = "red";
-                        return false
-                    } else {
-                      errorMsg.innerHTML = "";
-                        return true
-                    }
-                }
-            }
+            return false;
         }
+
+        if (file_img.size >= 4096 * 1024) {
+            errorMsg.innerHTML = "File too Big. Please select a file less than 4MB";
+            errorMsg.style.color = "red";
+            return false;
+        }
+
+        const pdfFileName = pdf_file_alert.split("\\").pop();
+        const pdfPath = `./pdf/${pdfFileName}`;
+        // Check if the file already exists in uploadedFiles
+        if (uploadedFiles.includes(pdfPath)) {
+            errorMsg.innerHTML = "";
+            errorMsg.style.color = "red";
+            return true;
+        }
+
+        // If it's a new file, add it to the uploadedFiles array
+        uploadedFiles.push(pdfPath);
+
+        show_pdf_name();
+        console.log(uploadedFiles);
+        pdfPreviewContainer.style.display = "block";
+        errorMsg.innerHTML = "";
+        return true;
+    }
+
+    function show_pdf_name() {
+        let pdfNameContainer = document.getElementById("pdf_name");
+        pdfNameContainer.innerHTML = ""; // Clear previous list
+        
+        uploadedFiles.forEach((pdfFileName, index) => {
+            let link_pdf = document.createElement("a");
+            let delete_button = document.createElement("a");
+            delete_button.style.color = "red";
+            delete_button.style.marginLeft = "30px";
+            delete_button.style.cursor = "pointer";
+
+            let div_new = document.createElement("div");
+            div_new.style.display = "flex";
+
+            link_pdf.classList.add("mystyle");
+            link_pdf.setAttribute("data-toggle", "modal");
+            link_pdf.setAttribute("data-target", "#exampleModal");
+            let pdfFilePath=pdfFileName.split("/").pop()
+            link_pdf.innerHTML = pdfFilePath;
+
+            delete_button.innerHTML = `<i class="fa fa-trash" aria-hidden="true"></i>`;
+
+            // Click event to show PDF preview
+            link_pdf.addEventListener("click", function () {
+                // alert("clcik")
+                clickme(pdfFileName);
+            });
+
+            // Click event to delete the PDF from the array
+            delete_button.addEventListener("click", function () {
+              let deleteConfirm=confirm(`Do you want to delete the pdf ${pdfFilePath}`);
+              if(deleteConfirm){
+                uploadedFiles.splice(index, 1);
+              }
+                
+                show_pdf_name(); // Refresh the list
+                if (uploadedFiles.length === 0) {
+                    document.getElementById("pdfPreviewContainer").style.display = "none";
+                }
+            });
+
+            div_new.appendChild(link_pdf);
+            div_new.appendChild(delete_button);
+            pdfNameContainer.appendChild(div_new);
+        });
+    }
+
+    function clickme(pdfFile) {
+        let pdf_preview = document.getElementById("pdfPreview");
+        pdf_preview.src = `${pdfFile}`;
     }
 
     function validation_date(){
         let date=document.getElementById("dob").value;
+        let d=new Date()
+        let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        // console.log((Date.parse(date))<(Date.parse(currentDate)))
         let errorMsg = document.getElementById("err_dob");
-
-        if(date==""){
-            errorMsg.innerHTML="Date is required."
+        const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
+        if(!date.trim()){
+            errorMsg.innerHTML="Date is required"
             errorMsg.style.color = "red";
             return false
-        }
-        else{
+        } else if(!patternDate.test(date)){
+            errorMsg.innerHTML="Date is invalid"
+            errorMsg.style.color = "red";
+            return false
+        } else if((Date.parse(date))>(Date.parse(currentDate))){
+            errorMsg.innerHTML="Date should not be of future"
+            errorMsg.style.color = "red";
+            return false
+        } else {
             errorMsg.innerHTML=""
             return true
         }
     }
+
+    function validation_address(){
+      var address=document.getElementById("address").value;
+      let errorMsg = document.getElementById("err_address");
+
+      let addressPattern = /^[A-Za-z\s]+$/;
+
+      // alert(address)
+      if(!address.trim()){
+          errorMsg.innerHTML="Address is required"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length<3){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length>250){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(!addressPattern.test(address)){
+          errorMsg.innerHTML = "Address must not contain numbers or special characters";
+          errorMsg.style.color = "red";
+          return false;
+      } else{
+          errorMsg.innerHTML=""
+          return true
+      }
+    }
+
+    
 
     function goBack(){
       window.location.href="./table2.html"
@@ -558,7 +820,7 @@ button:hover {
           <!-- Input for Username -->
           <div class="input-box">
             <span class="details">Date of Birth</span>
-            <input type="date" id="dob">
+            <input type="date" id="dob" onchange="validation_date()">
             <p id="err_dob"></p>
           </div>
         </div>
@@ -580,97 +842,200 @@ button:hover {
           <!-- Input for Password -->
           <div class="input-box">
             <span class="details">Password</span>
-            <input type="text" placeholder="Enter your password" onkeyup="validation_password()" id="Password">
+            <div class="password-container">
+              <input type="password" id="Password"  placeholder="Enter your password" onkeyup="validation_password()" id="Password">
+              <span class="toggle-password" onclick="togglePassword('Password', 'togglePasswordIcon')">
+                  <i id="togglePasswordIcon" class="fa fa-eye-slash"></i>
+              </span>
+            </div>
+            <!-- <input type="text" placeholder="Enter your password" onkeyup="validation_password()" > -->
             <p id="err_password"></p>
           </div>
           <!-- Input for Confirm Password -->
           <div class="input-box">
             <span class="details">Confirm Password</span>
-            <input type="text" placeholder="Confirm your password" onkeyup="validation_password_conformation()" id="ConformPass">
+            <div class="password-container">
+              <input type="password" id="ConformPass"  placeholder="Confirm your password" onkeyup="validation_password_conformation()">
+              <span class="toggle-password" onclick="togglePassword('ConformPass', 'toggleConfirmPasswordIcon')">
+                  <i id="toggleConfirmPasswordIcon" class="fa fa-eye-slash"></i>
+              </span>
+            </div>
+            <!-- <input type="text" placeholder="Confirm your password" onkeyup="validation_password_conformation()" id="ConformPass"> -->
             <p id="err_conf_password"></p>
           </div>
         </div>
+        <div class="gender-hobbies-container">
+          <!-- Gender Selection -->
+          <div class="gender-details">
+            <input type="radio" name="gender" id="dot-1" value="Male">
+            <input type="radio" name="gender" id="dot-2" value="Female">
+            <input type="radio" name="gender" id="dot-3" value="PreferNot">
+            <span class="gender-title">Gender</span>
+            <div class="category">
+              
+              <label for="dot-1">
+                <span class="dot one"></span>
+                <span class="gender">Male</span>
+              </label>
         
-        <div class="gender-details">
-          <!-- Radio buttons for gender selection -->
-          <input type="radio" name="gender" id="dot-1" value="Male">
-          <input type="radio" name="gender" id="dot-2" value="Female">
-          <input type="radio" name="gender" id="dot-3" value="PreferNot">
-          <span class="gender-title">Gender</span>
-          <div class="category" >
-            <!-- Label for Male -->
-            <label for="dot-1">
-              <span class="dot one"></span>
-              <span class="gender">Male</span>
-            </label>
-            <!-- Label for Female -->
-            <label for="dot-2">
-              <span class="dot two"></span>
-              <span class="gender">Female</span>
-            </label>
-            <!-- Label for Prefer not to say -->
-            <label for="dot-3">
-              <span class="dot three"></span>
-              <span class="gender">Prefer not to say</span>
-            </label>
+              
+              <label for="dot-2">
+                <span class="dot two"></span>
+                <span class="gender">Female</span>
+              </label>
+        
+              
+              <label for="dot-3">
+                <span class="dot three"></span>
+                <span class="gender">Prefer not to say</span>
+              </label>
+            </div>
           </div>
-        </div>
-        <div class="user-details">
-            <!-- Input for Full Name -->
-            <div class="input-box">
-              <span class="details">Upload Certificate</span>
-              <input type="file" onchange="file_size_validation()" id="Certificate" style="padding-top: 10px;">
-              <p id="err_cert"></p>
-            </div>
-            <!-- Input for Username -->
-            <div class="input-box">
-              <span class="details">Upload Profile Image</span>
-              <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" onchange="validation_img_file()" style="padding-top: 10px;"/>
-              <p id="err_img"></p>
-            </div>
-        </div>
-        <div class="user-details">
-            <!-- Input for Full Name -->
-            <div class="input-box">
-              <span class="details">Address</span>
-              <textarea id="address" class="txt_address"></textarea>
-              <p id="err_cert"></p>
-            </div>
-            <!-- Input for Username -->
-            <div class="input-box">
-              <span class="details">Role</span>
-              <select class="form-control user_role" id="role">
-                <option selected>Select Role</option>
-                <option  name="role" value="user">User</option>
-                <option  name="role" value="manager">Manager</option>
-              </select>
-              <p id="err_img"></p>
-            </div>
-        </div>
-        <div class="gender-details">
-            <!-- Radio buttons for gender selection -->
+        
+          <!-- Hobbies Selection -->
+          <div class="hobbies-details">
             <input type="checkbox" name="hobbies" id="check-1" value="Reading">
             <input type="checkbox" name="hobbies" id="check-2" value="Painting">
             <input type="checkbox" name="hobbies" id="check-3" value="Dancing">
             <span class="gender-title">Hobbies</span>
             <div class="category">
-              <!-- Label for Male -->
+              
               <label for="check-1">
                 <span class="dot one1"></span>
                 <span class="hobbies">Reading</span>
               </label>
-              <!-- Label for Female -->
+        
+              
               <label for="check-2">
                 <span class="dot two2"></span>
                 <span class="hobbies">Painting</span>
               </label>
-              <!-- Label for Prefer not to say -->
+        
+              
               <label for="check-3">
                 <span class="dot three3"></span>
                 <span class="hobbies">Dancing</span>
               </label>
             </div>
           </div>
+        </div>
+        
+        <!-- <div class="gender-details">
+        
+          <input type="radio" name="gender" id="dot-1" value="Male">
+          <input type="radio" name="gender" id="dot-2" value="Female">
+          <input type="radio" name="gender" id="dot-3" value="PreferNot">
+          <span class="gender-title">Gender</span>
+          <div class="category" >
+            
+            <label for="dot-1">
+              <span class="dot one"></span>
+              <span class="gender">Male</span>
+            </label>
+            
+            <label for="dot-2">
+              <span class="dot two"></span>
+              <span class="gender">Female</span>
+            </label>
+            
+            <label for="dot-3">
+              <span class="dot three"></span>
+              <span class="gender">Prefer not to say</span>
+            </label>
+          </div>
+        </div> -->
+
+        <div class="user-details">
+          <!-- Input for Full Name -->
+          <div class="input-box">
+            <span class="details">Address</span>
+            <input type="text" id="address" class="txt_address" onkeyup="validation_address()">
+            <p id="err_address"></p>
+          </div>
+          <!-- Input for Username -->
+          <div class="input-box">
+            <span class="details">Role</span>
+            <select class="form-control user_role" id="role">
+              <option selected>Select Role</option>
+              <option  name="role" value="user">User</option>
+              <option  name="role" value="manager">Manager</option>
+            </select>
+          </div>
+      </div>
+
+        <div class="user-details">
+            <!-- Input for Full Name -->
+            <div class="input-box">
+              <span class="details">Upload Profile Image</span>
+              <input type="file" placeholder="Profile Image" id="Profile_Img"  class="file_space" onchange="validation_img_file()" style="padding-top: 5px;"/>
+              <p id="err_img"></p>
+              <!-- Image Preview Section -->
+              <div id="imgPreviewContainer" style="display: none;">
+                <img id="imgPreview" style="width: 150px; cursor: pointer;" onclick="openCropperModal()" />
+              </div>
+            
+              <!-- Modal for Cropping -->
+              <div id="cropperModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+              background: rgba(0,0,0,0.8); justify-content: center; 
+              align-items: center; z-index: 9999;">
+                  <div style="background: white; padding: 20px; position: relative;">
+                      <canvas id="cropperCanvas"></canvas>
+                      <button onclick="cropImage()">Crop & Save</button>
+                      <button onclick="closeCropperModal()">Cancel</button>
+                  </div>
+              </div>
+            </div>
+            <!-- Input for Username -->
+            <div class="input-box">
+              <span class="details">Upload Certificate</span>
+              <input type="file" onchange="file_size_validation()" id="Certificate" style="padding-top: 5px;">
+              <p id="err_cert"></p>
+              <div id="pdfPreviewContainer" style="display: none; position: relative; width: 150px;">
+                <div id="pdf_name"></div>
+            <!-- <embed src="" width="100%" height="auto" id="pdfPreview"/> -->
+            <!-- <button id="deleteImgBtn" onclick="deleteImage()" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; padding: 5px; cursor: pointer;">X</button> -->
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <embed src="" width="100%" height="300px" id="pdfPreview"/>
+                    <!-- <iframe src="file_name.pdf" style="width: 100%;height: 100%;border: none;"></iframe> -->
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+        
+        <!-- <div class="gender-details">
+            
+            <input type="checkbox" name="hobbies" id="check-1" value="Reading">
+            <input type="checkbox" name="hobbies" id="check-2" value="Painting">
+            <input type="checkbox" name="hobbies" id="check-3" value="Dancing">
+            <span class="gender-title">Hobbies</span>
+            <div class="category">
+              
+              <label for="check-1">
+                <span class="dot one1"></span>
+                <span class="hobbies">Reading</span>
+              </label>
+              
+              <label for="check-2">
+                <span class="dot two2"></span>
+                <span class="hobbies">Painting</span>
+              </label>
+              
+              <label for="check-3">
+                <span class="dot three3"></span>
+                <span class="hobbies">Dancing</span>
+              </label>
+            </div>
+          </div> -->
         <!-- Submit button -->
         <div class="button">
           <input type="submit" value="Register" onclick="return validation()">
@@ -682,9 +1047,48 @@ button:hover {
     <div class="popup-content">
         <img src="./images/success.jpg" alt="Success" class="popup-icon">
         <!-- <h2>Oh Yeah!</h2> -->
-        <p>New user added successfully registered.</p>
+        <p>New user added successfully.</p>
         <button id="popup-ok-btn">Ok</button>
     </div>
 </div>
+
+<!-- JavaScript for Eye Icon and Form Validation -->
+<script>
+  function togglePassword(inputId, iconId) {
+      var passwordInput = document.getElementById(inputId);
+      var icon = document.getElementById(iconId);
+      
+      if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+      } else {
+          passwordInput.type = "password";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+      }
+  }
+</script>
+
+<!-- Font Awesome for Eye Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+  .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+    
+        .password-container input {
+            width: 100%;
+            padding-right: 40px;
+        }
+    
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+        }
+</style>
 </body>
 </html>

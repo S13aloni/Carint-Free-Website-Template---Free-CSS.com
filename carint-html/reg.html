@@ -16,55 +16,6 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Cropper.js CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
-
-<!-- Cropper.js JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
-
-<!-- Basic -->
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<!-- Mobile Metas -->
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<!-- Site Metas -->
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<meta name="author" content="" />
-<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
-
-<link rel="shortcut icon" href="images/fevicon.png" type="">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<title> Project </title>
-
-
-<!-- bootstrap core css -->
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-
-<!-- fonts style -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-<!--owl slider stylesheet -->
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-<!-- font awesome style -->
-<link href="css/font-awesome.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-
-
-<!-- Custom styles for this template -->
-<link href="css/style.css" rel="stylesheet" />
-<!-- responsive style -->
-<link href="css/responsive.css" rel="stylesheet" />
-
-<!-- Toastify CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
-<!-- Toastify JS -->
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <!-- <link rel="stylesheet" href="styles.css"> -->
      <style>
         /* General Styling */
@@ -116,7 +67,7 @@ button:hover {
 }
 
 .details_section {
-  max-width: 1000px;
+  max-width: 800px;
   margin: 30px auto;
   background: #f9f9f9;
   border-radius: 12px;
@@ -243,7 +194,7 @@ input, select {
 }
 
 .btn_reg {
-  background: linear-gradient(100deg, #0a97b0 30%, #065968 100%);
+  background-color: #0a97b0;
   color: white;
   padding: 12px 80px;
   border: none;
@@ -254,7 +205,7 @@ input, select {
 }
 
 .btn_reg:hover {
-  background: linear-gradient(100deg, #0a97b0 30%, #065968 100%);
+  background-color: #077f91;
   transform: scale(1.05);
 }
 
@@ -293,30 +244,9 @@ input, select {
   }
 }
 
-/* @media (max-width: 450px) {
-    .gender-hobbies-container {
-        display: flex;
-        flex-direction: column; 
-        gap: 10px; 
-    }
-
-    .gender-container, .hobbies-container {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .gender-details, .hobbies-details {
-        display: flex;
-        align-items: center;
-        gap: 5px; }
-} */
-
-
      </style>
 
      <script>
-      let profImg;
         function validation() {
             var name = document.forms["validate-form"]["Name"].value;
             var num = document.forms["validate-form"]["PhoneNumber"].value;
@@ -336,18 +266,7 @@ input, select {
                     checkedValues.push(checkbox.value);
                 }
             });
-
-            let img=document.getElementById("imgPreview")
-            if(!croppedImage){
-              var reader = new FileReader();
-              reader.onload = function (e) {
-                img.src=e.target.result
-                // console.log("In: "+profImg)
-              }
-              // reader.readAsDataURL(originalImage)
-            }
-            // console.log(profImg)
-            
+            // alert(checkedValues)
 
             const fileName = profile_img.split("\\").pop();
             const imagePath = `./images/${fileName}`;
@@ -405,7 +324,7 @@ input, select {
             Pass_ls: password,
             Dob_ls: dob,
             Address_ls: address,
-            Img_ls: croppedImage ? croppedImage: img.src,
+            Img_ls: imagePath,
             Hobbies_ls: checkedValues,
             PDF_ls: uploadedFiles
         };
@@ -449,8 +368,7 @@ input, select {
     function validation_number() {
         let num = document.forms["validate-form"]["PhoneNumber"].value;
         let errorMsg = document.getElementById("err_phone");
-        let pat_num = /^(?:\+91[\s-]?)?[6-9]\d{9}$|^(?:\+44[\s-]?)?(?:\d{3,4}[\s-]?)?\d{7}$/;
-        //+44 area code of 3 or 4 digits and then phone number of 7 digits 
+        // let pat_num = /^[7-9][0-9]{9}$/;
 
         // alert(num)
         
@@ -460,20 +378,16 @@ input, select {
           errorMsg.style.color = "red";
           return false
         }
-        // else if(num.length>10){
-        //   errorMsg.innerHTML="Number should contain at most 10 digits"
-        //   errorMsg.style.color = "red";
-        //   return false
-        // }
-        else if(pat_num.test(num)){
+        else if(num.length>10){
+          errorMsg.innerHTML="Number should contain at most 10 digits"
+          errorMsg.style.color = "red";
+          return false
+        }
+        else if(num.length==10){
           errorMsg.innerHTML = "" 
           // errorMsg.innerHTML = "Valid";
           // errorMsg.style.color = "green";
           return true;
-        } else if(!pat_num.test(num)){
-          errorMsg.innerHTML="Phone number is invalid";
-          errorMsg.style.color="red";
-          return false
         }
         else {
             errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
@@ -519,10 +433,10 @@ input, select {
     function validation_email() {
         let email = document.forms["validate-form"]["Email"].value;
         let errorMsg = document.getElementById("err_email");
-        let pat_mail = /^(?!.*=)[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let pat_mail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         // if (pat_mail.test(email)) 
-        if(!email.trim()){
+        if(email==""){
           errorMsg.innerHTML="Email address is required"
           errorMsg.style.color = "red";
           return false
@@ -546,144 +460,86 @@ input, select {
 
     function validation_date(){
       var date = document.forms["validate-form"]["DOB"].value;
-      let d=new Date()
-      let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-      // console.log((Date.parse(date))<(Date.parse(currentDate)))
       let errorMsg = document.getElementById("err_dob");
       const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
-      if(!date.trim()){
-          errorMsg.innerHTML="Date is required"
-          errorMsg.style.color = "red";
-          return false
-      } else if(!patternDate.test(date)){
-          errorMsg.innerHTML="Date is invalid"
-          errorMsg.style.color = "red";
-          return false
-      } else if((Date.parse(date))>(Date.parse(currentDate))){
-          errorMsg.innerHTML="Date should not be of future"
-          errorMsg.style.color = "red";
-          return false
-      } else {
-          errorMsg.innerHTML=""
-          return true
+      if(date==""){
+        errorMsg.innerHTML="Date is required"
+        errorMsg.style.color = "red";
+        return false
       }
+      else if(!patternDate.test(date)){
+        errorMsg.innerHTML="Date is invalid"
+        errorMsg.style.color = "red";
+        return false
+      } else {
+        errorMsg.innerHTML=""
+        return true
+      }
+
     }
 
     function validation_address(){
       var address=document.forms["validate-form"]["Address"].value;
       let errorMsg = document.getElementById("err_address");
 
-      let addressPattern = /^[A-Za-z\s]+$/;
-
-      // alert(address)
       if(!address.trim()){
-          errorMsg.innerHTML="Address is required"
-          errorMsg.style.color = "red";
-          return false
-      } else if(address.length<3){
-          errorMsg.innerHTML="Address must contain atleast 3 characters"
-          errorMsg.style.color = "red";
-          return false
+        errorMsg.innerHTML="Address is required"
+        errorMsg.style.color = "red";
+        return false
+      } else if(address.length<=3){
+        errorMsg.innerHTML="Address must contain atleast 3 characters"
+        errorMsg.style.color = "red";
+        return false
       } else if(address.length>250){
-          errorMsg.innerHTML="Address must contain atmost 250 characters"
-          errorMsg.style.color = "red";
-          return false
-      } else if(!addressPattern.test(address)){
-          errorMsg.innerHTML = "Address must not contain numbers or special characters";
-          errorMsg.style.color = "red";
-          return false;
+        errorMsg.innerHTML="Address must contain atleast 3 characters"
+        errorMsg.style.color = "red";
+        return false
       } else{
-          errorMsg.innerHTML=""
-          return true
+        errorMsg.innerHTML=""
+        return true
       }
     }
 
-    let cropper;
-    let croppedBlob; // Stores the cropped image
+    function validation_img_file() {
+        let fileInput = document.getElementById("Profile_Img");
+        let file_img = document.getElementById("Profile_Img").files[0];
+        let errorMsg = document.getElementById("err_img");
+        let imgPreviewContainer = document.getElementById("imgPreviewContainer");
+        let imgPreview = document.getElementById("imgPreview");
+        let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+        let file = fileInput.files[0];
 
-    var originalImage;
-function validation_img_file() {
-    let fileInput = document.getElementById("Profile_Img");
-    let file_img = fileInput.files[0];
-    originalImage=file_img
-    // console.log(fileInput.value)
-    let errorMsg = document.getElementById("err_img");
-    let imgPreviewContainer = document.getElementById("imgPreviewContainer");
-    let imgPreview = document.getElementById("imgPreview");
-    let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-
-    if (!file_img && !croppedBlob) {
-        errorMsg.innerHTML = "Profile image is required";
-        errorMsg.style.color="red";
-        return false;
-    }
-    else if (!allowedTypes.includes(file_img.type)) {
-        errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed";
-        errorMsg.style.color="red";
-        return false;
-    }
-    else if (file_img.size >= 2048 * 1024) {
-        errorMsg.innerHTML = "File too big. Select a file less than 2MB";
-        errorMsg.style.color="red";
-        return false;
-    } 
-    else{
-      errorMsg.innerHTML = "";
-      let fileURL = URL.createObjectURL(file_img);
-      imgPreview.src = fileURL;
-      imgPreviewContainer.style.display = "block";
-      return true
-    }    
-}
-
-// Open Cropper Modal
-function openCropperModal() {
-    let modal = document.getElementById("cropperModal");
-    let canvas = document.getElementById("cropperCanvas");
-    let ctx = canvas.getContext("2d");
-    let img = new Image();
-    img.src = document.getElementById("imgPreview").src;
-
-    img.onload = function () {
-        canvas.width = 300;
-        canvas.height = 300;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        modal.style.display = "flex";
-
-        if (cropper) {
-            cropper.destroy();
+        // alert(file_img)
+        if(file_img==undefined){
+          errorMsg.innerHTML = "Profile image is required";
+          errorMsg.style.color = "red";
+          return false
         }
-        cropper = new Cropper(canvas, {
-            aspectRatio: 1,
-            viewMode: 1,
-        });
-    };
-}
-
-// Crop Image & Save
-var croppedImage;
-function cropImage() {
-    // var reader = new FileReader();
-    let modal = document.getElementById("cropperModal");
-    let canvas = document.getElementById("cropperCanvas");
-
-    cropper.getCroppedCanvas().toBlob((blob) => {
-        croppedBlob = blob;
-
-        let croppedURL = URL.createObjectURL(blob);
-        croppedImage=cropper.getCroppedCanvas().toDataURL('image/jpeg')
-        document.getElementById("imgPreview").src = croppedURL;
-        
-        modal.style.display = "none";
-    });
-}
-
-// Close Modal
-function closeCropperModal() {
-    document.getElementById("cropperModal").style.display = "none";
-}
-
+        else if(file_img==undefined){
+          errorMsg.innerHTML = "Invalid file. Only jpeg, jpg, png are allowed";
+            errorMsg.style.color = "red";
+          return false
+        }
+        if (file_img.size >= 2048 * 1024) {
+            errorMsg.innerHTML = "File too Big. Please select a file less than 2MB";
+            errorMsg.style.color = "red";
+            return false;
+        }
+        else if (!allowedTypes.includes(file_img.type)) {
+            errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed";
+            errorMsg.style.color = "red";
+            // document.getElementById("Profile_Img").value = "";
+            return false
+        } else {
+          errorMsg.innerHTML =""
+          let fileURL = URL.createObjectURL(file);
+          imgPreview.src = fileURL;
+          imgPreviewContainer.style.display = "block";
+            // errorMsg.innerHTML = "Valid img file";
+            // errorMsg.style.color = "green";
+            return true;
+        }
+    }
     function validation_hobbies(){
 
       const hobbies = document.querySelectorAll('input[type="checkbox"]');
@@ -776,7 +632,7 @@ function closeCropperModal() {
 
             // Click event to show PDF preview
             link_pdf.addEventListener("click", function () {
-                // alert("clcik")
+                alert("clcik")
                 clickme(pdfFileName);
             });
 
@@ -841,80 +697,7 @@ function togglePassword(id, iconId) {
 
      </script>
 </head>
-<body class="sub_page">
-  <div class="hero_area">
-    <!-- header section strats -->
-    <header class="header_section">
-      <div class="header_top">
-        <div class="container-fluid ">
-          <div class="contact_nav">
-            <a href="">
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              <span>
-                Call : +01 123455678990
-              </span>
-            </a>
-            <a href="">
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-              <span>
-                Email : demo@gmail.com
-              </span>
-            </a>
-            <a href="">
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              <span>
-                Location
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="header_bottom">
-        <div class="container-fluid">
-          <nav class="navbar navbar-expand-lg custom_nav-container ">
-            <a class="navbar-brand" href="index.html">
-              <span>
-                Project
-              </span>
-            </a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class=""> </span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav  ">
-                <!-- <li class="nav-item ">
-                  <a class="nav-link" href="index.html">Home </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="service.html">Services</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="about.html"> About</a>
-                </li> -->
-                <li class="nav-item ">
-                  <a class="nav-link" href="login.html">  Login</a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="registration.html">Registration <span class="sr-only">(current)</span> </a>
-                </li>
-                <!-- <li class="nav-item ">
-                    <a class="nav-link" href="dummy_profile.html" style="display: flex;align-items: center;gap: 5px; "><i class="fa fa-user" aria-hidden="true" style="float: none;"></i> Profile </a>
-                  </li> -->
-                <form class="form-inline">
-                  <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                </form>
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </header>
-    <!-- end header section -->
-  </div>
+<body>
 
     <div class="container">
         <div class="details_section">
@@ -944,7 +727,7 @@ function togglePassword(id, iconId) {
                     </div>
                     <div class="col-lg-5 col-md-5">
                         <label for="DOB">Date of Birth:</label>
-                        <input type="date" id="DOB" onchange="validation_date()">
+                        <input type="date" id="DOB" onkeyup="validation_date()">
                         <p id="err_dob"></p>
                         <!-- <p class="error-message" id="dobError"></p> -->
                     </div>
@@ -982,8 +765,8 @@ function togglePassword(id, iconId) {
                       <div class="gender-hobbies-container">
                         <div class="gender-container">
                           <label class="genderTitle">Gender:</label>
-                          <label class="gender-details"><input type="radio" name="gender" value="Male"> Male</label>
-                          <label class="gender-details"><input type="radio" name="gender" value="Female"> Female</label>
+                          <label class="gender-details"><input type="radio" name="gender" value="male"> Male</label>
+                          <label class="gender-details"><input type="radio" name="gender" value="female"> Female</label>
                         </div>
                         <div class="hobbies-container">
                           <label>Hobbies:</label>
@@ -1024,7 +807,7 @@ function togglePassword(id, iconId) {
                     </div>
                     <div class="col-lg-7 col-md-7">
                         <label for="address">Address:</label>
-                        <input type="text" id="Address"  placeholder="Enter your address" onkeyup="validation_address()">
+                        <input type="text" id="Address"  placeholder="Enter your address">
                         <p id="err_address"></p>
                         <!-- <p class="error-message" id="addressError"></p> -->
                     </div>
@@ -1053,27 +836,6 @@ function togglePassword(id, iconId) {
     
                 <!-- Profile Picture Upload --><!-- Upload Certificate -->
                 <div class="row">
-                  <div class="col-lg-5 col-md-5">
-                    <label for="profilePic">Profile Picture:</label>
-                    <input type="file" id="Profile_Img" onchange="validation_img_file()">
-                    <p id="err_img"></p>
-                
-                    <!-- Image Preview Section -->
-                    <div id="imgPreviewContainer" style="display: none;">
-                      <img id="imgPreview" style="width: 150px; cursor: pointer;" onclick="openCropperModal()" />
-                    </div>
-                  
-                    <!-- Modal for Cropping -->
-                    <div id="cropperModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                    background: rgba(0,0,0,0.8); justify-content: center; 
-                    align-items: center; z-index: 9999;">
-                        <div style="background: white; padding: 20px; position: relative;">
-                            <canvas id="cropperCanvas"></canvas>
-                            <button onclick="cropImage()">Crop & Save</button>
-                            <button onclick="closeCropperModal()">Cancel</button>
-                        </div>
-                    </div>
-                  </div>
                     <div class="col-lg-5 col-md-5">
                         <label for="certificate">Upload Certificate:</label>
                         <input type="file" id="Certificate" onchange="file_size_validation()">
@@ -1083,23 +845,30 @@ function togglePassword(id, iconId) {
                             <!-- <embed src="" width="100%" height="auto" id="pdfPreview"/> -->
                             <!-- <button id="deleteImgBtn" onclick="deleteImage()" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; padding: 5px; cursor: pointer;">X</button> -->
                             </div>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog" role="document">
-                                <div class="modal-content" style="width: 900px;margin-left: -200px;margin-top: 150px;">
+                                <div class="modal-content">
                                   <div class="modal-body">
                                     <embed src="" width="100%" height="300px" id="pdfPreview"/>
                                     <!-- <iframe src="file_name.pdf" style="width: 100%;height: 100%;border: none;"></iframe> -->
                                   </div>
                                   <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%;background-color: red;">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                                   </div>
                                 </div>
                               </div>
                             </div>
                     </div>
-                    
-                  </div>
+                    <div class="col-lg-5 col-md-5">
+                        <label for="profilePic">Profile Picture:</label>
+                        <input type="file" id="Profile_Img" onchange="validation_img_file()">
+                        <p id="err_img"></p>
+                        <div id="imgPreviewContainer">
+                            <img id="imgPreview" src="" alt="Preview" style="display:none;">
+                        </div>
+                    </div>
+                </div>
     
                 <!-- Submit Button -->
                 <div class="btn_box">
@@ -1108,7 +877,7 @@ function togglePassword(id, iconId) {
     
                 <!-- Login Section -->
                 <div class="login_section">
-                    <p>Already have an account? <a href="./login.html">Login</a></p>
+                    <p>Already have an account? <a href="#">Login</a></p>
                 </div>
             </form>
         </div>
@@ -1122,130 +891,6 @@ function togglePassword(id, iconId) {
           <button id="popup-ok-btn">Ok</button>
       </div>
   </div>
-  <section class="info_section layout_padding2">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-lg-3 info_col">
-          <div class="info_contact">
-            <h4>
-              Address
-            </h4>
-            <div class="contact_link_box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Location
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>
-                  Call +01 1234567890
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span>
-                  demo@gmail.com
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="info_social">
-            <a href="">
-              <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-            <a href="">
-              <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-            <a href="">
-              <i class="fa fa-linkedin" aria-hidden="true"></i>
-            </a>
-            <a href="">
-              <i class="fa fa-instagram" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 info_col">
-          <div class="info_detail">
-            <h4>
-              Info
-            </h4>
-            <p>
-              necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
-            </p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-2 mx-auto info_col">
-          <div class="info_link_box">
-            <h4>
-              Links
-            </h4>
-            <div class="info_links">
-              <a class="active" href="index.html">
-                <img src="images/nav-bullet.png" alt="">
-                Home
-              </a>
-              <a class="" href="about.html">
-                <img src="images/nav-bullet.png" alt="">
-                About
-              </a>
-              <a class="" href="service.html">
-                <img src="images/nav-bullet.png" alt="">
-                Services
-              </a>
-
-              <a class="" href="contact.html">
-                <img src="images/nav-bullet.png" alt="">
-                Contact Us
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 info_col ">
-          <h4>
-            Subscribe
-          </h4>
-          <form action="#">
-            <input type="text" placeholder="Enter email" />
-            <button type="submit">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end info section -->
-
-  <!-- footer section -->
-  <section class="footer_section">
-    <div class="container">
-      <p>
-        &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
-      </p>
-    </div>
-  </section>
-  <!-- footer section -->
-
-  <!-- jQery -->
-  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-  </script>
-  <!-- bootstrap js -->
-  <script type="text/javascript" src="js/bootstrap.js"></script>
-  <!-- owl slider -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-  </script>
-  <!-- custom js -->
-  <script type="text/javascript" src="js/custom.js"></script>
-  <!-- Google Map -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
-  </script>
-  <!-- End Google Map -->
     
     <!-- JavaScript for Eye Icon and Form Validation -->
     <script>
@@ -1310,6 +955,20 @@ function togglePassword(id, iconId) {
     
 
     <script>
+        // ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+        // ^(\+91[\s-]?)?[6-9]\d{9}$
+//         ^(\+91[\s-]?)?[6-9]\d{9}$|^(\+44[\s-]?)?7\d{9}$
+//         For Indian Numbers (+91 optional):
+// ^(\+91[\s-]?)? → Matches optional +91 with optional space or hyphen
+// [6-9] → Ensures the first digit is between 6 and 9
+// \d{9} → Matches the remaining 9 digits
+// $ → End of the string
+// For UK Numbers (+44 optional):
+// ^(\+44[\s-]?)? → Matches optional +44 with optional space or hyphen
+// 7\d{9} → UK mobile numbers start with 7 followed by 9 digits
+// $ → End of the string
+
+
         // Image Preview Functionality
         document.getElementById("Profile_Img").addEventListener("change", function(event) {
             const reader = new FileReader();

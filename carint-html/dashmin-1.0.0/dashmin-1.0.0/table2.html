@@ -65,7 +65,11 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <style>
         body {
@@ -150,8 +154,8 @@
             padding: 20px;
             border-radius: 5px;
             text-align: center;
-            width: 60%;
-            max-width: 500px;
+            width: 80%;
+            max-width: 900px;
         }
 
         .modal-content-edit {
@@ -204,28 +208,48 @@
             color: white;
         }
         .profile-button {
-        background: #BA68C8;
-        box-shadow: none;
-        border: none;
+            background: #BA68C8;
+            box-shadow: none;
+            border: none;
         }
 
         .profile-button:hover {
-        background: #682773;
+            background: #682773;
         }
 
         .profile-button:focus {
-        background: #682773;
-        box-shadow: none;
+            background: #682773;
+            box-shadow: none;
         }
 
         .profile-button:active {
-        background: #682773;
-        box-shadow: none;
+            background: #682773;
+            box-shadow: none;
+        }
+
+        .profile-close-button {
+            background: #ed5555;
+            box-shadow: none;
+            border: none;
+        }
+
+        .profile-close-button:hover {
+            background: #f60606;
+        }
+
+        .profile-close-button:focus {
+            background: #700c0c;
+            box-shadow: none;
+        }
+
+        .profile-close-button:active {
+            background: #ad1919;
+            box-shadow: none;
         }
 
         .back:hover {
-        color: #682773;
-        cursor: pointer;
+            color: #682773;
+            cursor: pointer;
         }
         .modal .modal-content-edit{
             font-size: 20px;
@@ -243,6 +267,52 @@
         .selectView{
             width: 200px;float: right;height: 40px;font-size: 15px;margin-top: 8px;
         }
+
+        .drop1 {
+            position: relative;
+            width: 100%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 1px;
+            font-size: 10px;
+            cursor: pointer;
+            background-color: white;
+            text-align: left;
+            /* height: 35px; */
+        }
+
+        .dropdown-selected {
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            background-color: white;
+            width: 100%;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 2px;
+            z-index: 10;
+            font-size: 12px;
+        }
+
+        .dropdown-list label {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .dropdown-list input {
+            margin-right: 5px;
+        }
+
+        .dropdown.open .dropdown-list {
+            display: block;
+        }
+
+
         @media (max-width:890px){
             .export-btn {
                 margin-top: 10px;
@@ -388,6 +458,132 @@
             }
         }
     </style>
+    <script>
+        function validation_name() {
+                // var submitButton = document.forms["validate-form"]["submit"].disabled;
+                let nameInput = document.getElementById("name");
+                let errorMsg = document.getElementById("err_name");
+                // alert(nameInput.value.length)
+                // Regular expression to allow only letters and spaces
+                let namePattern = /^[A-Za-z\s]+$/;
+                // console.log(nameInput.value.length)
+                // alert(nameInput.length)
+                if (!nameInput.value.trim()) {
+                    errorMsg.innerHTML = "Name is required";
+                    errorMsg.style.color = "red";
+                    return false;
+                } else if(nameInput.value.length<=3 ){   
+                    errorMsg.innerHTML = "Name must contain atleast 3 characters";
+                    errorMsg.style.color = "red";
+                return false;
+                } else if(nameInput.value.length>=25){
+                    errorMsg.innerHTML = "Name must contain atmost 25 characters";
+                    errorMsg.style.color = "red";
+                return false;
+                }
+                else if (!namePattern.test(nameInput.value)) {
+                    errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                    errorMsg.style.color = "red";
+                    return false;
+                }  else {
+                    errorMsg.innerHTML = ""; // Clear error message on valid input
+                    return true;
+                }
+            }
+
+
+    function validation_number() {
+        let num = document.getElementById("phone").value;
+        let errorMsg = document.getElementById("err_phone");
+        let pat_num = /^(\+91[\s-]?)?\d{10}$|^(\+44[\s-]?)?((\d{3}|\d{4})[\s-]?)?\d{8}$/;
+        //+44 area code of 3 or 4 digits and then phone number of 8 digits
+
+        // alert(num)
+        
+        // if (pat_num.test(num))
+        if(!num.trim()){
+          errorMsg.innerHTML="Phone number is required"
+          errorMsg.style.color = "red";
+          return false
+        }
+        // else if(num.length>10){
+        //   errorMsg.innerHTML="Number should contain at most 10 digits"
+        //   errorMsg.style.color = "red";
+        //   return false
+        // }
+        else if(pat_num.test(num)){
+          errorMsg.innerHTML = "" 
+          // errorMsg.innerHTML = "Valid";
+          // errorMsg.style.color = "green";
+          return true;
+        } else if(!pat_num.test(num)){
+          errorMsg.innerHTML="Phone number is invalid";
+          errorMsg.style.color="red";
+          return false
+        }
+        else {
+            errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+            errorMsg.style.color = "red";
+            // document.getElementById("PhoneNumber").value = "";
+            return false;
+        }
+    }
+
+    function validation_date(){
+      var date = document.getElementById("dob").value;
+      let d=new Date()
+      let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+      // console.log((Date.parse(date))<(Date.parse(currentDate)))
+      let errorMsg = document.getElementById("err_dob");
+      const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
+      if(!date.trim()){
+          errorMsg.innerHTML="Date is required"
+          errorMsg.style.color = "red";
+          return false
+      } else if(!patternDate.test(date)){
+          errorMsg.innerHTML="Date is invalid"
+          errorMsg.style.color = "red";
+          return false
+      } else if((Date.parse(date))>(Date.parse(currentDate))){
+          errorMsg.innerHTML="Date should not be of future"
+          errorMsg.style.color = "red";
+          return false
+      } else {
+          errorMsg.innerHTML=""
+          return true
+      }
+    }
+
+    function validation_address(){
+      var address=document.getElementById("address").value;
+      let errorMsg = document.getElementById("err_address");
+
+      let addressPattern = /^[A-Za-z\s]+$/;
+
+      // alert(address)
+      if(!address.trim()){
+          errorMsg.innerHTML="Address is required"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length<3){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length>250){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(!addressPattern.test(address)){
+          errorMsg.innerHTML = "Address must not contain numbers or special characters";
+          errorMsg.style.color = "red";
+          return false;
+      } else{
+          errorMsg.innerHTML=""
+          return true
+      }
+    }
+
+    </script>
 </head>
 <body>
     <div class="container-xxl position-relative bg-white d-flex p-0">
@@ -437,7 +633,7 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <form class="d-none d-md-flex ms-4">
-                    <input class="form-control border-0" type="search" id="search" placeholder="Search..." style="width: 200px;height: 40px;font-size: 15px;margin-top: 10px;">
+                    <input class="form-control border-0" type="search" id="search" placeholder="Search name/email..." style="width: 200px;height: 40px;font-size: 15px;margin-top: 10px;">
                 </form>
                 <div class="navbar-nav align-items-center ms-auto">
                 
@@ -447,9 +643,9 @@
                             <span class="d-none d-lg-inline-flex" id="dropdown_admin" style="color: black;"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0" style="font-size: 15px;">
-                            <a href="#" class="dropdown-item">My Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
+                            <a href="profilepage1.html" class="dropdown-item">My Profile</a>
+                            <a href="changePassword.html" class="dropdown-item">Change Password</a>
+                            <a href="/Users/Saloni%20Pancholi/Downloads/Carint%20Free%20Website%20Template%20-%20Free-CSS.com/carint-html/login.html" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -472,14 +668,30 @@
                 
             
             </div>
-            <div id="progressBar">
-                <div id="myProgress" class="progress">
-                    <div class="progress-bar progress-bar-striped active" id="myBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                        
-                    </div>
+
+
+            <!-- progress bar  -->
+            <div id="csvProgressContainer" class="progress" style="display:none; height: 20px;">
+                <div id="csvProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                     style="width:0%; text-align:center; color:white;">
+                    0%
                 </div>
             </div>
-            <div id="downloadPDF_div" style="text-align: right;"></div>
+            
+            <!-- PDF Progress Bar -->
+            <div id="pdfProgressContainer" class="progress" style="display:none; height: 20px;">
+                <div id="pdfProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                     style="width:0%; text-align:center; color:white;">
+                    0%
+                </div>
+            </div>
+            <div style="display: flex;justify-content: flex-end;">
+                <div id="downloadPDF_div" style="text-align: right;"></div>
+                <div id="downloadCSV_div" style="text-align: right;"></div>
+            </div>
+
+
+
             <div id="table-container" class="table-responsive"></div>
             <div id="pagination" class="pagination"></div>
             
@@ -508,16 +720,34 @@
                                         <h6 class="text-right">Edit Profile</h6>
                                     </div> -->
                                     <div class="row mt-2">
-                                        <div class="col-md-6" ><input type="text" class="form-control" id="name" ></div>
-                                        <div class="col-md-6"><input type="date" class="form-control" id="dob" ></div>
+                                        <div class="col-md-6" ><input type="text" class="form-control" id="name" onkeyup="validation_name()">
+                                            <p id="err_name" style="font-size: 15px;text-align: left;"></p>
+                                        </div>
+                                        <div class="col-md-6"><input type="date" class="form-control" id="dob" onchange="validation_date()">
+                                            <p id="err_dob" style="font-size: 15px;text-align: left;"></p>
+                                        </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-6"><input type="text" class="form-control" id="email"></div>
-                                        <div class="col-md-6"><input type="text" class="form-control" id="phone"></div>
+                                        <div class="col-md-6"><input type="text" class="form-control" id="email" disabled></div>
+                                        <div class="col-md-6"><input type="text" class="form-control" id="phone" onkeyup="validation_number()">
+                                            <p id="err_phone" style="font-size: 15px;text-align: left;"></p>
+                                        </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-6"><input type="text" class="form-control" id="address"></div>
-                                        <div class="col-md-6"><input type="text" class="form-control" id="hobbies"></div>
+                                        <div class="col-md-6"><input type="text" class="form-control" id="address" onkeyup="validation_address()">
+                                            <p id="err_address" style="font-size: 15px;text-align: left;"></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- <label for="hobbies">Hobbies:</label> -->
+                                            <div class="dropdown drop1">
+                                                <div class="dropdown-selected" onclick="toggleDropdown()" id="hobbies_value"></div>
+                                                <div class="dropdown-list">
+                                                    <label><input type="checkbox" value="Reading"> Reading</label>
+                                                    <label><input type="checkbox" value="Painting"> Painting</label>
+                                                    <label><input type="checkbox" value="Dancing"> Dancing</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row mt-3">
                                         <!-- <div class="col-md-6"><input type="text" class="form-control" id="pdf"></div> -->
@@ -539,15 +769,18 @@
                                           </div>
                                         <!-- <div class="col-md-6"><input type="text" class="form-control" id="role"></div> -->
                                     </div>
-                                    <div class="mt-5 text-right"><button class="btn btn-primary profile-button" type="button" id="save_profile" style="font-size: 15px;">Save Profile</button></div>
+                                    <div style="display: flex;justify-content: flex-end;">
+                                        <div class="mt-5 text-right"><button class="btn btn-primary profile-button" type="button" id="save_profile" style="font-size: 15px;">Save Profile</button></div>
+                                        <div class="mt-5 text-right" style="margin-left: 10px;"><button class="btn btn-primary profile-close-button" type="button" id="closeModal_edit" style="font-size: 15px;">Close</button></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 
-                <button class="close-btn" id="closeModal_edit">Close</button>
                 </div>
             </div>
+            
         </div>
     </div>
 
@@ -599,6 +832,7 @@
     <script src="js/main.js"></script>
 
     <script>
+        
         function changeAvatar(event) {
                 const avatar = document.getElementById("profile_img");
                 const file = event.target.files[0];
@@ -639,6 +873,37 @@
                 }
         }
         document.addEventListener("DOMContentLoaded", function () {
+
+            var selectedValues
+            function toggleDropdown() {
+                document.querySelector(".drop1").classList.toggle("open");
+            }
+
+            document.addEventListener("click", function (event) {
+                const dropdown = document.querySelector(".drop1");
+                console.log(dropdown)
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove("open");
+                }
+            });
+
+            const checkboxes = document.querySelectorAll(".dropdown-list input[type='checkbox']");
+            const dropdownSelected = document.querySelector(".dropdown-selected");
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", function () {
+                    selectedValues = Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value);
+
+                    dropdownSelected.textContent = selectedValues.length ? selectedValues.join(", ") : "Select Hobbies";
+                    // console.log(selectedValues)
+                });
+            });
+
+    // Assign toggle function to the dropdown div
+    document.querySelector(".dropdown-selected").addEventListener("click", toggleDropdown);
+
             let tableContainer = document.getElementById("table-container");
             let sortBtn = document.getElementById("sortBtn");
             let searchInput = document.getElementById("search");
@@ -654,8 +919,8 @@
             let manager_logged_in_id=manager_logged_in.Id_ls
             document.getElementById("admin_name").innerHTML=manager_logged_in.Name_ls
             document.getElementById("dropdown_admin").innerHTML=manager_logged_in.Name_ls
-            document.getElementById("adminImg").src=manager_logged_in.Img_ls
-            document.getElementById("admin_Img").src=manager_logged_in.Img_ls
+            document.getElementById("adminImg").src=manager_logged_in.Img_ls || "./images/admin.jpg"
+            document.getElementById("admin_Img").src=manager_logged_in.Img_ls || "./images/admin.jpg"
             if(manager_logged_in.Role_ls=="manager"){
                 let find_users=tableData.filter((item)=> item.ManagerId_ls==manager_logged_in_id)
                 tableData=find_users
@@ -665,6 +930,8 @@
             const rowsPerPage = 5;
             let originalData = [...tableData]; // Store the original order
             let sortState = 0; // 0: original, 1: ascending, -1: descending
+            let sortState_Email = 0;
+            let sortState_Phone = 0;
 
             var filteredData;
             let exportCSVButton = document.getElementById("exportCSV");
@@ -815,7 +1082,7 @@
                     let headerRow = document.createElement("tr");
 
 
-                    columnOrder.forEach((key) => {
+                    columnOrder.forEach((key,index) => {
                         if (key !== "Pass_ls" && key !== "Role_ls" && key!=="Id_ls" && key!=="ManagerId_ls") {
                             let th = document.createElement("th");
                             let res = key.split("_ls").join("");
@@ -839,8 +1106,32 @@
                                 // Append text and button
                                 th.appendChild(headerText);
                                 th.appendChild(sortButton);
-                            }
-                            
+                            } else if (key === "Email_ls") {
+                                th.classList.add("sortable");
+                                let sortButton = document.createElement("button");
+                                sortButton.innerHTML = "↕"; // Default down arrow
+                                sortButton.classList.add("sort-icon");
+                                sortButton.addEventListener("click", function () {
+                                    sortTable_Email();
+                                });
+
+                                // Append text and button
+                                th.appendChild(headerText);
+                                th.appendChild(sortButton);
+                            } else if (key === "Phone_ls") {
+                                th.classList.add("sortable");
+                                let sortButton = document.createElement("button");
+                                sortButton.innerHTML = "↕"; // Default down arrow
+                                sortButton.classList.add("sort-icon");
+                                sortButton.addEventListener("click", function () {
+                                    sortTable_Phone();
+                                });
+
+                                // Append text and button
+                                th.appendChild(headerText);
+                                th.appendChild(sortButton);
+                            } 
+                            // console.log(th)
                             headerRow.appendChild(th);
                         }
                     });
@@ -881,7 +1172,7 @@
 
                             if (key === "Img_ls") {
                                 let img = document.createElement("img");
-                                img.src = data[key];
+                                img.src = data[key] || "./images/admin.jpg";
                                 img.alt = "User Image";
                                 td.appendChild(img);
                             } else if (key === "PDF_ls") {
@@ -908,6 +1199,9 @@
                             } else if(key=="Checkbox"){
                                 let checkbox = document.createElement("input");
                                 checkbox.type = "checkbox";
+                                // console.log(data)
+                                checkbox.setAttribute("data-index",index)
+                                checkbox.setAttribute("data-parent",data.Name_ls)
                                 td.appendChild(checkbox);
                             } else if(key=="Action"){
                                 
@@ -929,9 +1223,10 @@
                                 action_div.appendChild(deleteButton)
                                 td.appendChild(action_div);
                             } else {
-                                td.textContent = data[key];
+                                td.textContent = data[key] || "";
                             }
 
+                            // console.log(td)
                             row.appendChild(td);
                             
                         }
@@ -998,6 +1293,38 @@
                 currentPage=1
                 renderTable() ;
             }
+
+            function sortTable_Email() {
+                // alert(tableData)
+                if (sortState_Email === 0) {
+                    tableData.sort((a, b) => a["Email_ls"].localeCompare(b["Email_ls"]));
+                    sortState_Email = 1;
+                } else if (sortState_Email === 1) {
+                    tableData.sort((a, b) => b["Email_ls"].localeCompare(a["Email_ls"]));
+                    sortState_Email = -1;
+                } else {
+                    tableData = [...originalData];
+                    sortState_Email = 0;
+                }
+                currentPage=1
+                renderTable() ;
+            }
+
+            function sortTable_Phone() {
+                // alert(tableData)
+                if (sortState_Phone === 0) {
+                    tableData.sort((a, b) => a["Phone_ls"].localeCompare(b["Phone_ls"]));
+                    sortState_Phone = 1;
+                } else if (sortState_Phone === 1) {
+                    tableData.sort((a, b) => b["Phone_ls"].localeCompare(a["Phone_ls"]));
+                    sortState_Phone = -1;
+                } else {
+                    tableData = [...originalData];
+                    sortState_Phone = 0;
+                }
+                currentPage=1
+                renderTable() ;
+            }
             
 
             // sortBtn.addEventListener("click", sortTable);
@@ -1053,9 +1380,11 @@
                 let email_old=document.getElementById("email").value=data.Email_ls
                 let phone_old=document.getElementById("phone").value=data.Phone_ls
                 let address_old=document.getElementById("address").value=data.Address_ls
-                let hobbies_old=document.getElementById("hobbies").value=data.Hobbies_ls
+                // let hobbies_old=document.getElementById("hobbies").value=data.Hobbies_ls
                 let role_old=document.getElementById("role").value=data.Role_ls
                 let profileImg=document.getElementById("profile_img").src=data.Img_ls
+                document.getElementById("hobbies_value").innerHTML=data.Hobbies_ls
+                document.getElementById("hobbies_value").value=data.Hobbies_ls
 
                 let manager=document.getElementById("manager")
                 manager.innerHTML=`<option value="">Select Manager</option>`
@@ -1068,41 +1397,51 @@
                 }
             }
             
+            
 
             let save_prof=document.getElementById("save_profile")
             save_prof.addEventListener("click",function (){
-                    let name=document.getElementById("name").value;
-                    data_user.Name_ls=name;
-                    let email=document.getElementById("email").value;
-                    data_user.Email_ls=email
-                    let phone=document.getElementById("phone").value;
-                    data_user.Phone_ls=phone
-                    let dob=document.getElementById("dob").value;
-                    
-                    data_user.Dob_ls=dob
-                    let address=document.getElementById("address").value
-                    data_user.Address_ls=address
-                    let hobbies=document.getElementById("hobbies").value;
-                    data_user.Hobbies_ls=hobbies;
-                    let role=document.getElementById("role").value;
-                    data_user.Role_ls=role;
-
-                    
-                    let manager=document.getElementById("manager").value;  
-                    let managerid=managerData.find((item)=> item.Name_ls==manager)
-                    
-                    if(managerid){
-                        man_id=managerid.Id_ls
-                        data_user.ManagerId_ls=man_id
+                    let isNameValid=validation_name()
+                    let isPhoneValid=validation_number()
+                    let isAddressValid=validation_address()
+                    let isDateValid=validation_date()
+                    if(isNameValid && isPhoneValid && isAddressValid && isDateValid){
+                        let name=document.getElementById("name").value;
+                        data_user.Name_ls=name;
+                        let email=document.getElementById("email").value;
+                        data_user.Email_ls=email
+                        let phone=document.getElementById("phone").value;
+                        data_user.Phone_ls=phone
+                        let dob=document.getElementById("dob").value;
                         
+                        data_user.Dob_ls=dob
+                        let address=document.getElementById("address").value
+                        data_user.Address_ls=address
+                        if(selectedValues){
+                            let hobbies=document.getElementById("hobbies_value").value;
+                            data_user.Hobbies_ls=selectedValues;
+                        }
+                        let role=document.getElementById("role").value;
+                        data_user.Role_ls=role;
+
+                        
+                        let manager=document.getElementById("manager").value;  
+                        let managerid=managerData.find((item)=> item.Name_ls==manager)
+                        
+                        if(managerid){
+                            man_id=managerid.Id_ls
+                            data_user.ManagerId_ls=man_id
+                            
+                        }
+                        
+                        let edit_modal = document.getElementById("editModal");
+                        edit_modal.style.display = "none";
+                        
+                        localStorage.setItem("formData_new",JSON.stringify(tableData))
+                        location.reload();
+                    } else{
+                        return false
                     }
-                    
-                    let edit_modal = document.getElementById("editModal");
-                    edit_modal.style.display = "none";
-                    
-                    localStorage.setItem("formData_new",JSON.stringify(tableData))
-                    location.reload();
-                
             })
 
             
@@ -1119,10 +1458,23 @@
                 if(index>=0){
                     let confirmDelete = confirm(`Do you want to delete ${data.Name_ls}?`);
                     if(confirmDelete){
-                        tableData.splice(index, 1);
-                        localStorage.setItem("formData_new", JSON.stringify(tableData));
-                        alert(data.Name_ls+" deleted successfully!!!!!");
-                        window.location.href="./table2.html"
+                        // tableData.splice(index, 1);
+                        let deletedItem=tableData.filter(item=>item.Email_ls!==data.Email_ls)
+                        // console.log(JSON.stringify(deletedItem))
+                        localStorage.setItem("formData_new", JSON.stringify(deletedItem));
+                        // alert(data.Name_ls+" deleted successfully!!!!!");
+                        let toast=Toastify({
+                                text: `${data.Name_ls} deleted successfully!`,
+                                duration: 2000,  // Toast lasts for 3 seconds
+                                gravity: "top", 
+                                position: "right",
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                close: true
+                            })
+                        toast.showToast();
+                        setTimeout(function() {
+                            window.location.href="./table2.html"
+                        },2000)
                     }
                 } else {
                     alert("Data doesnt exists")
@@ -1130,7 +1482,48 @@
                 
             }
 
-            
+            function downloadSelectedCSV() {
+                let selectedData=[] ;
+                let checkboxes = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+
+                if (checkboxes.length === 0) {
+                    // alert("Please select at least one row to download.");
+                    return;
+                }
+
+                // console.log(columnOrder.map((key)=>key))
+                checkboxes.forEach((checkbox) => {
+                    // let rowIndex = checkbox.getAttribute("data-index"); // Get row index
+                    // let rowData = tableData[rowIndex]; // Fetch data from tableData using index
+                    // console.log("rowData: "+JSON.stringify(rowData))
+                    let rowFilter=checkbox.getAttribute("data-parent")
+                    // console.log("Row data: "+rowFilter)
+
+                    let rowData = tableData.filter((item) =>item.Name_ls==rowFilter)
+                    let rowdata=rowData[0]
+                    // let selectedRow = tableData
+                    //      .filter((key) => key !== "Pass_ls" && key !== "Checkbox" && key !== "Action" && key!="Img_ls" && key!="PDF_ls")
+                    //      .map((key) => rowdata[key]); // Extract row values
+
+                        //  console.log(selectedRow)
+                     selectedData.push(rowdata);
+
+                    // selectedData=filteredData
+                    
+                    // Extract only visible columns (excluding hidden ones)
+                    // let headers = Object.keys(columnOrder[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls");
+                    // let selectedRow = columnOrder
+                    //     .filter((key) => key !== "Pass_ls" && key !== "Checkbox" && key !== "Action" && key!="Img_ls" && key!="PDF_ls")
+                    //     .map((key) => rowData[key]); // Extract row values
+
+                    // selectedData.push(selectedRow);
+                    // console.log(selectedData)
+                });
+                
+                console.log("row:",selectedData)
+
+                return selectedData
+            }
             
 
             // Add event listeners for the export buttons
@@ -1139,60 +1532,151 @@
 
             //Table data converted to csv file
             function exportToCSV() {
+                // document.getElementById("progressBar").style.display="block";
+                let checkboxData=downloadSelectedCSV()
+                // console.log("Selected: ",checkboxHead)
+                
                 let heading=[];
                 let csvContent = "data:text/csv;charset=utf-8,";
-                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls");
+                let headers = Object.keys(filteredData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls" && key!="Id_ls" && key!="ManagerId_ls");
                 for(let i=0;i<headers.length;i++){
                     heading[i]=headers[i].split("_ls").join("");
                 }
 
-                csvContent += heading.join(",") + "\n";//All the heading of the table
+                let csvD = "data:text/csv;charset=utf-8,";
+                if(checkboxData){
+                    csvD += heading.join(",") + "\n";
+                    let headers = Object.keys(checkboxData[0]).filter(key => key !== "Pass_ls" && key !== "Role_ls" &&  key !== "Img_ls" && key !== "PDF_ls" && key!="Id_ls" && key!="ManagerId_ls");
+                    checkboxData.forEach(row=>{
+                        // console.log("row",row[0])
+                        let rowData = headers.map(header => {
+                            return `"${row[header] || ""}"`;
+                        }).join(",");
+                        csvD+=rowData+"\n";
+                        // console.log(rowData)
+                    })
+                    // console.log(csvD)
 
-                filteredData.forEach(row => {
-                    let rowData = headers.map(header => {
-                        return `"${row[header] || ""}"`;
-                    }).join(",");
-                    csvContent += rowData + "\n";//Data of the table
-                });
+                    let d=new Date()
+                        let date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                        let hours = d.getHours();
+                        let minutes = d.getMinutes();
+                        let seconds = d.getSeconds();
 
-    
-                let encodedUri = encodeURI(csvContent);
-                let link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "UserData.csv");
-                document.body.appendChild(link);
-                var i = 0;
-                let progress=0;
-                var z = 1;
-                if (i == 0) {
-                    i = 1;
-                    var elem = document.getElementById("myBar");
-                    let rowCount=filteredData.length;
-                    // let rowCount=100;
-                    var id = setInterval(() => {
-                            progress = Math.min(100, (z/rowCount) * 100);
-                            elem.style.width = progress + "%";
-                            elem.innerText = Math.round(progress) + "%";
-                            z++;
-                            if (progress >= 100) {
-                                clearInterval(id);
-                                let downloadPDF_div = document.getElementById("downloadPDF_div");
+                        let currentTime=`${hours}:${minutes}:${seconds}`;
+            
+                        let encodedUri = encodeURI(csvD);
+                        let link = document.createElement("a");
+                        link.setAttribute("href", encodedUri);
+                        link.setAttribute("download", `UserData(${date})(${currentTime}).csv`);
+                        document.body.appendChild(link);
 
-                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
-                                    downloadPDF_div.addEventListener("click", download_link);
-                                    function download_link(){
-                                        link.click();
-                                        document.body.removeChild(link);
-                                        location.reload();
+                        var elem = document.getElementById("csvProgressBar");
+                        elem.style.width = "0%"; // Reset width
+                        elem.innerText = "0%";   // Reset text
+                        document.getElementById("csvProgressContainer").style.display = "block";
+                        document.getElementById("pdfProgressContainer").style.display = "none";
+
+                        var i = 0;
+                        let progress=0;
+                        var z = 1;
+                        if (i == 0) {
+                            i = 1;
+                            // var elem = document.getElementById("myBar");
+                            let rowCount=checkboxData.length;
+                            // let rowCount=100;
+                            var id = setInterval(() => {
+                                    progress = Math.min(100, (z/rowCount) * 100);
+                                    elem.style.width = progress + "%";
+                                    elem.innerText = Math.round(progress) + "%";
+                                    z++;
+                                    if (progress >= 100) {
+                                        clearInterval(id);
+                                        // document.getElementById("progressBar").style.display="none";
+                                        let downloadCSV_div = document.getElementById("downloadCSV_div");
+
+                                            downloadCSV_div.innerHTML=`<button class="export-btn" >Download CSV</button>`
+                                            downloadCSV_div.addEventListener("click", download_link);
+                                            function download_link(){
+                                                link.click();
+                                                document.body.removeChild(link);
+                                                downloadCSV_div.style.display="none"
+                                                document.getElementById("csvProgressContainer").style.display = "none"; 
+                                                // location.reload();
+                                            }
                                     }
-                            }
-                        }, 100);
+                                }, 100);
+                        }
+
+                } else{
+                    // console.log(csvD)
+
+                    csvContent += heading.join(",") + "\n";//All the heading of the table
+
+                    filteredData.forEach(row => {
+                        let rowData = headers.map(header => {
+                            return `"${row[header] || ""}"`;
+                        }).join(",");
+                        csvContent += rowData + "\n";//Data of the table
+                    });
+                    // console.log(csvContent)
+
+                    let d=new Date()
+                    let date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                    let hours = d.getHours();
+                    let minutes = d.getMinutes();
+                    let seconds = d.getSeconds();
+
+                    let currentTime=`${hours}:${minutes}:${seconds}`;
+
+                    let encodedUri = encodeURI(csvContent);
+                    let link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", `UserData(${date})(${currentTime}).csv`);
+                    document.body.appendChild(link);
+
+                    var elem = document.getElementById("csvProgressBar");
+                        elem.style.width = "0%"; // Reset width
+                        elem.innerText = "0%";   // Reset text
+                        document.getElementById("csvProgressContainer").style.display = "block";
+                        document.getElementById("pdfProgressContainer").style.display = "none";
+                        
+                    var i = 0;
+                    let progress=0;
+                    var z = 1;
+                    if (i == 0) {
+                        i = 1;
+                        // var elem = document.getElementById("myBar");
+                        let rowCount=filteredData.length;
+                        // let rowCount=100;
+                        var id = setInterval(() => {
+                                progress = Math.min(100, (z/rowCount) * 100);
+                                elem.style.width = progress + "%";
+                                elem.innerText = Math.round(progress) + "%";
+                                z++;
+                                if (progress >= 100) {
+                                    clearInterval(id);
+                                    // document.getElementById("progressBar").style.display="none"
+                                    let downloadCSV_div = document.getElementById("downloadCSV_div");
+
+                                        downloadCSV_div.innerHTML=`<button class="export-btn" >Download CSV</button>`
+                                        downloadCSV_div.addEventListener("click", download_link);
+                                        function download_link(){
+                                            link.click();
+                                            document.body.removeChild(link);
+                                            downloadCSV_div.style.display="none"
+                                            document.getElementById("csvProgressContainer").style.display = "none"; 
+                                            // location.reload();
+                                        }
+                                }
+                            }, 100);
+                    }
                 }
-                
             }
 
             //Table data converted to pdf file
             function exportToPDF() {
+                // document.getElementById("progressBar").style.display="block";
                 const { jsPDF } = window.jspdf;
                 let doc = new jsPDF();
                 
@@ -1202,20 +1686,39 @@
                 for(let i=0;i<headers.length;i++){
                     heading[i]=headers[i].split("_ls").join("");
                 }
+        
                 let data = filteredData.map(row => headers.map(header => row[header] || ""));
 
-                doc.text("User Data Table", 10, 10);
+                let d=new Date()
+                let date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                let hours = d.getHours();
+                let minutes = d.getMinutes();
+                let seconds = d.getSeconds();
+
+                let currentTime=`${hours}:${minutes}:${seconds}`;
+
+                doc.text("User Details", 10, 10);
                 doc.autoTable({
                     head: [heading],
                     body: data,
-                    startY: 20
+                    startY: 20,
+                    styles: { cellPadding: 2, fontSize: 10 }, // Adjust padding & font size
+                    columnStyles: {
+                        2: { cellWidth: 30 }, 
+                    }
                 });
+
+                let elem = document.getElementById("pdfProgressBar");
+                elem.style.width = "0%"; 
+                elem.innerText = "0%";
+                document.getElementById("pdfProgressContainer").style.display = "block";
+                document.getElementById("csvProgressContainer").style.display = "none";
 
                 var i = 0;
                 var z = 1;
                 if (i == 0) {
                     i = 1;
-                    var elem = document.getElementById("myBar");
+                    // var elem = document.getElementById("myBar");
                     let rowCount=filteredData.length;
                     
                     var width = 10;
@@ -1226,13 +1729,16 @@
                             z++;
                             if (progress >= 100) {
                                 clearInterval(id);
+                                // document.getElementById("progressBar").style.display="none"
                                 let downloadPDF_div = document.getElementById("downloadPDF_div");
 
-                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download</button>`
+                                    downloadPDF_div.innerHTML=`<button class="export-btn" >Download PDF</button>`
                                     downloadPDF_div.addEventListener("click", download_link);
                                     function download_link(){
-                                        doc.save("UserData.pdf");
-                                        location.reload()
+                                        doc.save(`UserData(${date})(${currentTime}).pdf`);
+                                        downloadPDF_div.style.display="none";
+                                        document.getElementById("pdfProgressContainer").style.display = "none";
+                                        // location.reload()
                                     }
                             }
                         }, 100);

@@ -32,7 +32,32 @@
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
+<!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded",function(){
+    document.getElementById("Logout").addEventListener("click",function(){
+    let toast=Toastify({
+            text: "Logout successfully!!!",
+            duration: 3000,  // Toast lasts for 3 seconds
+            gravity: "top", 
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            close: true
+        })
+        toast.showToast();
+
+        // Redirect after 3 seconds
+        setTimeout(function() {
+          window.location.href="./login.html"
+        },3000)
+  })
+  })
+  
+</script>
 </head>
 
 <body class="sub_page">
@@ -89,11 +114,14 @@
                   <a class="nav-link" href="about.html"> About <span class="sr-only">(current)</span> </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" id="Logout">  Logout</a>
+                </li>
+                <!-- <li class="nav-item">
                   <a class="nav-link" href="login.html">Login</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="registration.html">Registration</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
                 </li>

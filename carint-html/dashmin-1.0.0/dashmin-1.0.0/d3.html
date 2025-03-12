@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown with Checkboxes</title>
+    <style>
+        /* Dropdown styling */
+        .custom-select {
+            position: relative;
+            width: 200px;
+            display: inline-block;
+        }
+
+        .select-box {
+            width: 100%;
+            padding: 8px;
+            background: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .options-container {
+            display: none;
+            position: absolute;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .options-container label {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .options-container input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        /* Show dropdown */
+        .custom-select.active .options-container {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="custom-select" id="customSelect">
+    <div class="select-box" onclick="toggleDropdown()">Select Hobbies ⬇</div>
+    <div class="options-container">
+        <label><input type="checkbox" value="Reading" onchange="updateHobbies()"> Reading</label>
+        <label><input type="checkbox" value="Painting" onchange="updateHobbies()"> Painting</label>
+        <label><input type="checkbox" value="Dancing" onchange="updateHobbies()"> Dancing</label>
+    </div>
+</div>
+
+<p>Selected Hobbies: <span id="selectedHobbies"></span></p>
+
+<script>
+    let hobbiesArray = [];
+
+    function toggleDropdown() {
+        document.getElementById("customSelect").classList.toggle("active");
+    }
+
+    function updateHobbies() {
+        hobbiesArray = Array.from(document.querySelectorAll('.options-container input:checked'))
+                            .map(checkbox => checkbox.value);
+        document.querySelector(".select-box").textContent = hobbiesArray.length > 0 ? hobbiesArray.join(", ") : "Select Hobbies ⬇";
+        document.getElementById("selectedHobbies").textContent = hobbiesArray.join(", ");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(event) {
+        if (!document.getElementById("customSelect").contains(event.target)) {
+            document.getElementById("customSelect").classList.remove("active");
+        }
+    });
+</script>
+
+</body>
+</html>

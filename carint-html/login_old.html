@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="images/fevicon.png" type="" />
+
+    <title>Project</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--owl slider stylesheet -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+<style>
+  .eye-icon{
+  position: absolute; margin-top: 18px; margin-left: -30px;
+}
+@media (max-width:985px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 650px;
+  }
+}
+@media (max-width:925px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 630px;
+  }
+}
+@media (max-width:880px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 600px;
+  }
+}
+@media (max-width:840px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 550px;
+  }
+}
+@media (max-width:798px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 500px;
+  }
+}
+@media (max-width:785px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 500px;
+  }
+}
+@media (max-width:768px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 500px;
+  }
+}
+@media (max-width:692px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 400px;
+  }
+}
+@media (max-width:650px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 350px;
+  }
+}
+@media (max-width:605px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 300px;
+  }
+}
+@media (max-width:550px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 250px;
+  }
+}
+@media (max-width:505px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 200px;
+  }
+}
+@media (max-width:480px){
+    .eye-icon{
+      position: absolute; margin-top: -60px; margin-left: 220px;
+  }
+}
+@media (max-width:475px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 220px;
+  }
+}
+@media (max-width:395px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 190px;
+  }
+}
+@media (max-width:372px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 170px;
+  }
+}
+@media (max-width:340px){
+    .eye-icon{
+      position: absolute; margin-top: -30px; margin-left: 150px;
+  }
+}
+</style>
+    <script>
+      var flag_email = false;
+      var flag_password = false;
+
+      var form_password;
+      function final_check() {
+      var data_1 = localStorage.getItem("formData_new");
+      var pase_data = JSON.parse(data_1);
+
+      var email = document.forms["validate-form"]["Email"].value.trim(); // Trim to remove whitespace
+      let errorMsg = document.getElementById("err_email");
+
+      if (!email) {
+        // If the input box is empty
+        errorMsg.innerHTML = "Invalid email.";
+        errorMsg.style.color = "red";
+        return false;
+      }
+
+      var user_data_1 = pase_data ? pase_data.find((user) => user.Email_ls === email) : null;
+
+      if (user_data_1) {
+        form_password = user_data_1.Pass_ls;
+        errorMsg.innerHTML = ""
+        return true; // Email exists
+      } else {
+        // If the email doesn't match any in localStorage
+        errorMsg.innerHTML = "This email is not registered.";
+        errorMsg.style.color = "red";
+        return false;
+      }
+    }
+
+
+  
+      function final_check_password() {
+        var password = document.forms["validate-form"]["Password"].value.trim();
+        let errorMsg = document.getElementById("err_password");
+
+        if (!password) {
+          errorMsg.innerHTML = "Invalid password.";
+          errorMsg.style.color = "red";
+          return false;
+        }
+        
+        if (form_password != password) {
+          errorMsg.innerHTML = "This password is not valid.";
+          errorMsg.style.color = "red";
+          return false;
+        } else {
+          errorMsg.innerHTML = ""
+          return true;
+        }
+      }
+      
+
+      function check_for_admin() {
+        var email = document.forms["validate-form"]["Email"].value;
+        var isEmailValid = final_check();
+        var isPasswordValid = final_check_password();
+        if (isEmailValid == true && isPasswordValid == true) {
+          const storedFormData = JSON.parse(localStorage.getItem("login_users")) || [];
+          
+          var data_1 = localStorage.getItem("formData_new");
+          var pase_data = JSON.parse(data_1);
+          var user_data_1 = pase_data.find((user) => user.Email_ls == email);
+          var rand = function() {
+                return Math.random().toString(36).substr(2); // remove `0.`
+            };
+
+            var token = function() {
+                return rand() + rand(); // to make it longer
+            };
+
+          Object.assign(user_data_1, { Token_ls: token() });
+          storedFormData.push(user_data_1)
+          localStorage.setItem("login_users", JSON.stringify(storedFormData));
+          if (email == "superadmin@gmail.com") {       
+            alert("Logged in successfully!");
+            window.open("./dashmin-1.0.0/dashmin-1.0.0/table2.html","_blank");
+          } else if(user_data_1.Role_ls=="manager") {
+            alert("Logged in successfully!");
+            window.open("./dashmin-1.0.0/dashmin-1.0.0/table2.html","_blank");
+          }
+          else {
+            alert("Logged in successfully!");
+            window.open("./index.html","_blank");
+          }  
+        }
+        else{
+          return false
+        }
+      }
+    </script>
+  </head>
+
+  <body class="sub_page">
+    <div class="hero_area">
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="header_top">
+          <div class="container-fluid">
+            <div class="contact_nav">
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span> Call : +01 123455678990 </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span> Email : demo@gmail.com </span>
+              </a>
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span> Location </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="header_bottom">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+              <a class="navbar-brand" href="index.html">
+                <span> Project </span>
+              </a>
+
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class=""> </span>
+              </button>
+
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="service.html">Services</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="about.html"> About</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="login.html"
+                      >Login <span class="sr-only">(current)</span></a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="registration.html"
+                      >Registration</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="dummy_profile.html"
+                      ><i class="fa fa-user" aria-hidden="true"></i> Profile
+                    </a>
+                  </li>
+                  <form class="form-inline">
+                    <button
+                      class="btn my-2 my-sm-0 nav_search-btn"
+                      type="submit"
+                    >
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                  </form>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <!-- end header section -->
+    </div>
+
+    <!-- Details section -->
+    <div class="example">
+      <section class="details_section layout_padding-top">
+        <div class="container-fluid">
+          <div class="heading_container">
+            <h2>Log<span>In</span></h2>
+            <p id="local_data"></p>
+          </div>
+          <div class="form_container" >
+            <form name="validate-form" onsubmit="return check_for_admin()">
+              <!-- onsubmit="check_for_admin()"> -->
+              <div class="login_page">
+                <div>
+                  <label for="Email">Email: </label><br />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    id="Email"
+                    onkeyup="return final_check()"
+                  />
+                  <p id="err_email"></p>
+                </div>
+                <div>
+                  <label for="Password">Password: </label><br />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    id="Password"
+                    onkeyup="return final_check_password()"
+                  />
+                  <i class="fa-solid fa-eye eye-icon" id="togglePassword"></i>
+                  <p id="err_password"></p>
+                </div>
+                <div>
+                  <a href="forgotPassword.html" class="password_link"
+                    >Forgot Password?</a
+                  >
+                </div>
+                <br />
+                <div>
+                  Don't have an account?
+                  <a href="registration.html">Register</a>
+                </div>
+                <br />
+                <div class="btn_box">
+                  <button class="btn_reg">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  
+    <!-- info section -->
+
+    <section class="info_section layout_padding2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-3 info_col">
+            <div class="info_contact">
+              <h4>Address</h4>
+              <div class="contact_link_box">
+                <a href="">
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  <span> Location </span>
+                </a>
+                <a href="">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span> Call +01 1234567890 </span>
+                </a>
+                <a href="">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <span> demo@gmail.com </span>
+                </a>
+              </div>
+            </div>
+            <div class="info_social">
+              <a href="">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 info_col">
+            <div class="info_detail">
+              <h4>Info</h4>
+              <p>
+                necessary, making this the first true generator on the Internet.
+                It uses a dictionary of over 200 Latin words, combined with a
+                handful
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2 mx-auto info_col">
+            <div class="info_link_box">
+              <h4>Links</h4>
+              <div class="info_links">
+                <a class="active" href="index.html">
+                  <img src="images/nav-bullet.png" alt="" />
+                  Home
+                </a>
+                <a class="" href="about.html">
+                  <img src="images/nav-bullet.png" alt="" />
+                  About
+                </a>
+                <a class="" href="service.html">
+                  <img src="images/nav-bullet.png" alt="" />
+                  Services
+                </a>
+
+                <a class="" href="contact.html">
+                  <img src="images/nav-bullet.png" alt="" />
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 info_col">
+            <h4>Subscribe</h4>
+            <form action="#">
+              <input type="text" placeholder="Enter email" />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end info section -->
+
+    <!-- footer section -->
+    <section class="footer_section">
+      <div class="container">
+        <p>
+          &copy; <span id="displayYear"></span> All Rights Reserved By
+          <a href="https://html.design/">Free Html Templates</a>
+        </p>
+      </div>
+    </section>
+    <!-- footer section -->
+
+    <!-- jQery -->
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <!-- bootstrap js -->
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <!-- owl slider -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+    ></script>
+    <!-- custom js -->
+    <script type="text/javascript" src="js/custom.js"></script>
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+    <!-- End Google Map -->
+    <script>
+      const togglePassword =
+            document.querySelector('#togglePassword');
+  
+      const password = 
+            document.querySelector('#Password');
+  
+      togglePassword.
+      addEventListener('click', function (e) {
+  
+          // Toggle the type attribute 
+          const type = password.getAttribute(
+              'type') === 'password' ? 'text' : 'password';
+          password.setAttribute('type', type);
+          // console.log(togglePassword.className)
+  
+          if(togglePassword.className.match("fa-solid fa-eye-slash eye-icon")){
+            togglePassword.setAttribute("class","fa-solid fa-eye eye-icon")
+          } else {
+            togglePassword.setAttribute("class","fa-solid fa-eye-slash eye-icon")
+          }
+      }); 
+  </script>
+  </body>
+</html>

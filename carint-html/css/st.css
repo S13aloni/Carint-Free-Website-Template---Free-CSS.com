@@ -1,0 +1,167 @@
+.example{
+    background-image: linear-gradient(to bottom right,white, #0a97b0);
+    padding-bottom: 100px;
+    padding-top: 20px;
+  }
+  .details_section {
+    position: relative;
+    padding-bottom: 90px;
+    background-color: rgb(249, 249, 249);
+    border: 3px solid #959595;
+    box-shadow: 0 0 5px 0 #555454;
+    margin: 40px 250px 40px 250px; /*top right bottom left*/
+    border-radius: 20px;
+    /* margin-right: 90px; */
+    /* padding: 30px; */
+  }
+  
+  .zoom {
+    /* padding: 50px; */
+    transition: transform .2s; /* Animation */
+    /* margin: 0 auto; */
+  }
+  
+  .zoom:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  }
+  
+  .details_section .heading_container {
+    margin-bottom: 25px;
+  }
+  .heading_container{
+    align-items: center;
+  }
+  .details_section .heading_container h2 {
+    text-transform: uppercase;
+  }
+  
+  .details_section .form_container {
+    /* margin-right: 10px; */
+  margin-right: 50px;
+    /* margin-left: 130px; */
+    /* align-items: center; */
+  }
+  .details_section .form_container .login_page {
+    margin-left: 100px;
+    margin-right: 50px;
+  }
+  .details_section .form_container .profile_img{
+    height: auto;
+    width: auto;
+    border-radius: 20%;
+  }
+  
+  .details_section .row .file_space{
+    padding-top: 10px;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  
+  .details_section .container-fluid .heading_container{
+    animation-name: slideIn;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .details_section{
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+  }
+  .details_section .form_container input {
+    width: 100%;
+    border: none;
+    height: 50px;
+    /* margin-bottom: 25px; */
+    padding-left: 15px;
+    outline: none;
+    color: #101010;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .details_section .form_container input[type="radio"]{
+    box-shadow: none;
+    width: auto;
+    height: auto;
+  }
+  .details_section .form_container input[type="checkbox"]{
+    box-shadow: none;
+    width: auto;
+    height: auto;
+  }
+  
+  .details_section .form_container div .col-lg-5 div label{
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+  
+  
+  
+  .details_section .form_container select {
+    width: 100%;
+    border: none;
+    height: 50px;
+    margin-bottom: 25px;
+    padding-left: 15px;
+    outline: none;
+    color: #101010;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+  }
+  
+  .details_section .form_container input::-webkit-input-placeholder {
+    color: #04233b;
+  }
+  
+  .details_section .form_container input:-ms-input-placeholder {
+    color: #04233b;
+  }
+  
+  .details_section .form_container input::-ms-input-placeholder {
+    color: #04233b;
+  }
+  
+  .details_section .form_container input::placeholder {
+    color: #04233b;
+  }
+  
+  .details_section .form_container input.message-box {
+    height: 50px;
+  }
+  
+  .details_section .form_container  .btn_reg {
+    border: none;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 12px 55px;
+    background-color: #0a97b0;
+    color: #ffffff;
+    border-radius: 5px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    border: none;
+  }
+  
+  .details_section .form_container  .btn_reg:hover {
+    background-color: #065968;
+  }
+  

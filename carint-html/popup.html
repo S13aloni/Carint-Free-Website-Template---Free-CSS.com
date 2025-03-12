@@ -58,12 +58,14 @@
 
     document.getElementById('imageInput').addEventListener('change', function (e) {
         var file = e.target.files[0];
+        console.log(file)
 
         if (file) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
                 image.src = e.target.result;
+                console.log(e.target.result)
 
                 // Initialize Cropper once the image is loaded
                 cropper = new Cropper(image, {
@@ -74,6 +76,7 @@
             };
 
             reader.readAsDataURL(file);
+            // console.log(reader)
         }
     });
 
@@ -199,7 +202,7 @@
                             checkedValues.push(checkbox.value);
                         }
                     });
-                    
+                    console.log("Checked: ",!checkedValues)
                         //login data
                         var data_1_email=localStorage.getItem("login_users")
                         var parse_data_1_email=JSON.parse(data_1_email)
@@ -212,8 +215,9 @@
                         let updated = false;
                         email=login_email.replace(/"/g, '')
 
-                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==""){
+                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==false){
                             if(name){
+                              if(validation_name()){
                                 dataArray = dataArray.map(item => {
                                     if (item.Email_ls === email) {
                                         // updated = true;
@@ -221,9 +225,10 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else {valid=false}
                             }
                             if(phone_number){
-                              if(validation_phone()){
+                              if(validation_number()){
                                 dataArray = dataArray.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -233,6 +238,7 @@
                                 });
                             }else {valid=false}}
                             if(birth_date){
+                              if(validation_date()){
                                 dataArray = dataArray.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -240,8 +246,10 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else {valid=false}
                             }
                             if(address){
+                              if(validation_address()){
                                 dataArray = dataArray.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -249,8 +257,11 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else{valid=false}
                             }
-                            if(checkedValues){
+                            if(checkedValues==false){
+                              console.log("No update")
+                            } else{
                                 dataArray = dataArray.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -268,9 +279,9 @@
                         let updated_login = false;
                         email=login_email.replace(/"/g, '')
 
-                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==""){
+                        if(name || phone_number || birth_date || address || checkedValues || name=="" || phone_number=="" || birth_date=="" || address=="" || checkedValues==false){
                             if(name){
-                              
+                              if(validation_name()){
                                 dataArray_login = dataArray_login.map(item => {
                                     if (item.Email_ls === email) {
                                         // updated = true;
@@ -278,9 +289,10 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else {valid=false}
                             }
                             if(phone_number){
-                              if(validation_phone()){
+                              if(validation_number()){
                                 dataArray_login = dataArray_login.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -290,6 +302,7 @@
                                 });
                             }else{valid=false}}
                             if(birth_date){
+                              if(validation_date()){
                                 dataArray_login = dataArray_login.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -297,8 +310,10 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else {valid=false}
                             }
                             if(address){
+                              if(validation_address()){
                                 dataArray_login = dataArray_login.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -306,8 +321,11 @@
                                     }
                                     return item; // Return other objects unchanged
                                 });
+                              } else{valid=false}
                             }
-                            if(checkedValues){
+                            if(checkedValues==false){
+                              console.log("No update")
+                            } else{
                                 dataArray_login = dataArray_login.map(item => {
                                     if (item.Email_ls === email) {
                                         
@@ -320,7 +338,7 @@
                         }
                     
 
-                        console.log(JSON.stringify(dataArray))
+                        // console.log(JSON.stringify(dataArray))
                         if (updated && updated_login) {
                             console.log("Data updated successfully!");
                         } else {
@@ -380,26 +398,132 @@
                    }
                    x[n].className += " active";
                }
+
+
+                  function validation_name() {
+                    // var submitButton = document.forms["validate-form"]["submit"].disabled;
+                    let nameInput = document.getElementById("fetch_name");
+                    let errorMsg = document.getElementById("err_name");
+                    // alert(nameInput.value.length)
+                    // Regular expression to allow only letters and spaces
+                    let namePattern = /^[A-Za-z\s]+$/;
+                    // console.log(nameInput.value.length)
+                    // alert(nameInput.length)
+                    if (!nameInput.value.trim()) {
+                        errorMsg.innerHTML = "Name is required";
+                        errorMsg.style.color = "red";
+                        return false;
+                    } else if(nameInput.value.length<=3 ){   
+                        errorMsg.innerHTML = "Name must contain atleast 3 characters";
+                        errorMsg.style.color = "red";
+                    return false;
+                    } else if(nameInput.value.length>=25){
+                        errorMsg.innerHTML = "Name must contain atmost 25 characters";
+                        errorMsg.style.color = "red";
+                    return false;
+                    }
+                    else if (!namePattern.test(nameInput.value)) {
+                        errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                        errorMsg.style.color = "red";
+                        return false;
+                    }  else {
+                        errorMsg.innerHTML = ""; // Clear error message on valid input
+                        return true;
+                    }
+                }
+
+
+               function validation_date(){
+                  var date = document.getElementById("fetch_birth_date").value;
+                  let d=new Date()
+                  let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+                  // console.log((Date.parse(date))<(Date.parse(currentDate)))
+                  let errorMsg = document.getElementById("err_dob");
+                  const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
+                  if(!date.trim()){
+                    errorMsg.innerHTML="Date is required"
+                    errorMsg.style.color = "red";
+                    return false
+                  }
+                  else if(!patternDate.test(date)){
+                    errorMsg.innerHTML="Date is invalid"
+                    errorMsg.style.color = "red";
+                    return false
+                  } else if((Date.parse(date))>(Date.parse(currentDate))){
+                    errorMsg.innerHTML="Date should not be of future"
+                    errorMsg.style.color = "red";
+                    return false
+                  } else {
+                    errorMsg.innerHTML=""
+                    return true
+                  }
+
+                }
+
+                function validation_address(){
+                  var address=document.getElementById("fetch_address").value;
+                  let errorMsg = document.getElementById("err_address");
+                  let addressPattern = /^[A-Za-z\s]+$/;
+
+                  // alert(address)
+                  if(!address.trim()){
+                    errorMsg.innerHTML="Address is required"
+                    errorMsg.style.color = "red";
+                    return false
+                  } else if(address.length<3){
+                    errorMsg.innerHTML="Address must contain atleast 3 characters"
+                    errorMsg.style.color = "red";
+                    return false
+                  } else if(address.length>250){
+                    errorMsg.innerHTML="Address must contain atleast 3 characters"
+                    errorMsg.style.color = "red";
+                    return false
+                  } else if(!addressPattern.test(address)){
+                    errorMsg.innerHTML = "Address must not contain numbers or special characters";
+                    errorMsg.style.color = "red";
+                    return false;
+                  } else{
+                    errorMsg.innerHTML=""
+                    return true
+                  }
+                }
                
-function validation_phone(){
-  // alert(phone)
-  var phone=document.forms["regForm"]["fetch_phone_number"].value;
-   let errorMsg=document.getElementById("err_phone")
-   if(phone.length>10){
-    errorMsg.innerHTML="Phone number should not be greater than 10 digits."
-    errorMsg.style.color = "red";
-    return false;
-   } else if(phone.length<10){
-    errorMsg.innerHTML="Phone number should not be at least of 10 digits."
-    errorMsg.style.color = "red";
-    return false;
-   }
-   else{
-    errorMsg.innerHTML=""
-    return true;
-   }
-   
-}
+               function validation_number() {
+                  let num = document.getElementById("fetch_phone_number").value;
+                  let errorMsg = document.getElementById("err_phone");
+                  let pat_num = /^(\+91[\s-]?)?\d{10}$|^(\+44[\s-]?)?((\d{3}|\d{4})[\s-]?)?\d{8}$/;
+                  //+44 area code of 3 or 4 digits and then phone number of 8 digits
+
+                  // alert(num)
+                  
+                  // if (pat_num.test(num))
+                  if(!num.trim()){
+                    errorMsg.innerHTML="Phone number is required"
+                    errorMsg.style.color = "red";
+                    return false
+                  }
+                  // else if(num.length>10){
+                  //   errorMsg.innerHTML="Number should contain at most 10 digits"
+                  //   errorMsg.style.color = "red";
+                  //   return false
+                  // }
+                  else if(pat_num.test(num)){
+                    errorMsg.innerHTML = "" 
+                    // errorMsg.innerHTML = "Valid";
+                    // errorMsg.style.color = "green";
+                    return true;
+                  } else if(!pat_num.test(num)){
+                    errorMsg.innerHTML="Phone number is invalid";
+                    errorMsg.style.color="red";
+                    return false
+                  }
+                  else {
+                      errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+                      errorMsg.style.color = "red";
+                      // document.getElementById("PhoneNumber").value = "";
+                      return false;
+                  }
+              }
                
   </script>
 </head>
@@ -500,7 +624,7 @@ function validation_phone(){
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -521,22 +645,23 @@ function validation_phone(){
                 <div class="tab">
                   <h6>Do you want to change your name?</h6>
                     <p>
-                      <input oninput="this.className = ''" name="fname" id="fetch_name" ></p>
-                    
+                      <input oninput="this.className = ''" name="fname" id="fetch_name" onkeyup="validation_name()"></p>
+                      <p id="err_name" style="margin-top: -10px;"></p>
                 </div>
                 <div class="tab">
                   <h6>Do you want to change your phone number?</h6>
-                    <p><input type="tel" oninput="this.className = ''" name="phone" id="fetch_phone_number" onkeyup="validation_phone()"></p>
-                    <p id="err_phone"></p>
+                    <p><input type="tel" oninput="this.className = ''" name="phone" id="fetch_phone_number" onkeyup="validation_number()"></p>
+                    <p id="err_phone" style="margin-top: -10px;"></p>
                 </div>
                 <div class="tab">
                     <h6>Do you want to change your Birth Date?</h6>
-                    <p><input type="date" oninput="this.className = ''" name="birth-date" id="fetch_birth_date"></p>
-                 
+                    <p><input type="date" oninput="this.className = ''" name="birth-date" id="fetch_birth_date" onchange="validation_date()"></p>
+                    <p id="err_dob" style="margin-top: -10px;"></p>
                 </div>
                 <div class="tab">
                     <h6>Do you want to change your address?</h6>
-                    <p><input type="text" oninput="this.className = ''" name="address" id="fetch_address"></p>
+                    <p><input type="text" oninput="this.className = ''" name="address" id="fetch_address" onkeyup="validation_address()"></p>
+                    <p id="err_address" style="margin-top: -10px;"></p>
                 </div>
 
                 <div class="tab">

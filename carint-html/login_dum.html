@@ -15,7 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Basic -->
 <meta charset="utf-8" />
@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <title> Project </title>
+
 
 <!-- bootstrap core css -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -53,13 +54,6 @@
 <!-- responsive style -->
 <link href="css/responsive.css" rel="stylesheet" />
     <!-- <link rel="stylesheet" href="styles.css"> -->
-
-
-     <!-- Toastify CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
-    <!-- Toastify JS -->
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
      <style>
         /* General Styling */
 body {
@@ -184,115 +178,9 @@ input, select {
 
      </style>
 
-<script>
-
-  var flag_email = false;
-  var flag_password = false;
-
-  var form_password;
-  function final_check() {
-  var data_1 = localStorage.getItem("formData_new");
-  var pase_data = JSON.parse(data_1);
-
-  var email = document.forms["validate-form"]["Email"].value.trim(); // Trim to remove whitespace
-  let errorMsg = document.getElementById("err_email");
-
-  if (!email) {
-    // If the input box is empty
-    errorMsg.innerHTML = "Email address is required";
-    errorMsg.style.color = "red";
-    return false;
-  }
-
-  var user_data_1 = pase_data ? pase_data.find((user) => user.Email_ls === email) : null;
-
-  if (user_data_1) {
-    form_password = user_data_1.Pass_ls;
-    errorMsg.innerHTML = ""
-    return true; // Email exists
-  } else {
-    // If the email doesn't match any in localStorage
-    errorMsg.innerHTML = "This email is not registered";
-    errorMsg.style.color = "red";
-    return false;
-  }
-}
-
-
-
-  function final_check_password() {
-    var password = document.forms["validate-form"]["Password"].value.trim();
-    let errorMsg = document.getElementById("err_password");
-
-    if (!password) {
-      errorMsg.innerHTML = "Password is required";
-      errorMsg.style.color = "red";
-      return false;
-    }
-    
-    if (form_password != password) {
-      errorMsg.innerHTML = "This password is not valid";
-      errorMsg.style.color = "red";
-      return false;
-    } else {
-      errorMsg.innerHTML = ""
-      return true;
-    }
-  }
-  function check_for_admin() {
-    var email = document.forms["validate-form"]["Email"].value;
-    var isEmailValid = final_check();
-    var isPasswordValid = final_check_password();
-    
-    if (isEmailValid == true && isPasswordValid == true) {
-        const storedFormData = JSON.parse(localStorage.getItem("login_users")) || [];
-      
-        var data_1 = localStorage.getItem("formData_new");
-        var pase_data = JSON.parse(data_1);
-        var user_data_1 = pase_data.find((user) => user.Email_ls == email);
-
-        var rand = function() {
-            return Math.random().toString(36).substr(2);
-        };
-
-        var token = function() {
-            return rand() + rand();
-        };
-
-        Object.assign(user_data_1, { Token_ls: token() });
-        storedFormData.push(user_data_1);
-        localStorage.setItem("login_users", JSON.stringify(storedFormData));
-
-        // Toast notification
-        let toast=Toastify({
-            text: "Logged in successfully! Redirecting...",
-            duration: 3000,  // Toast lasts for 3 seconds
-            gravity: "top", 
-            position: "right",
-            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-            close: true
-        })
-        toast.showToast();
-
-        // Redirect after 3 seconds
-        setTimeout(function() {
-            if (email == "superadmin@gmail.com") {
-                window.open("./dashmin-1.0.0/dashmin-1.0.0/table2.html","_blank")
-                location.reload()
-            } else if (user_data_1.Role_ls == "manager") {
-              window.open("./dashmin-1.0.0/dashmin-1.0.0/table2.html","_blank")
-            } else {
-                window.location.href = "./index.html";
-            }
-        }, 3000);
-        return false
-    } else {
-        return false;
-    }
-}
-
-
-</script>
+     <script>
+        
+     </script>
 </head>
 <body class="sub_page">
   <div class="hero_area">
@@ -337,24 +225,24 @@ input, select {
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav  ">
-                <!-- <li class="nav-item ">
+                <li class="nav-item ">
                   <a class="nav-link" href="index.html">Home </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="service.html">Services</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
-                </li> -->
-                <li class="nav-item active">
-                  <a class="nav-link" href="login.html">Login<span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="about.html"> About</a>
                 </li>
                 <li class="nav-item ">
-                  <a class="nav-link" href="registration.html">Registration</a>
+                  <a class="nav-link" href="login.html">  Login</a>
                 </li>
-                <!-- <li class="nav-item ">
-                    <a class="nav-link" href="dummy_profile.html" style="display: flex;align-items: center;gap: 5px; "><i class="fa fa-user" aria-hidden="true" style="float: none;"></i> Profile </a>
-                </li> -->
+                <li class="nav-item active">
+                  <a class="nav-link" href="registration.html">Registration <span class="sr-only">(current)</span> </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="dummy_profile.html"><i class="fa fa-user" aria-hidden="true" style="float: left;"></i> Profile </a>
+                  </li>
                 <form class="form-inline">
                   <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -373,11 +261,11 @@ input, select {
         <div class="details_section">
             <h2 class="heading_container">Login</h2>
             
-            <form name="validate-form" onsubmit="return check_for_admin()">
+            <form>
                 <div class="row">
                     <div class="col-xl-10 col-md-5">
                         <label for="Email">Email:</label>
-                        <input type="email" id="Email"  placeholder="Enter your email" onkeyup="return final_check()">
+                        <input type="email" id="Email"  placeholder="Enter your email">
                         <p id="err_email"></p>
                         <!-- <p class="error-message" id="emailError"></p> -->
                     </div>
@@ -387,7 +275,7 @@ input, select {
                     <div class="col-xl-10 col-md-5">
                         <label for="password">Password:</label>
                         <div class="password-container">
-                            <input type="password" id="Password"  placeholder="Enter password" onkeyup="return final_check_password()">
+                            <input type="password" id="Password"  placeholder="Enter password" onkeyup="validation_password()">
                             <span class="toggle-password" onclick="togglePassword('Password', 'togglePasswordIcon')">
                                 <i id="togglePasswordIcon" class="fa fa-eye-slash"></i>
                             </span>
@@ -396,9 +284,6 @@ input, select {
                     </div>
                 </div>
     
-                <div class="login_section">
-                  <a href="./forgotPassword.html">Forgot Password?</a>
-                </div>
                 
                 <!-- Submit Button -->
                 <div class="btn_box">
@@ -601,7 +486,7 @@ input, select {
     </style>
     
 
-    <!-- <script>
+    <script>
         // Image Preview Functionality
         document.getElementById("Profile_Img").addEventListener("change", function(event) {
             const reader = new FileReader();
@@ -612,7 +497,7 @@ input, select {
             };
             reader.readAsDataURL(event.target.files[0]);
         });
-    </script> -->
+    </script>
 
 </body>
 </html>

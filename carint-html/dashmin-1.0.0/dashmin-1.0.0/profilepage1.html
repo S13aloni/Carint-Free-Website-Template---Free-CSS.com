@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- Toastify CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+<!-- Toastify JS -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding-top: 40px;
+            color: #2e323c;
+            background: #f5f6fa;
+            position: relative;
+            height: 100%;
+        }
+        .account-settings .user-profile {
+            margin: 0 0 1rem 0;
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+        .account-settings .user-profile .user-avatar {
+            margin: 0 0 1rem 0;
+        }
+        .account-settings .user-profile .user-avatar img {
+            width: 90px;
+            height: 90px;
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+        }
+        .account-settings .user-profile h5.user-name {
+            margin: 0 0 0.5rem 0;
+        }
+        .account-settings .user-profile h6.user-email {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #9fa8b9;
+        }
+        .account-settings .about {
+            margin: 2rem 0 0 0;
+            text-align: center;
+        }
+        .account-settings .about h5 {
+            margin: 0 0 15px 0;
+            color: #007ae1;
+        }
+        .account-settings .about p {
+            font-size: 0.825rem;
+        }
+        .form-control {
+            border: 1px solid #cfd1d8;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: .825rem;
+            background: #ffffff;
+            color: #2e323c;
+        }
+        .form-select {
+            border: 1px solid #cfd1d8;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            font-size: .825rem;
+            background: #ffffff;
+            color: #2e323c;
+            width: 100%;
+            height: 35px;
+        }
+        
+
+        .card {
+            background: #ffffff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: 0;
+            margin-bottom: 1rem;
+        }
+
+        .dropdown {
+            position: relative;
+            width: 100%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 1px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: white;
+            /* height: 35px; */
+        }
+
+        .dropdown-selected {
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            background-color: white;
+            width: 100%;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .dropdown-list label {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .dropdown-list input {
+            margin-right: 5px;
+        }
+
+        .dropdown.open .dropdown-list {
+            display: block;
+        }
+
+
+
+    </style>
+    <script>
+        var email;
+        function changeAvatar(event) {
+          const avatar = document.getElementById("avatarImage");
+          const file = event.target.files[0];
+          const fileName = file.name; 
+          const imagePath = `./images/${fileName}`; 
+
+          // Use FileReader to set the image preview
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            avatar.src = e.target.result;  // Set the new image source to the uploaded image (base64)
+          }
+
+          reader.readAsDataURL(file);  // Convert the file to base64 and trigger the load event
+
+          // Update login_users data in localStorage with the new image path
+          const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+
+          // Update the user's Img_ls field with the new image path
+          parsedData[latestIndex].Img_ls = imagePath;  // This stores the relative path of the image
+          localStorage.setItem("login_users", JSON.stringify(parsedData));
+
+          // Update formData_new data in localStorage for registered users
+          const formData = localStorage.getItem("formData_new");
+          const formDataParsed = JSON.parse(formData) || [];
+
+          // Find the user in the formData_new array who matches the logged-in user's email or unique identifier
+          const userEmail = parsedData[latestIndex].Email_ls;
+          const userIndex = formDataParsed.findIndex(user => user.Email_ls === userEmail);
+
+          if (userIndex !== -1) {
+            // Update the user's Img_ls field in formData_new
+            formDataParsed[userIndex].Img_ls = imagePath;
+            localStorage.setItem("formData_new", JSON.stringify(formDataParsed));
+          }
+        }
+
+        function get_local_data() {
+          const data = localStorage.getItem("login_users");
+          const parsedData = JSON.parse(data);
+          const latestIndex = parsedData.length - 1;
+          const user = parsedData[latestIndex];
+
+          email=user.Email_ls
+          // Display user details
+          document.getElementById("fetch_name").innerHTML = user.Name_ls;
+          document.getElementById("fetch_email").innerHTML = `${user.Email_ls}`;
+          
+          document.getElementById("fullName").value=user.Name_ls
+        //   document.getElementById("eMail").value=user.Email_ls
+          document.getElementById("phone").value=user.Phone_ls
+          document.getElementById("address").value=user.Address_ls
+          document.getElementById("dob").value=user.Dob_ls
+          document.getElementById("hobbies_value").value=user.Hobbies_ls
+          document.getElementById("hobbies_value").innerHTML=user.Hobbies_ls
+
+          
+          const avatarImage = document.getElementById("avatarImage");
+          avatarImage.src = user.Img_ls || "./images/admin.jpg"; // Fallback to default image if not set
+
+            document.getElementById("update").addEventListener("click",function(){
+                let registered_user=JSON.parse(localStorage.getItem("formData_new"))
+                let registered_update=registered_user.find(item=>item.Email_ls==email)
+
+                let login_user=JSON.parse(localStorage.getItem("login_users"))
+                let login_update=login_user.findLast(item=>item.Email_ls==email)
+                
+                let isNameValid=validation_name()
+                let isAddressValid=validation_address()
+                let isPhoneValid=validation_number()
+                let isDateValid=validation_date()
+
+                if(isNameValid && isAddressValid && isPhoneValid && isDateValid){
+                    let name=document.getElementById("fullName").value
+                    registered_update.Name_ls=name
+                    login_update.Name_ls=name
+                    let phone=document.getElementById("phone").value
+                    registered_update.Phone_ls=phone
+                    login_update.Phone_ls=phone
+                    let address=document.getElementById("address").value
+                    registered_update.Address_ls=address
+                    login_update.Address_ls=address
+                    let dob=document.getElementById("dob").value
+                    registered_update.Dob_ls=dob
+                    login_update.Dob_ls=dob
+                    // let hobbies=document.getElementById("hobbies").value
+                    registered_update.Hobbies_ls=selectedValues
+                    login_update.Hobbies_ls=selectedValues
+                    // alert(JSON.stringify(login_user))
+                    
+                    localStorage.setItem("formData_new",JSON.stringify(registered_user))
+                    localStorage.setItem("login_users",JSON.stringify(login_user))
+                    let toast=Toastify({
+                                text: "Profile updated successfully!",
+                                duration: 3000,  // Toast lasts for 3 seconds
+                                gravity: "top", 
+                                position: "right",
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                close: true
+                            })
+                    toast.showToast();
+                    setTimeout(function() {
+                            window.location.href="./table2.html"
+                    },3000)
+                } else{
+                    let toast=Toastify({
+                                text: "Error",
+                                duration: 3000,  // Toast lasts for 3 seconds
+                                gravity: "top", 
+                                position: "right",
+                                backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                                close: true
+                            })
+                    toast.showToast();
+                    setTimeout(function() {
+                            location.reload()
+                    },3000)
+                }
+            })
+
+            document.getElementById("cancel").addEventListener("click",function(){
+                window.location.href="./table2.html"
+            })
+        }
+        
+        
+        
+
+        function validation_name() {
+                // var submitButton = document.forms["validate-form"]["submit"].disabled;
+                let nameInput = document.getElementById("fullName")
+                let errorMsg = document.getElementById("err_name");
+                // alert(nameInput.value.length)
+                // Regular expression to allow only letters and spaces
+                let namePattern = /^[A-Za-z\s]+$/;
+                // console.log(nameInput.value.length)
+                // alert(nameInput.length)
+                if (!nameInput.value.trim()) {
+                    errorMsg.innerHTML = "Name is required";
+                    errorMsg.style.color = "red";
+                    return false;
+                } else if(nameInput.value.length<=3 ){   
+                    errorMsg.innerHTML = "Name must contain atleast 3 characters";
+                    errorMsg.style.color = "red";
+                return false;
+                } else if(nameInput.value.length>=25){
+                    errorMsg.innerHTML = "Name must contain atmost 25 characters";
+                    errorMsg.style.color = "red";
+                return false;
+                }
+                else if (!namePattern.test(nameInput.value)) {
+                    errorMsg.innerHTML = "Name must not contain numbers or special characters";
+                    errorMsg.style.color = "red";
+                    return false;
+                }  else {
+                    errorMsg.innerHTML = ""; // Clear error message on valid input
+                    return true;
+                }
+            }
+
+
+    function validation_number() {
+        let num = document.getElementById("phone").value
+        let errorMsg = document.getElementById("err_phone");
+        let pat_num = /^(\+91[\s-]?)?\d{10}$|^(\+44[\s-]?)?((\d{3}|\d{4})[\s-]?)?\d{8}$/;
+        //+44 area code of 3 or 4 digits and then phone number of 8 digits
+
+        // alert(num)
+        
+        // if (pat_num.test(num))
+        if(!num.trim()){
+          errorMsg.innerHTML="Phone number is required"
+          errorMsg.style.color = "red";
+          return false
+        }
+        // else if(num.length>10){
+        //   errorMsg.innerHTML="Number should contain at most 10 digits"
+        //   errorMsg.style.color = "red";
+        //   return false
+        // }
+        else if(pat_num.test(num)){
+          errorMsg.innerHTML = "" 
+          // errorMsg.innerHTML = "Valid";
+          // errorMsg.style.color = "green";
+          return true;
+        } else if(!pat_num.test(num)){
+          errorMsg.innerHTML="Phone number is invalid";
+          errorMsg.style.color="red";
+          return false
+        }
+        else {
+            errorMsg.innerHTML = "Invalid number please add a number with 10 digits";
+            errorMsg.style.color = "red";
+            // document.getElementById("PhoneNumber").value = "";
+            return false;
+        }
+    }
+
+    function validation_date(){
+      var date = document.getElementById("dob").value;
+      let d=new Date()
+      let currentDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+      // console.log((Date.parse(date))<(Date.parse(currentDate)))
+      let errorMsg = document.getElementById("err_dob");
+      const patternDate = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; 
+      if(!date.trim()){
+          errorMsg.innerHTML="Date is required"
+          errorMsg.style.color = "red";
+          return false
+      } else if(!patternDate.test(date)){
+          errorMsg.innerHTML="Date is invalid"
+          errorMsg.style.color = "red";
+          return false
+      } else if((Date.parse(date))>(Date.parse(currentDate))){
+          errorMsg.innerHTML="Date should not be of future"
+          errorMsg.style.color = "red";
+          return false
+      } else {
+          errorMsg.innerHTML=""
+          return true
+      }
+    }
+
+    function validation_address(){
+      var address=document.getElementById("address").value;
+      let errorMsg = document.getElementById("err_address");
+
+      let addressPattern = /^[A-Za-z\s]+$/;
+
+      // alert(address)
+      if(!address.trim()){
+          errorMsg.innerHTML="Address is required"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length<3){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(address.length>250){
+          errorMsg.innerHTML="Address must contain atleast 3 characters"
+          errorMsg.style.color = "red";
+          return false
+      } else if(!addressPattern.test(address)){
+          errorMsg.innerHTML = "Address must not contain numbers or special characters";
+          errorMsg.style.color = "red";
+          return false;
+      } else{
+          errorMsg.innerHTML=""
+          return true
+      }
+    }
+
+    var selectedValues
+    document.addEventListener("DOMContentLoaded", function () {
+        function toggleDropdown() {
+            document.querySelector(".dropdown").classList.toggle("open");
+        }
+
+        document.addEventListener("click", function (event) {
+            const dropdown = document.querySelector(".dropdown");
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove("open");
+            }
+        });
+
+        
+
+        const checkboxes = document.querySelectorAll(".dropdown-list input[type='checkbox']");
+        const dropdownSelected = document.querySelector(".dropdown-selected");
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                selectedValues = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+
+                dropdownSelected.textContent = selectedValues.length ? selectedValues.join(", ") : "Select Hobbies";
+                
+                // console.log(selectedValues)
+            });
+        });
+
+            // Assign toggle function to the dropdown div
+            document.querySelector(".dropdown-selected").addEventListener("click", toggleDropdown);
+    });
+
+
+
+
+
+    </script>
+</head>
+<body onload="get_local_data()">
+    <div class="container">
+        <div class="row gutters">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="account-settings">
+                    <div class="user-profile">
+                        <div class="user-avatar" onclick="document.getElementById('avatarInput').click();">
+                            <img id="avatarImage" src="" alt="Profile Avatar" class="img_profile"/>
+                        </div>
+                        <input type="file" id="avatarInput" style="display: none;" accept="image/*" onchange="changeAvatar(event)" />
+                        <h5 class="user-name" id="fetch_name"></h5>
+                        <h6 class="user-email" id="fetch_email"></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row gutters">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h6 class="mb-2 text-primary">Personal Details</h6>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Enter full name" onkeyup="validation_name()">
+                            <p id="err_name"></p>
+                        </div>
+                    </div>
+                    <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="eMail">Email</label>
+                            <input type="email" class="form-control" id="eMail" placeholder="Enter email ID">
+                        </div>
+                    </div> -->
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" id="phone" placeholder="Enter phone number" onkeyup="validation_number()">
+                            <p id="err_phone"></p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="url" class="form-control" id="address" placeholder="Address" onkeyup="validation_address()">
+                            <p id="err_address"></p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" onchange="validation_date()">
+                            <p id="err_dob"></p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="hobbies">Hobbies:</label>
+                            <div class="dropdown">
+                                <div class="dropdown-selected" onclick="toggleDropdown()" id="hobbies_value"></div>
+                                <div class="dropdown-list">
+                                    <label><input type="checkbox" value="Reading"> Reading</label>
+                                    <label><input type="checkbox" value="Painting"> Painting</label>
+                                    <label><input type="checkbox" value="Dancing"> Dancing</label>
+                                </div>
+                            </div>
+                            <!-- <p>Selected Hobbies: <span id="selectedHobbies"></span></p> -->
+
+                            <!-- <p>Selected Hobbies: <span id="selectedHobbies"></span></p> -->
+                            
+                        </div>
+                        <!-- <div class="form-group">
+                            <label for="hobbies">Hobbies</label>
+                            <input type="text" class="form-control" id="hobbies">
+                        </div> -->
+                    </div>
+                </div>
+                
+                <div class="row gutters">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="text-right">
+                            <button type="button" id="cancel" name="submit" class="btn btn-secondary">Cancel</button>
+                            <button type="button" id="update" name="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Cropper.js CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+<script>
+    let cropper;
+let croppedBlob; // Stores the cropped image
+
+function validation_img_file() {
+    let fileInput = document.getElementById("Profile_Img");
+    let file_img = fileInput.files[0];
+    let errorMsg = document.getElementById("err_img");
+    let imgPreviewContainer = document.getElementById("imgPreviewContainer");
+    let imgPreview = document.getElementById("imgPreview");
+    let allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+    if (!file_img) {
+        errorMsg.innerHTML = "Profile image is required";
+        return false;
+    }
+    if (!allowedTypes.includes(file_img.type)) {
+        errorMsg.innerHTML = "Invalid file. Only jpeg, png are allowed";
+        return false;
+    }
+    if (file_img.size >= 2048 * 1024) {
+        errorMsg.innerHTML = "File too big. Select a file less than 2MB";
+        return false;
+    }
+
+    errorMsg.innerHTML = "";
+    let fileURL = URL.createObjectURL(file_img);
+    imgPreview.src = fileURL;
+    imgPreviewContainer.style.display = "block";
+}
+
+// Open Cropper Modal
+function openCropperModal() {
+    let modal = document.getElementById("cropperModal");
+    let canvas = document.getElementById("cropperCanvas");
+    let ctx = canvas.getContext("2d");
+    let img = new Image();
+    img.src = document.getElementById("imgPreview").src;
+
+    img.onload = function () {
+        canvas.width = 300;
+        canvas.height = 300;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        modal.style.display = "flex";
+
+        if (cropper) {
+            cropper.destroy();
+        }
+        cropper = new Cropper(canvas, {
+            aspectRatio: 1,
+            viewMode: 1,
+        });
+    };
+}
+
+// Crop Image & Save
+function cropImage() {
+    let modal = document.getElementById("cropperModal");
+    let canvas = document.getElementById("cropperCanvas");
+
+    cropper.getCroppedCanvas().toBlob((blob) => {
+        croppedBlob = blob;
+
+        let croppedURL = URL.createObjectURL(blob);
+        document.getElementById("imgPreview").src = croppedURL;
+        modal.style.display = "none";
+    });
+}
+
+// Close Modal
+function closeCropperModal() {
+    document.getElementById("cropperModal").style.display = "none";
+}
+
+</script>
+
+</head>
+<body>
+    <input type="file" id="Profile_Img" accept="image/jpeg, image/png, image/jpg" onchange="validation_img_file()" />
+
+<!-- Image Preview -->
+<div id="imgPreviewContainer" style="display: none;">
+    <img id="imgPreview" style="width: 150px; cursor: pointer;" onclick="openCropperModal()" />
+</div>
+
+<!-- Modal for Cropping -->
+<div id="cropperModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; position: relative;">
+        <canvas id="cropperCanvas"></canvas>
+        <button onclick="cropImage()">Crop & Save</button>
+        <button onclick="closeCropperModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Error Message -->
+<p id="err_img" style="color: red;"></p>
+
+</body>
+</html>
